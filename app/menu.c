@@ -176,7 +176,7 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 
         case MENU_SC_REV:
             //*pMin = 0;
-            *pMax = 26;
+            *pMax = 64;
             break;
 
         case MENU_ROGER:

@@ -102,9 +102,9 @@ void CHFRSCANNER_ContinueScanning(void)
 
 void CHFRSCANNER_Found(void)
 {
-    if (gEeprom.SCAN_RESUME_MODE > 2) {
+    if (gEeprom.SCAN_RESUME_MODE > 40) {
         if (!gScanPauseMode) {
-            gScanPauseDelayIn_10ms = scan_pause_delay_in_5_10ms * (gEeprom.SCAN_RESUME_MODE - 2) * 5;
+            gScanPauseDelayIn_10ms = scan_pause_delay_in_5_10ms * (gEeprom.SCAN_RESUME_MODE - 40) * 5;
             gScanPauseMode = true;
         }
     } else {

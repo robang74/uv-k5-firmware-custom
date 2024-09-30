@@ -401,6 +401,20 @@ Skip:
                 }
                 */
 
+                if(gEeprom.SCAN_RESUME_MODE < 41)
+                {
+                    if(gEeprom.SCAN_RESUME_MODE == 0)
+                    {
+                        CHFRSCANNER_Stop();
+                    }
+                    else
+                    {
+                        gScanPauseDelayIn_10ms = scan_pause_delay_in_6_10ms + (scan_pause_delay_in_6_10ms * 24 * gEeprom.SCAN_RESUME_MODE);
+                        gScheduleScanListen    = false;
+                    }
+                }
+
+                /*
                 if(gEeprom.SCAN_RESUME_MODE < 2)
                 {
                     gScanPauseDelayIn_10ms = scan_pause_delay_in_6_10ms + (scan_pause_delay_in_6_10ms * 24 * gEeprom.SCAN_RESUME_MODE);
@@ -411,6 +425,7 @@ Skip:
                 {
                     CHFRSCANNER_Stop();
                 }
+                */
 
                 /*
                 switch (gEeprom.SCAN_RESUME_MODE)

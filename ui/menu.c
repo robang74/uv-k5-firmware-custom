@@ -835,13 +835,17 @@ void UI_DisplayMenu(void)
         #endif
 
         case MENU_SC_REV:
-            if(gSubMenuSelection < 3)
+            if(gSubMenuSelection == 0)
             {
-                strcpy(String, gSubMenu_SC_REV[gSubMenuSelection]);
+                strcpy(String, "STOP");
+            }
+            else if(gSubMenuSelection < 41)
+            {
+                sprintf(String, "CARRIER\n%02ds:%03dms", ((gSubMenuSelection * 250) / 1000), ((gSubMenuSelection * 250) % 1000));
             }
             else
             {
-                sprintf(String, "TIMEOUT\n%02dm:%02ds", (((gSubMenuSelection - 2) * 5) / 60), (((gSubMenuSelection - 2) * 5) % 60));
+                sprintf(String, "TIMEOUT\n%02dm:%02ds", (((gSubMenuSelection - 40) * 5) / 60), (((gSubMenuSelection - 40) * 5) % 60));
             }
             break;
 
@@ -995,7 +999,7 @@ void UI_DisplayMenu(void)
             }
             else if(gSubMenuSelection < 121)
             {
-                sprintf(String, "%02dh:%02dm", (gSubMenuSelection / 60), (gSubMenuSelection % 60));
+                sprintf(String, "%dh:%02dm", (gSubMenuSelection / 60), (gSubMenuSelection % 60));
             }
             break;
 #endif
