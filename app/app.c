@@ -1631,9 +1631,9 @@ void APP_TimeSlice500ms(void)
     }
 
     if (gWakeUp) {
-        static bool swap = true;
-        swap = !swap;  // Alterne l'état à chaque exécution
-        BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, swap);
+        static uint8_t counter = 0;
+        counter = (counter + 1) % 4;
+        BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, (counter == 0));
     }
 #endif
 
