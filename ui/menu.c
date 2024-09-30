@@ -232,13 +232,6 @@ const char* const gSubMenu_RXMode[] =
     };
 #endif
 
-const char gSubMenu_SC_REV[][13] =
-{
-    "CARRIER\nFAST",
-    "CARRIER\nSLOW",
-    "STOP"
-};
-
 const char* const gSubMenu_MDF[] =
 {
     "FREQ",
