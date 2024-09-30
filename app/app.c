@@ -409,7 +409,7 @@ Skip:
                     }
                     else
                     {
-                        gScanPauseDelayIn_10ms = gEeprom.SCAN_RESUME_MODE * (250 / 10);
+                        gScanPauseDelayIn_10ms = gEeprom.SCAN_RESUME_MODE * (250 / 10); // 250ms
                         gScheduleScanListen    = false;
                     }
                 }
