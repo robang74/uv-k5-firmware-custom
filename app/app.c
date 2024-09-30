@@ -401,7 +401,7 @@ Skip:
                 }
                 */
 
-                if(gEeprom.SCAN_RESUME_MODE < 41)
+                if(gEeprom.SCAN_RESUME_MODE < 81)
                 {
                     if(gEeprom.SCAN_RESUME_MODE == 0)
                     {

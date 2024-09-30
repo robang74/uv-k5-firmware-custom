@@ -832,13 +832,13 @@ void UI_DisplayMenu(void)
             {
                 strcpy(String, "STOP");
             }
-            else if(gSubMenuSelection < 41)
+            else if(gSubMenuSelection < 81)
             {
                 sprintf(String, "CARRIER\n%02ds:%03dms", ((gSubMenuSelection * 250) / 1000), ((gSubMenuSelection * 250) % 1000));
             }
             else
             {
-                sprintf(String, "TIMEOUT\n%02dm:%02ds", (((gSubMenuSelection - 40) * 5) / 60), (((gSubMenuSelection - 40) * 5) % 60));
+                sprintf(String, "TIMEOUT\n%02dm:%02ds", (((gSubMenuSelection - 80) * 5) / 60), (((gSubMenuSelection - 80) * 5) % 60));
             }
             break;
 
