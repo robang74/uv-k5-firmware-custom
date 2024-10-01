@@ -1613,15 +1613,15 @@ void APP_TimeSlice500ms(void)
             PWM_PLUS0_CH0_COMP = 0;
             ST7565_ShutDown();
         }
-        else if(gSleepModeCountdown_500ms < 60 && gSetting_set_off != 0)
+        else if(gSleepModeCountdown_500ms != 0 && gSleepModeCountdown_500ms < 61 && gSetting_set_off != 0)
         {
-            if(gSleepModeCountdown_500ms % 2 == 0)
+            if(gSleepModeCountdown_500ms % 4 == 0)
             {
-                PWM_PLUS0_CH0_COMP = 0;
+                PWM_PLUS0_CH0_COMP = value[gEeprom.BACKLIGHT_MAX] * 4; // Max brightness
             }
             else
             {
-                PWM_PLUS0_CH0_COMP = value[gEeprom.BACKLIGHT_MAX] * 4; // Max brightness
+                PWM_PLUS0_CH0_COMP = 0;
             }
         }
     }
