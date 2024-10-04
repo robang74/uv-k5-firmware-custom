@@ -727,7 +727,9 @@ void SETTINGS_SaveSettings(void)
     EEPROM_WriteBuffer(0x0F40, State);
 
 #ifdef ENABLE_FEAT_F4HWN
-    memset(State, 0xFF, sizeof(State));
+    EEPROM_ReadBuffer(0x1FF0, State, sizeof(State));
+
+    //memset(State, 0xFF, sizeof(State));
 
     /*
     tmp = 0;
@@ -904,13 +906,13 @@ void SETTINGS_UpdateChannel(uint8_t channel, const VFO_Info_t *pVFO, bool keep, 
 
 void SETTINGS_WriteBuildOptions(void)
 {
-    uint8_t buf[8] = {0};
+    uint8_t State[8];
 
 #ifdef ENABLE_FEAT_F4HWN
-    EEPROM_ReadBuffer(0x1FF0, buf, 8);
+    EEPROM_ReadBuffer(0x1FF0, State, sizeof(State));
 #endif
     
-buf[0] = 0
+State[0] = 0
 #ifdef ENABLE_FMRADIO
     | (1 << 0)
 #endif
@@ -937,7 +939,7 @@ buf[0] = 0
 #endif
 ;
 
-buf[1] = 0
+State[1] = 0
 #ifdef ENABLE_FLASHLIGHT
     | (1 << 0)
 #endif
@@ -957,5 +959,5 @@ buf[1] = 0
     | (1 << 5)
 #endif
 ;
-    EEPROM_WriteBuffer(0x1FF0, buf);
+    EEPROM_WriteBuffer(0x1FF0, State);
 }
