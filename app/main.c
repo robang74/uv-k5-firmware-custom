@@ -210,9 +210,9 @@ static void processFKeyFunction(const KEY_Code_t Key, const bool beep)
                     gEeprom.ScreenChannel[Vfo] = gEeprom.NoaaChannel[gEeprom.TX_VFO];
                 }
                 else {
-                    gEeprom.ScreenChannel[Vfo] = gEeprom.FreqChannel[gEeprom.TX_VFO];
+                    gEeprom.ScreenChannel[Vfo] = gEeprom.MrChannel[gEeprom.TX_VFO];
 #ifdef ENABLE_VOICE
-                        gAnotherVoiceID = VOICE_ID_FREQUENCY_MODE;
+                        gAnotherVoiceID = VOICE_ID_CHANNEL_MODE;
 #endif
                 }
                 gRequestSaveVFO   = true;
