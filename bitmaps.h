@@ -41,6 +41,8 @@ extern const uint8_t BITMAP_ScanListE[7];
 extern const uint8_t BITMAP_PowerUser[3];
 extern const uint8_t BITMAP_compand[6];
 
+extern const uint8_t BITMAP_NOAA[12];
+
 #ifndef ENABLE_CUSTOM_MENU_LAYOUT
     extern const uint8_t BITMAP_CurrentIndicator[8];
 #endif
