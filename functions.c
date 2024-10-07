@@ -79,7 +79,7 @@ void FUNCTION_Init(void)
     gNOAACountdown_10ms = 0;
 
     if (IS_NOAA_CHANNEL(gRxVfo->CHANNEL_SAVE)) {
-        gCurrentCodeType = CODE_TYPE_CONTINUOUS_TONE;
+        gCurrentCodeType = CODE_TYPE_OFF;
     }
 #endif
 
