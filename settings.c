@@ -350,8 +350,8 @@ void SETTINGS_InitEEPROM(void)
         gSetting_set_ctr = (ctr_value > 0 && ctr_value < 16) ? ctr_value : 10;
 
         gSetting_set_tmr = Data[4] & 0x01;
-#ifdef ENABLE_FEAT_F4HWN_SLEEP 
-        gSetting_set_off = Data[4] >> 1;
+#ifdef ENABLE_FEAT_F4HWN_SLEEP
+        gSetting_set_off = (Data[4] >> 1) > 120 ? 60 : (Data[4] >> 1); 
 #endif
 
         // Warning
