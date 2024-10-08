@@ -235,7 +235,6 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
         #endif
         case MENU_BCL:
         case MENU_BEEP:
-        case MENU_AUTOLK:
         case MENU_S_ADD1:
         case MENU_S_ADD2:
         case MENU_S_ADD3:
@@ -274,6 +273,10 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
             *pMax = ARRAY_SIZE(gSubMenu_SCRAMBLER) - 1;
             break;
 #endif
+
+        case MENU_AUTOLK:
+            *pMax = 40;
+            break;
 
         case MENU_TOT:
             //*pMin = 0;
@@ -634,7 +637,7 @@ void MENU_AcceptSetting(void)
 
         case MENU_AUTOLK:
             gEeprom.AUTO_KEYPAD_LOCK = gSubMenuSelection;
-            gKeyLockCountdown        = 30;
+            gKeyLockCountdown        = gEeprom.AUTO_KEYPAD_LOCK * 30; // 15 seconds step
             break;
 
         case MENU_S_ADD1:

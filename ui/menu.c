@@ -705,7 +705,10 @@ void UI_DisplayMenu(void)
             break;
 
         case MENU_AUTOLK:
-            strcpy(String, (gSubMenuSelection == 0) ? "OFF" : "AUTO");
+            if (gSubMenuSelection == 0)
+                strcpy(String, "OFF");
+            else
+                sprintf(String, "%02dm:%02ds", ((gSubMenuSelection * 15) / 60), ((gSubMenuSelection * 15) % 60));
             break;
 
         case MENU_COMPAND:

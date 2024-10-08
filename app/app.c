@@ -1834,7 +1834,7 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
     gBatterySaveCountdown_10ms = battery_save_count_10ms;
 
     if (gEeprom.AUTO_KEYPAD_LOCK)
-        gKeyLockCountdown = 30;     // 15 seconds
+        gKeyLockCountdown = gEeprom.AUTO_KEYPAD_LOCK * 30;     // 15 seconds step
 
     if (!bKeyPressed) { // key released
         if (flagSaveVfo) {
