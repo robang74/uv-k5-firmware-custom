@@ -1605,7 +1605,11 @@ void APP_TimeSlice500ms(void)
         gWakeUp = false;
     }
 
+    #ifdef ENABLE_AIRCOPY
     if(gCurrentFunction != FUNCTION_TRANSMIT && !FUNCTION_IsRx() && gScreenToDisplay != DISPLAY_AIRCOPY)
+    #else
+    if(gCurrentFunction != FUNCTION_TRANSMIT && !FUNCTION_IsRx())
+    #endif
     {
         if (gSleepModeCountdown_500ms > 0 && --gSleepModeCountdown_500ms == 0) {
             gBacklightCountdown_500ms = 0;
