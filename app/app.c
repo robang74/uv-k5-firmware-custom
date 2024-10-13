@@ -1127,9 +1127,10 @@ void APP_Update(void)
             // go back to sleep
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
-            if(bitchk(BF_DS_WAKE_UP))
-                //RAF: original values were 120:1000, now 2^3 F4HWN_SLEEP_VALUE
-                gPowerSave_10ms = F4HWN_SLEEP_VALUE << 3; // Why ? Why not :) 10s
+            if(bitchk(BF_DS_WAKE_UP)) {
+                //RAF: original multiplier was 250 but changed in << 8
+                gPowerSave_10ms = gEeprom.BATTERY_SAVE << 8; // deep sleep now indexed on BatSav
+            }
             else
 #endif
             gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
