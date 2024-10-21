@@ -1,7 +1,7 @@
 #!/bin/sh
 #export DOCKER_DEFAULT_PLATFORM=linux/amd64
 IMAGE_NAME="uvk5"
-rm "${PWD}/compiled-firmware/*"
+rm -f "${PWD}/compiled-firmware/*"
 docker build -t $IMAGE_NAME .
 
 docker run --rm -v "${PWD}/compiled-firmware/:/app/compiled-firmware" $IMAGE_NAME /bin/bash -c "rm ./compiled-firmware/*; cd /app && make -s \
