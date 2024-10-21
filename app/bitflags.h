@@ -20,6 +20,7 @@ extern uint8_t bitflags; // variable defined in action.c
 #define BT_MONITOR_FN  0x02
 #define BF_DUAL_WATCH  0x04
 #define BF_FLASHLIGHT  0x08
+#define BF_MODE_RX_DW  0x10
 
 #define bitchk(m)    ( bitflags & m )
 #define bitset(m, x) { bitflags = x ? (bitflags | m) : (bitflags & ~m); }

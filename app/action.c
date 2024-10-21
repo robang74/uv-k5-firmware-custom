@@ -558,11 +558,11 @@ uint8_t bitflags = 0; // defined extern in bitflags.h
 
 void ACTION_RxMode(void)
 {
-    if(bitchk(BF_CROSS_BAND))
+    if(bitchk(BF_MODE_RX_DW))
         gEeprom.CROSS_BAND_RX_TX = !gEeprom.CROSS_BAND_RX_TX;
     else
         gEeprom.DUAL_WATCH = !gEeprom.DUAL_WATCH;
-    bitflp(BF_CROSS_BAND);
+    bitflp(BF_MODE_RX_DW);
 
     ACTION_Update();
 }
