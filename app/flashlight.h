@@ -4,7 +4,7 @@
 #ifdef ENABLE_FLASHLIGHT
 
 #include <stdint.h>
-#include "flags.h"
+#include "bitflags.h"
 
 #ifndef ENABLE_FEAT_F4HWN
     enum FlashlightMode_t {
@@ -19,6 +19,7 @@
 
     void FlashlightTimeSlice(void);
 #endif
+
 void ACTION_FlashLight(void);
 
 #endif
