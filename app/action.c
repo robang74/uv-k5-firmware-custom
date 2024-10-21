@@ -575,8 +575,16 @@ void ACTION_MainOnly(void)
         uint8_t txvfo;
         txvfo = (gEeprom.TX_VFO & ~3) ? 0 : gEeprom.TX_VFO + 1;
         gEeprom.DUAL_WATCH = bitchk(BF_DUAL_WATCH) ? txvfo : 0;
-        gEeprom.CROSS_BAND_RX_TX = bitchk(BF_CROSS_BAND);
+        //RAF: can we use here the value gEeprom.TX_VFO + 1?
+        //     if this works, then we saved a whole bit! ;-)
+        gEeprom.CROSS_BAND_RX_TX = bitchk(BF_CROSS_BAND) ? txvfo : 0;
+        //RAF: at this point these two variable have the same
+        //     if this is (almost) true, a tristate is enough.
     } else {
+        //RAF: gEeprom.CROSS_BAND_RX_TX ?= _A _B or (TX_VFO + 1)
+        //     allowed values: 0 (OFF), 1 (A), 2 (B) only.
+        //     if gEeprom.TX_VFO remains informative then
+        //     the following instruction is superfluous.
         bitset(BF_CROSS_BAND, gEeprom.CROSS_BAND_RX_TX);
         //RAF: gEeprom.DUAL_WATCH ?= _A _B or (TX_VFO + 1)
         //     allowed values: 0 (OFF), 1 (A), 2 (B) only.
