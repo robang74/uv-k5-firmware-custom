@@ -2,7 +2,6 @@
 
 #include "driver/gpio.h"
 #include "bsp/dp32g030/gpio.h"
-
 #include "flashlight.h"
 
 #ifndef ENABLE_FEAT_F4HWN
@@ -66,9 +65,7 @@
 #else
     void ACTION_FlashLight(void)
     {
-        static bool gFlashLightState = false;
-
-        if(gFlashLightState)
+        if(flags & flight)
         {
             GPIO_ClearBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
         }
@@ -76,8 +73,7 @@
         {
             GPIO_SetBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);    
         }
-
-        gFlashLightState = (gFlashLightState) ? false : true;
+	bitflp(flight)
     }
 #endif
 #endif

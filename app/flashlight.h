@@ -4,6 +4,7 @@
 #ifdef ENABLE_FLASHLIGHT
 
 #include <stdint.h>
+#include "flags.h"
 
 #ifndef ENABLE_FEAT_F4HWN
     enum FlashlightMode_t {

@@ -47,6 +47,10 @@
   #include "screenshot.h"
 #endif
 
+#include "flags.h"
+
+uint8_t flags = 0;
+
 #if defined(ENABLE_FMRADIO)
 static void ACTION_Scan_FM(bool bRestart);
 #endif
@@ -474,43 +478,28 @@ void ACTION_Update(void)
 
 void ACTION_RxMode(void)
 {
-    static bool cycle = 0;
-
-    switch(cycle) {
-        case 0:
-            gEeprom.DUAL_WATCH = !gEeprom.DUAL_WATCH;
-            cycle = 1;
-            break;
-        case 1:
-            gEeprom.CROSS_BAND_RX_TX = !gEeprom.CROSS_BAND_RX_TX;
-            cycle = 0;
-            break;
+    if(flags & rxmod) {
+    	gEeprom.CROSS_BAND_RX_TX = !gEeprom.CROSS_BAND_RX_TX;
+    } else {
+	gEeprom.DUAL_WATCH = !gEeprom.DUAL_WATCH;
     }
+    bitflp(rxmod);
 
     ACTION_Update();
 }
 
 void ACTION_MainOnly(void)
 {
-    static bool cycle = 0;
-    static uint8_t dw = 0;
-    static uint8_t cb = 0;
-
-    switch(cycle) {
-        case 0:
-            dw = gEeprom.DUAL_WATCH;
-            cb = gEeprom.CROSS_BAND_RX_TX;
-
-            gEeprom.DUAL_WATCH = 0;
-            gEeprom.CROSS_BAND_RX_TX = 0;
-            cycle = 1;
-            break;
-        case 1:
-            gEeprom.DUAL_WATCH = dw;
-            gEeprom.CROSS_BAND_RX_TX = cb;
-            cycle = 0;
-            break;
+    if(flags & monly) {
+	gEeprom.DUAL_WATCH = flags & dlwtc;
+	gEeprom.CROSS_BAND_RX_TX = flags & crsbd;
+    } else {
+	bitset(crsbd, gEeprom.CROSS_BAND_RX_TX);
+	bitset(dlwtc, gEeprom.DUAL_WATCH);
+	gEeprom.CROSS_BAND_RX_TX = 0;
+	gEeprom.DUAL_WATCH = 0;
     }
+    bitflp(monly);
 
     ACTION_Update();
 }
