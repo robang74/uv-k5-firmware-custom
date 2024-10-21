@@ -570,11 +570,19 @@ void ACTION_RxMode(void)
 void ACTION_MainOnly(void)
 {
     if(bitchk(BT_MONITOR_FN)) {
-        gEeprom.DUAL_WATCH = bitchk(BF_DUAL_WATCH);
+        //RAF: can we use here the value gEeprom.TX_VFO + 1?
+        //     if this works, then we saved a whole bit! ;-)
+        uint8_t txvfo;
+        txvfo = (gEeprom.TX_VFO & ~3) ? 0 : gEeprom.TX_VFO + 1;
+        gEeprom.DUAL_WATCH = bitchk(BF_DUAL_WATCH) ? txvfo : 0;
         gEeprom.CROSS_BAND_RX_TX = bitchk(BF_CROSS_BAND);
     } else {
         bitset(BF_CROSS_BAND, gEeprom.CROSS_BAND_RX_TX);
-        bitset(BF_DUAL_WATCH, gEeprom.DUAL_WATCH);  
+        //RAF: gEeprom.DUAL_WATCH ?= _A _B or (TX_VFO + 1)
+        //     allowed values: 0 (OFF), 1 (A), 2 (B) only.
+        //     if gEeprom.TX_VFO remains informative then
+        //     the following instruction is superfluous.
+        bitset(BF_DUAL_WATCH, gEeprom.DUAL_WATCH);
         gEeprom.CROSS_BAND_RX_TX = 0;
         gEeprom.DUAL_WATCH = 0;
     }
