@@ -9,6 +9,7 @@ ENABLE_SPECTRUM=1 \
 ENABLE_FMRADIO=0 \
 ENABLE_AIRCOPY=1 \
 ENABLE_NOAA=0 \
+ENABLE_UART=1 \
 TARGET=f4hwn.bandscope \
 && cp f4hwn.bandscope* compiled-firmware/"
 
@@ -17,6 +18,7 @@ ENABLE_SPECTRUM=0 \
 ENABLE_FMRADIO=1 \
 ENABLE_AIRCOPY=1 \
 ENABLE_NOAA=0 \
+ENABLE_UART=1 \
 TARGET=f4hwn.broadcast \
 && cp f4hwn.broadcast* compiled-firmware/"
 
@@ -29,6 +31,7 @@ ENABLE_AUDIO_BAR=0 \
 ENABLE_FEAT_F4HWN_SPECTRUM=0 \
 ENABLE_FEAT_F4HWN_SLEEP=0 \
 ENABLE_NOAA=0 \
+ENABLE_UART=1 \
 TARGET=f4hwn.voxless \
 && cp f4hwn.voxless* compiled-firmware/"
 
@@ -45,5 +48,6 @@ ENABLE_FEAT_F4HWN_SLEEP=0 \
 ENABLE_FEAT_F4HWN_RX_TX_TIMER=0 \
 ENABLE_FEAT_F4HWN_PMR=1 \
 ENABLE_NOAA=0 \
+ENABLE_UART=1 \
 TARGET=f4hwn.bnb-frills \
 && cp f4hwn.bnb-frills* compiled-firmware/"
