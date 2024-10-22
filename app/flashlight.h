@@ -6,7 +6,6 @@
 #include <stdint.h>
 
 #ifndef ENABLE_FEAT_F4HWN
-#include "bitflags.h"
 
     enum FlashlightMode_t {
         FLASHLIGHT_OFF = 0,

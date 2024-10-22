@@ -28,8 +28,20 @@ extern volatile uint8_t bitflags; // variable instanced in main.c
 #define BF_MODE_RX_DW  0x10
 #define BF_DS_WAKE_UP  0x20
 
+#if 0
+
+inline static void bitset(uint8_t m, bool x) {
+    bitflags = x ? (bitflags | m) : (bitflags & ~m);
+}
+inline static bool bitchk(uint8_t m) { return bitflags & m; }
+inline static void bitflp(uint8_t m) { bitflags ^= m; }
+
+#else
+
 #define bitchk(m)    ( bitflags & m )
 #define bitset(m, x) { bitflags = x ? (bitflags | m) : (bitflags & ~m); }
 #define bitflp(m)    { bitflags ^= m; }
+
+#endif
 
 #endif //APP_BITFLAGS_H

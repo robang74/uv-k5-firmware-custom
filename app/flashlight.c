@@ -95,6 +95,6 @@ void ACTION_FlashLight(void)
     bitflp(BF_FLASHLIGHT);
 }
 
-#endif
+#endif //ENABLE_FEAT_F4HWN
 
 #endif
