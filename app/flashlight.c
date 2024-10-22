@@ -1,5 +1,6 @@
 #ifdef ENABLE_FLASHLIGHT
 
+#include "flashlight.h"
 #include "driver/gpio.h"
 #include "bsp/dp32g030/gpio.h"
 
@@ -81,7 +82,7 @@
  *     limitations under the License.
  */
 
-#include "flashlight.h"
+#include "bitflags.h"
 
 void ACTION_FlashLight(void)
 {
