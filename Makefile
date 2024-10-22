@@ -17,6 +17,9 @@ ENABLE_DTMF_CALLING           	?= 0
 ENABLE_FLASHLIGHT             	?= 1
 
 # ---- CUSTOM MODS ----
+ENABLE_ROBANG74_UI_MENU         ?= 1
+# requires ENABLE_ROBANG74_UI_MENU=1
+ENABLE_FLOCK_SHORT_MENU         ?= 0
 ENABLE_SPECTRUM               	?= 1
 ENABLE_BIG_FREQ               	?= 1
 ENABLE_SMALL_BOLD             	?= 1
@@ -45,7 +48,7 @@ ENABLE_FEAT_F4HWN_SCREENSHOT  	?= 0
 ENABLE_FEAT_F4HWN_SPECTRUM    	?= 1
 ENABLE_FEAT_F4HWN_RX_TX_TIMER   ?= 1
 ENABLE_FEAT_F4HWN_CHARGING_C    ?= 1
-ENABLE_FEAT_F4HWN_SLEEP		?= 1
+ENABLE_FEAT_F4HWN_SLEEP         ?= 1
 ENABLE_FEAT_F4HWN_PMR         	?= 0
 ENABLE_FEAT_F4HWN_GMRS_FRS_MURS	?= 0
 ENABLE_FEAT_F4HWN_CA         	?= 1
@@ -247,15 +250,15 @@ endif
 
 CFLAGS =
 ifeq ($(ENABLE_CLANG),0)
-	CFLAGS += -Oz -Wall -Werror -mcpu=cortex-m0 -fshort-enums -fno-delete-null-pointer-checks -std=c2x -MMD
-	#CFLAGS += -Os -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c2x -MMD
-	#CFLAGS += -Os -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c11 -MMD
-	#CFLAGS += -Os -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c99 -MMD
+	CFLAGS  += -Oz -Wall -Werror -mcpu=cortex-m0              -fshort-enums -fno-delete-null-pointer-checks -std=c2x   -MMD
+	#CFLAGS += -Os -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c2x   -MMD
+	#CFLAGS += -Os -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c11   -MMD
+	#CFLAGS += -Os -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c99   -MMD
 	#CFLAGS += -Os -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=gnu99 -MMD
 	#CFLAGS += -Os -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=gnu11 -MMD
 else
 	# Oz needed to make it fit on flash
-	CFLAGS += -Oz -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c2x -MMD
+	CFLAGS  += -Oz -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c2x   -MMD
 endif
 
 ifeq ($(ENABLE_LTO),1)
@@ -273,10 +276,32 @@ CFLAGS += -Wextra
 #CFLAGS += -Wpedantic
 
 CFLAGS += -DPRINTF_INCLUDE_CONFIG_H
-CFLAGS += -DAUTHOR_STRING=\"$(AUTHOR_STRING)\" -DVERSION_STRING=\"$(VERSION_STRING)\"
+ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
+	CFLAGS += -DAUTHOR_STRING=\"$(AUTHOR_STRING)\" 
+else
+	CFLAGS += -DAUTHOR_STRING=\"$(AUTHOR_STRING)+ROBANG_UI\"
+endif
+CFLAGS += -DVERSION_STRING=\"$(VERSION_STRING)\"
 
+ifeq ($(ENABLE_FLOCK_SHORT_MENU),1) 
+ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
+	$(info "")
+	$(error "ENABLE_ROBANG74_UI_MENU missing, exit")
+	$(info "")
+	$(info  "ENABLE_FLOCK_SHORT_MENU requires it")
+	$(info "")
+	$(exit -1)
+endif
+endif
+
+ifeq ($(ENABLE_ROBANG74_UI_MENU),1)
+	CFLAGS += -DENABLE_ROBANG74_UI_MENU
+endif
+ifeq ($(ENABLE_FLOCK_SHORT_MENU),1)
+	CFLAGS += -DENABLE_FLOCK_SHORT_MENU
+endif
 ifeq ($(ENABLE_SPECTRUM),1)
-CFLAGS += -DENABLE_SPECTRUM
+	CFLAGS += -DENABLE_SPECTRUM
 endif
 ifeq ($(ENABLE_SWD),1)
 	CFLAGS += -DENABLE_SWD
