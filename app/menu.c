@@ -383,7 +383,7 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
         case MENU_SET_OFF:
-            *pMax = 120;
+            *pMax = 128;
             break;
 #endif
 

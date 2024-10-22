@@ -1128,17 +1128,12 @@ void APP_Update(void)
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
             if(gWakeUp)
-            {
                 gPowerSave_10ms = 1000; // Why ? Why not :) 10s
-            }
             else
-            {
-                gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
-            }
 #else
             gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
 #endif
-            gRxIdleMode     = true;
+            gRxIdleMode = true;
             goToSleep = false;
 
             BK4819_DisableVox();
@@ -1597,7 +1592,13 @@ void APP_TimeSlice500ms(void)
     }
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
-    if (gSleepModeCountdown_500ms == gSetting_set_off * 120 && gWakeUp) {
+     /* RAF: reworked on 22.10.2024 by github/robang74
+            (c) Roberto A. Foglietta, under APL v2.0
+
+        original F4HWN was using 120x which is similar to (1<<7) = 128x (faster)
+        moreover, first checking the boolean (quick) then the other stuff (slow)
+    */
+    if (gWakeUp && gSleepModeCountdown_500ms == (gSetting_set_off << 7)) {
         //ST7565_Init();
         ST7565_FixInterfGlitch();
         BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, false);
@@ -1605,42 +1606,42 @@ void APP_TimeSlice500ms(void)
         gWakeUp = false;
     }
 
-    #ifdef ENABLE_AIRCOPY
-    if(gCurrentFunction != FUNCTION_TRANSMIT && !FUNCTION_IsRx() && gScreenToDisplay != DISPLAY_AIRCOPY)
-    #else
+#ifdef ENABLE_AIRCOPY
+    if(gScreenToDisplay != DISPLAY_AIRCOPY   &&
+       gCurrentFunction != FUNCTION_TRANSMIT && !FUNCTION_IsRx())
+#else
     if(gCurrentFunction != FUNCTION_TRANSMIT && !FUNCTION_IsRx())
-    #endif
+#endif
     {
-        if (gSleepModeCountdown_500ms > 0 && --gSleepModeCountdown_500ms == 0) {
-            gBacklightCountdown_500ms = 0;
+        if(gSleepModeCountdown_500ms) {
+            --gSleepModeCountdown_500ms;
+
+            if(gSetting_set_off && gSleepModeCountdown_500ms < 61)
+            {
+                PWM_PLUS0_CH0_COMP = (gSleepModeCountdown_500ms & 3) ? 0 : \
+                    value[gEeprom.BACKLIGHT_MAX] << 2; // Max brightness
+            }
+        }
+        else
+        {
             gPowerSave_10ms = 1;
             gWakeUp = true;
             PWM_PLUS0_CH0_COMP = 0;
             ST7565_ShutDown();
         }
-        else if(gSleepModeCountdown_500ms != 0 && gSleepModeCountdown_500ms < 61 && gSetting_set_off != 0)
-        {
-            if(gSleepModeCountdown_500ms % 4 == 0)
-            {
-                PWM_PLUS0_CH0_COMP = value[gEeprom.BACKLIGHT_MAX] * 4; // Max brightness
-            }
-            else
-            {
-                PWM_PLUS0_CH0_COMP = 0;
-            }
-        }
     }
     else
     {
-        gSleepModeCountdown_500ms = gSetting_set_off * 120;
+        //RAF: original F4HWN was using 120x but (1<<7) = 128x is faster
+        gSleepModeCountdown_500ms = gSetting_set_off << 7;
     }
 
     if (gWakeUp) {
         static uint8_t counter = 0;
-        counter = (counter + 1) % 4;
-        BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, (counter == 0));
+        counter = (counter + 1) & 3;
+        BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, !counter);
     }
-#endif
+#endif //ENABLE_FEAT_F4HWN_SLEEP
 
     if (gReducedService)
     {
