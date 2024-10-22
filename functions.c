@@ -39,6 +39,9 @@
 #include "settings.h"
 #include "ui/status.h"
 #include "ui/ui.h"
+#ifdef ENABLE_FEAT_F4HWN_SLEEP
+    #include "app/bitflags.h"
+#endif
 
 FUNCTION_Type_t gCurrentFunction;
 
@@ -119,7 +122,7 @@ void FUNCTION_Foreground(const FUNCTION_Type_t PreviousFunction)
 
 void FUNCTION_PowerSave() {
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
-    if(gWakeUp)
+    if(bitchk(BF_DS_WAKE_UP))
         //RAF: original values were 120:1000, now 2^3 F4HWN_SLEEP_VALUE
         gPowerSave_10ms = F4HWN_SLEEP_VALUE << 3; // Why ? Why not :) 10s
     else

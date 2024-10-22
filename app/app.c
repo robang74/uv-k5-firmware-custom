@@ -46,6 +46,7 @@
 #include "bsp/dp32g030/gpio.h"
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
     #include "bsp/dp32g030/pwmplus.h"
+    #include "bitflags.h"
 #endif
 #include "driver/backlight.h"
 #ifdef ENABLE_FMRADIO
@@ -1127,7 +1128,7 @@ void APP_Update(void)
             // go back to sleep
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
-            if(gWakeUp)
+            if(bitchk(BF_DS_WAKE_UP))
                 //RAF: original values were 120:1000, now 2^3 F4HWN_SLEEP_VALUE
                 gPowerSave_10ms = F4HWN_SLEEP_VALUE << 3; // Why ? Why not :) 10s
             else
@@ -1599,12 +1600,12 @@ void APP_TimeSlice500ms(void)
         original F4HWN was using 120x which is similar to (1<<7) = 128x (faster)
         moreover, first checking the boolean (quick) then the other stuff (slow)
     */
-    if (gWakeUp && gSleepModeCountdown_500ms == (gSetting_set_off << 7)) {
+    if (bitchk(BF_DS_WAKE_UP) && gSleepModeCountdown_500ms == (gSetting_set_off << 7)) {
         //ST7565_Init();
         ST7565_FixInterfGlitch();
         BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, false);
         gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
-        gWakeUp = false;
+        bitflp(BF_DS_WAKE_UP);
     }
 
 #ifdef ENABLE_AIRCOPY
@@ -1626,7 +1627,7 @@ void APP_TimeSlice500ms(void)
         else
         {
             gPowerSave_10ms = 1;
-            gWakeUp = true;
+            bitflags |= BF_DS_WAKE_UP;
             PWM_PLUS0_CH0_COMP = 0;
             ST7565_ShutDown();
         }
@@ -1637,7 +1638,7 @@ void APP_TimeSlice500ms(void)
         gSleepModeCountdown_500ms = (uint16_t)gSetting_set_off << 7;
     }
 
-    if (gWakeUp) {
+    if (bitchk(BF_DS_WAKE_UP)) {
         static uint8_t counter = 0;
         counter = (counter + 1) & 3;
         BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, !counter);

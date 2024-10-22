@@ -26,6 +26,7 @@ extern volatile uint8_t bitflags; // variable instanced in main.c
 #define BF_DUAL_WATCH  0x04
 #define BF_FLASHLIGHT  0x08
 #define BF_MODE_RX_DW  0x10
+#define BF_DS_WAKE_UP  0x20
 
 #define bitchk(m)    ( bitflags & m )
 #define bitset(m, x) { bitflags = x ? (bitflags | m) : (bitflags & ~m); }

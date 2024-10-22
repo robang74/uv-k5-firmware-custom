@@ -166,7 +166,6 @@ extern enum BacklightOnRxTx_t gSetting_backlight_on_tx_rx;
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
 #define F4HWN_SLEEP_VALUE 128
     extern uint8_t           gSetting_set_off;
-    extern bool              gWakeUp;
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN
