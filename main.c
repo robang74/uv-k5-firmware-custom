@@ -104,6 +104,9 @@ void Main(void)
     SETTINGS_InitEEPROM();
 
 #ifdef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_FEAT_F4HWN_SLEEP
+    gSleepModeCountdown_500ms = 0; //RAF: initialisation in the main? Right!
+#endif
     bitflags = 0; //RAF: not nessarly zero, but it is zero by now.
     gDW = gEeprom.DUAL_WATCH;
     gCB = gEeprom.CROSS_BAND_RX_TX;

@@ -118,22 +118,17 @@ void FUNCTION_Foreground(const FUNCTION_Type_t PreviousFunction)
 }
 
 void FUNCTION_PowerSave() {
-    #ifdef ENABLE_FEAT_F4HWN_SLEEP
-        if(gWakeUp)
-        {
-            gPowerSave_10ms = 1000; // Why ? Why not :) 10s
-        }
-        else
-        {
-            gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
-        }
-    #else
-        gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
-    #endif
+#ifdef ENABLE_FEAT_F4HWN_SLEEP
+    if(gWakeUp)
+        //RAF: original values were 120:1000, now 2^3 F4HWN_SLEEP_VALUE
+        gPowerSave_10ms = F4HWN_SLEEP_VALUE << 3; // Why ? Why not :) 10s
+    else
+#else
+    gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
+#endif
+
     gPowerSaveCountdownExpired = false;
-
     gRxIdleMode = true;
-
     gMonitor = false;
 
     BK4819_DisableVox();

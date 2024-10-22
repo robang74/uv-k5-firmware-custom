@@ -351,7 +351,8 @@ void SETTINGS_InitEEPROM(void)
 
         gSetting_set_tmr = Data[4] & 0x01;
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
-        gSetting_set_off = (Data[4] >> 1) > 120 ? 60 : (Data[4] >> 1); 
+        //RAF: original values were 120:1000, now 2^3 F4HWN_SLEEP_VALUE 2^-1
+        gSetting_set_off = (Data[4] >> 7) ? F4HWN_SLEEP_VALUE >> 1 : Data[4];
 #endif
 
         // Warning

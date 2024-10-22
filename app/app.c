@@ -1128,7 +1128,8 @@ void APP_Update(void)
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
             if(gWakeUp)
-                gPowerSave_10ms = 1000; // Why ? Why not :) 10s
+                //RAF: original values were 120:1000, now 2^3 F4HWN_SLEEP_VALUE
+                gPowerSave_10ms = F4HWN_SLEEP_VALUE << 3; // Why ? Why not :) 10s
             else
 #else
             gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
@@ -1633,7 +1634,7 @@ void APP_TimeSlice500ms(void)
     else
     {
         //RAF: original F4HWN was using 120x but (1<<7) = 128x is faster
-        gSleepModeCountdown_500ms = gSetting_set_off << 7;
+        gSleepModeCountdown_500ms = (uint16_t)gSetting_set_off << 7;
     }
 
     if (gWakeUp) {

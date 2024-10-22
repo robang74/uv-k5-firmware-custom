@@ -36,7 +36,7 @@ bool backlightOn;
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
-    uint16_t gSleepModeCountdown_500ms = 0;
+    uint16_t gSleepModeCountdown_500ms;
 #endif
 
 void BACKLIGHT_InitHardware()
@@ -81,22 +81,23 @@ static void BACKLIGHT_Sound(void)
 
 void BACKLIGHT_TurnOn(void)
 {
-    #ifdef ENABLE_FEAT_F4HWN_SLEEP
-        gSleepModeCountdown_500ms = gSetting_set_off * 120;
-    #endif
+#ifdef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_FEAT_F4HWN_SLEEP
+        //RAF: original value was 120 but now 2^7
+        gSleepModeCountdown_500ms = (uint16_t)gSetting_set_off << 7;
+#endif
 
-    #ifdef ENABLE_FEAT_F4HWN
         gBacklightBrightnessOld = BACKLIGHT_GetBrightness();
-    #endif
+#endif //ENABLE_FEAT_F4HWN
 
     if (gEeprom.BACKLIGHT_TIME == 0) {
         BACKLIGHT_TurnOff();
-        #ifdef ENABLE_FEAT_F4HWN
-            if(gK5startup == true) 
-            {
-                BACKLIGHT_Sound();
-            }
-        #endif
+#ifdef ENABLE_FEAT_F4HWN
+        if(gK5startup == true) 
+        {
+            BACKLIGHT_Sound();
+        }
+#endif
         return;
     }
 
