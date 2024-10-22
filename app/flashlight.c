@@ -64,7 +64,8 @@
 
 #else
 
-/* Copyright 2024 Roberto A. Foglietta
+/*******************************************************************************
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
  * https://github.com/robang74
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

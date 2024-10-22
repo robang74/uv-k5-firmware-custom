@@ -1,4 +1,5 @@
-/* Copyright 2024 Roberto A. Foglietta
+/*******************************************************************************
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
  * https://github.com/robang74
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +15,10 @@
  *     limitations under the License.
  */
 
-extern uint8_t bitflags; // variable defined in action.c
+#ifndef APP_BITFLAGS_H
+#define APP_BITFLAGS_H
+
+extern uint8_t bitflags; // variable defined in main.c
 
 #define BF_CROSS_BAND  0x01
 #define BT_MONITOR_FN  0x02
@@ -25,3 +29,5 @@ extern uint8_t bitflags; // variable defined in action.c
 #define bitchk(m)    ( bitflags & m )
 #define bitset(m, x) { bitflags = x ? (bitflags | m) : (bitflags & ~m); }
 #define bitflp(m)    { bitflags ^= m; }
+
+#endif //APP_BITFLAGS_H

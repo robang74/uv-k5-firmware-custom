@@ -19,8 +19,6 @@
 
 #include "driver/keyboard.h"
 
-extern uint8_t flags;
-
 void ACTION_Power(void);
 void ACTION_Monitor(void);
 void ACTION_Scan(bool bRestart);

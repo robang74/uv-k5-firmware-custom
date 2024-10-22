@@ -4,9 +4,10 @@
 #ifdef ENABLE_FLASHLIGHT
 
 #include <stdint.h>
-#include "bitflags.h"
 
 #ifndef ENABLE_FEAT_F4HWN
+#include "bitflags.h"
+
     enum FlashlightMode_t {
         FLASHLIGHT_OFF = 0,
         FLASHLIGHT_ON,
@@ -18,6 +19,7 @@
     extern volatile uint16_t     gFlashLightBlinkCounter;
 
     void FlashlightTimeSlice(void);
+
 #endif
 
 void ACTION_FlashLight(void);

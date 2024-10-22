@@ -50,6 +50,13 @@
 #include "ui/lock.h"
 #include "ui/welcome.h"
 #include "ui/menu.h"
+
+#ifdef ENABLE_FEAT_F4HWN
+// RAF: defined extern uint8_t in app/bitflags
+//    + initialised in main() with gDW and gCB
+    uint8_t bitflags;
+#endif
+
 void _putchar(__attribute__((unused)) char c)
 {
 
@@ -95,10 +102,11 @@ void Main(void)
 
     SETTINGS_InitEEPROM();
 
-    #ifdef ENABLE_FEAT_F4HWN
-        gDW = gEeprom.DUAL_WATCH;
-        gCB = gEeprom.CROSS_BAND_RX_TX;
-    #endif
+#ifdef ENABLE_FEAT_F4HWN
+    bitflags = 0; //RAF: not nessarly zero, but it is zero by now.
+    gDW = gEeprom.DUAL_WATCH;
+    gCB = gEeprom.CROSS_BAND_RX_TX;
+#endif
 
     SETTINGS_WriteBuildOptions();
     SETTINGS_LoadCalibration();

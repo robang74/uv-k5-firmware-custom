@@ -536,8 +536,8 @@ void ACTION_BackLightOnDemand(void)
     BACKLIGHT_TurnOn();
 }
 
-/******************************************************************************/
-/* Copyright 2024 Roberto A. Foglietta
+/*******************************************************************************
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
  * https://github.com/robang74
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -554,7 +554,6 @@ void ACTION_BackLightOnDemand(void)
  */
  
 #include "bitflags.h"
-uint8_t bitflags = 0; // defined extern in bitflags.h
 
 void ACTION_RxMode(void)
 {
