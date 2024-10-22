@@ -59,6 +59,8 @@ make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
     ENABLE_REDUCE_LOW_MID_TX_POWER=1 \
     ENABLE_FEAT_F4HWN_RX_TX_TIMER=0 \
     ENABLE_FEAT_F4HWN_CA=0 \
+    ENABLE_ROBANG74_UI_MENU=1 \
+    ENABLE_FLOCK_SHORT_MENU=0 \
     ENABLE_FLASHLIGHT=0"
 
 make_in_docker "f4hwn.voxless" "${TVOXLESS}"
