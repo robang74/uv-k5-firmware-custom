@@ -38,8 +38,9 @@
 static void convertTime(uint8_t *line, uint8_t type) 
 {
     //RAF: reworked on 22.10.2024 by github/robang74
+    //     (c) Roberto A. Foglietta, under APL v2.0
     uint16_t t;
-    char str[8];
+    char str[6];
 
     // Quick fix on display (on scanning I, II, etc.)
     gStatusLine[0] = gStatusLine[7] = gStatusLine[14] = 0x00;
@@ -47,7 +48,7 @@ static void convertTime(uint8_t *line, uint8_t type)
     t = gTxTimerCountdown_500ms >> 1;
     t = type ? 3600 - t : t;
     // Utilisation de l'opérateur modulo pour simplifier le calcul des secondes
-    sprintf(str, "%02d:%02d", t/60, t%60);
+    sprintf(str, "%02u:%02u", t/60, t%60);
     UI_PrintStringSmallBufferNormal(str, line);
 
     gUpdateStatus = true;
