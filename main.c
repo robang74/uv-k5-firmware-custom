@@ -52,9 +52,10 @@
 #include "ui/menu.h"
 
 #ifdef ENABLE_FEAT_F4HWN
-// RAF: defined extern uint8_t in app/bitflags
-//    + initialised in main() with gDW and gCB
-    uint8_t bitflags;
+// RAF: defined extern uint8_t in app/bitflags.h
+//      + initialised in main() with gDW and gCB
+//      volatile is possibly superflous but ARM.
+    volatile uint8_t bitflags;
 #endif
 
 void _putchar(__attribute__((unused)) char c)

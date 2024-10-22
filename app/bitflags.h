@@ -19,7 +19,7 @@
 #ifndef APP_BITFLAGS_H
 #define APP_BITFLAGS_H
 
-extern uint8_t bitflags; // variable defined in main.c
+extern volatile uint8_t bitflags; // variable instanced in main.c
 
 #define BF_CROSS_BAND  0x01
 #define BT_MONITOR_FN  0x02
