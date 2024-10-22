@@ -105,6 +105,8 @@ void Main(void)
 
 #ifdef ENABLE_FEAT_F4HWN
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
+    gWakeUp = false;
+    gSetting_set_off = 1;
     gSleepModeCountdown_500ms = 0; //RAF: initialisation in the main? Right!
 #endif
     bitflags = 0; //RAF: not nessarly zero, but it is zero by now.
