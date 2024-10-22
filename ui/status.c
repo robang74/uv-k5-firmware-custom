@@ -37,15 +37,18 @@
 #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
 static void convertTime(uint8_t *line, uint8_t type) 
 {
-    uint16_t t = (type == 0) ? (gTxTimerCountdown_500ms / 2) : (3600 - gRxTimerCountdown_500ms / 2);
+    //RAF: reworked on 22.10.2024 by github/robang74
+    //     (c) Roberto A. Foglietta, under APL v2.0
+    uint16_t t;
+    char str[6];
 
-    uint8_t m = t / 60;
-    uint8_t s = t % 60; // Utilisation de l'opérateur modulo pour simplifier le calcul des secondes
+    // Quick fix on display (on scanning I, II, etc.)
+    gStatusLine[0] = gStatusLine[7] = gStatusLine[14] = 0x00;
 
-    gStatusLine[0] = gStatusLine[7] = gStatusLine[14] = 0x00; // Quick fix on display (on scanning I, II, etc.)
-
-    char str[8];
-    sprintf(str, "%02d:%02d", m, s);
+    t = gTxTimerCountdown_500ms >> 1;
+    t = type ? 3600 - t : t;
+    // Utilisation de l'opérateur modulo pour simplifier le calcul des secondes
+    sprintf(str, "%02u:%02u", t/60, t%60);
     UI_PrintStringSmallBufferNormal(str, line);
 
     gUpdateStatus = true;
@@ -143,13 +146,9 @@ void UI_DisplayStatus()
 
         if(!SCANNER_IsScanning()) {
         #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
-            if(gCurrentFunction == FUNCTION_TRANSMIT && gSetting_set_tmr == true)
-            {
-                convertTime(line, 0);
-            }
-            else if(FUNCTION_IsRx() && gSetting_set_tmr == true)
-            {
-                convertTime(line, 1);
+            //RAF: reworked on 22.10.2024 by github/robang74
+            if(gSetting_set_tmr == true) {
+                convertTime(line, FUNCTION_IsRx());
             }
             else
         #endif
