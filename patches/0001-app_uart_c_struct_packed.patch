@@ -1,0 +1,122 @@
+--- app/uart.c	2024-10-22 13:52:13.569357680 +0200
++++ app/uart.c.1	2024-10-22 13:51:55.281227987 +0200
+@@ -49,28 +49,28 @@
+ typedef struct {
+     uint16_t ID;
+     uint16_t Size;
+-} Header_t;
++} __attribute__((__packed__)) Header_t;
+ 
+ typedef struct {
+     uint8_t  Padding[2];
+     uint16_t ID;
+-} Footer_t;
++} __attribute__((__packed__)) Footer_t;
+ 
+ typedef struct {
+     Header_t Header;
+     uint32_t Timestamp;
+-} CMD_0514_t;
++} __attribute__((__packed__)) CMD_0514_t;
+ 
+ typedef struct {
+     Header_t Header;
+     struct {
+         char     Version[16];
++        uint32_t Challenge[4];
++        uint8_t  Padding[2];
+         bool     bHasCustomAesKey;
+         bool     bIsInLockScreen;
+-        uint8_t  Padding[2];
+-        uint32_t Challenge[4];
+-    } Data;
+-} REPLY_0514_t;
++    } __attribute__((__packed__)) Data;
++} __attribute__((__packed__)) REPLY_0514_t;
+ 
+ typedef struct {
+     Header_t Header;
+@@ -78,7 +78,7 @@ typedef struct {
+     uint8_t  Size;
+     uint8_t  Padding;
+     uint32_t Timestamp;
+-} CMD_051B_t;
++} __attribute__((__packed__)) CMD_051B_t;
+ 
+ typedef struct {
+     Header_t Header;
+@@ -87,24 +87,24 @@ typedef struct {
+         uint8_t  Size;
+         uint8_t  Padding;
+         uint8_t  Data[128];
+-    } Data;
+-} REPLY_051B_t;
++    } __attribute__((__packed__)) Data;
++} __attribute__((__packed__)) REPLY_051B_t;
+ 
+ typedef struct {
+     Header_t Header;
++    uint32_t Timestamp;
+     uint16_t Offset;
+     uint8_t  Size;
+     bool     bAllowPassword;
+-    uint32_t Timestamp;
+     uint8_t  Data[0];
+-} CMD_051D_t;
++} __attribute__((__packed__)) CMD_051D_t;
+ 
+ typedef struct {
+     Header_t Header;
+     struct {
+         uint16_t Offset;
+-    } Data;
+-} REPLY_051D_t;
++    } __attribute__((__packed__)) Data;
++} __attribute__((__packed__)) REPLY_051D_t;
+ 
+ typedef struct {
+     Header_t Header;
+@@ -112,34 +112,34 @@ typedef struct {
+         uint16_t RSSI;
+         uint8_t  ExNoiseIndicator;
+         uint8_t  GlitchIndicator;
+-    } Data;
+-} REPLY_0527_t;
++    } __attribute__((__packed__)) Data;
++} __attribute__((__packed__)) REPLY_0527_t;
+ 
+ typedef struct {
+     Header_t Header;
+     struct {
+         uint16_t Voltage;
+         uint16_t Current;
+-    } Data;
+-} REPLY_0529_t;
++    } __attribute__((__packed__)) Data;
++} __attribute__((__packed__)) REPLY_0529_t;
+ 
+ typedef struct {
+     Header_t Header;
+     uint32_t Response[4];
+-} CMD_052D_t;
++} __attribute__((__packed__)) CMD_052D_t;
+ 
+ typedef struct {
+     Header_t Header;
+     struct {
+-        bool bIsLocked;
+         uint8_t Padding[3];
+-    } Data;
+-} REPLY_052D_t;
++        bool bIsLocked;
++    } __attribute__((__packed__)) Data;
++} __attribute__((__packed__)) REPLY_052D_t;
+ 
+ typedef struct {
+     Header_t Header;
+     uint32_t Timestamp;
+-} CMD_052F_t;
++} __attribute__((__packed__)) CMD_052F_t;
+ 
+ static const uint8_t Obfuscation[16] =
+ {

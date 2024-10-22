@@ -1,0 +1,440 @@
+From 232d24015a58a867e39a8b73a42eaa32bf03ca7c Mon Sep 17 00:00:00 2001
+From: "Roberto A. Foglietta" <roberto.foglietta@gmail.com>
+Date: Tue, 22 Oct 2024 13:53:05 +0200
+Subject: [PATCH] bool packaging
+
+Signed-off-by: Roberto A. Foglietta <roberto.foglietta@gmail.com>
+---
+ app/action.c    |  4 ++--
+ app/app.c       | 10 ++++-----
+ app/menu.c      | 28 ++++++++++++-------------
+ driver/st7565.c |  2 +-
+ misc.c          |  9 +--------
+ misc.h          | 34 ++++++++++++++++++++-----------
+ settings.c      | 54 ++++++++++++++++++++++++-------------------------
+ ui/main.c       |  4 ++--
+ ui/status.c     |  4 ++--
+ 9 files changed, 76 insertions(+), 73 deletions(-)
+
+diff --git a/app/action.c b/app/action.c
+index 3e063fb..80443f4 100644
+--- a/app/action.c
++++ b/app/action.c
+@@ -471,14 +471,14 @@ void ACTION_BlminTmpOff(void)
+ 
+ void ACTION_Update(void)
+ {
+-    gSaveRxMode          = false;
++    g.b.SaveRxMode          = false;
+     gFlagReconfigureVfos = true;
+     gUpdateStatus        = true;
+ }
+ 
+ void ACTION_Ptt(void)
+ {
+-    gSetting_set_ptt_session = (gSetting_set_ptt_session == 0) ? 1: 0;
++    g.b.Setting_set_ptt_session = (g.b.Setting_set_ptt_session == 0) ? 1: 0;
+ }
+ 
+ void ACTION_Wn(void)
+diff --git a/app/app.c b/app/app.c
+index b3c24c5..a7df995 100644
+--- a/app/app.c
++++ b/app/app.c
+@@ -952,7 +952,7 @@ void APP_Update(void)
+         gTxTimeoutReachedAlert = false;
+         gTxTimeoutToneAlert = 800;
+ 
+-        if (gSetting_set_ptt_session) // Improve OnePush if TOT
++        if (g.b.Setting_set_ptt_session) // Improve OnePush if TOT
+         {
+             if(gPttOnePushCounter == 1)
+             {
+@@ -970,7 +970,7 @@ void APP_Update(void)
+             ST7565_ContrastAndInv();
+         }
+         /*
+-        if (gSetting_set_ptt_session) // Improve OnePush if TOT
++        if (g.b.Setting_set_ptt_session) // Improve OnePush if TOT
+         {
+             ProcessKey(KEY_PTT, false, false);
+             gPttIsPressed = false;
+@@ -1173,7 +1173,7 @@ static void CheckKeys(void)
+ 
+ // -------------------- PTT ------------------------
+ #ifdef ENABLE_FEAT_F4HWN
+-    if (gSetting_set_ptt_session)
++    if (g.b.Setting_set_ptt_session)
+     {
+         if (!GPIO_CheckBit(&GPIOC->DATA, GPIOC_PIN_PTT) && !SerialConfigInProgress() && gPttOnePushCounter == 0)
+         {   // PTT pressed
+@@ -1600,7 +1600,7 @@ void APP_TimeSlice500ms(void)
+         original F4HWN was using 120x which is similar to (1<<7) = 128x (faster)
+         moreover, first checking the boolean (quick) then the other stuff (slow)
+     */
+-    if (bitchk(BF_DS_WAKE_UP) && gSleepModeCountdown_500ms == (gSetting_set_off << 7)) {
++    if (bitchk(BF_DS_WAKE_UP) && gSleepModeCountdown_500ms == ((uint16_t)gSetting_set_off << 7)) {
+         //ST7565_Init();
+         ST7565_FixInterfGlitch();
+         BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, false);
+@@ -1921,7 +1921,7 @@ static void ProcessKey(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
+ #ifdef ENABLE_FEAT_F4HWN // Disable PTT if KEY_LOCK
+     bool lck_condition = false;
+ 
+-    if(gSetting_set_lck)
++    if(g.b.Setting_set_lck)
+         lck_condition = (gEeprom.KEY_LOCK || lowBatPopup) && gCurrentFunction != FUNCTION_TRANSMIT;
+     else
+         lck_condition = (gEeprom.KEY_LOCK || lowBatPopup) && gCurrentFunction != FUNCTION_TRANSMIT && Key != KEY_PTT;
+diff --git a/app/menu.c b/app/menu.c
+index 22fd18d..da1d029 100644
+--- a/app/menu.c
++++ b/app/menu.c
+@@ -605,7 +605,7 @@ void MENU_AcceptSetting(void)
+             #ifdef ENABLE_FEAT_F4HWN
+                 gDW = gEeprom.DUAL_WATCH;
+                 gCB = gEeprom.CROSS_BAND_RX_TX;
+-                gSaveRxMode = true;
++                g.b.SaveRxMode = true;
+             #endif
+ 
+             gFlagReconfigureVfos = true;
+@@ -893,8 +893,8 @@ void MENU_AcceptSetting(void)
+             gRequestSaveChannel = 1;
+             break;
+         case MENU_SET_PTT:
+-            gSetting_set_ptt = gSubMenuSelection;
+-            gSetting_set_ptt_session = gSetting_set_ptt; // Special for action
++            g.b.Setting_set_ptt = gSubMenuSelection;
++            g.b.Setting_set_ptt_session = g.b.Setting_set_ptt; // Special for action
+             break;
+         case MENU_SET_TOT:
+             gSetting_set_tot = gSubMenuSelection;
+@@ -906,19 +906,19 @@ void MENU_AcceptSetting(void)
+             gSetting_set_ctr = gSubMenuSelection;
+             break;
+         case MENU_SET_INV:
+-            gSetting_set_inv = gSubMenuSelection;
++            g.b.Setting_set_inv = gSubMenuSelection;
+             break;
+         case MENU_SET_LCK:
+-            gSetting_set_lck = gSubMenuSelection;
++            g.b.Setting_set_lck = gSubMenuSelection;
+             break;
+         case MENU_SET_MET:
+-            gSetting_set_met = gSubMenuSelection;
++            g.b.Setting_set_met = gSubMenuSelection;
+             break;
+         case MENU_SET_GUI:
+-            gSetting_set_gui = gSubMenuSelection;
++            g.b.Setting_set_gui = gSubMenuSelection;
+             break;
+         case MENU_SET_TMR:
+-            gSetting_set_tmr = gSubMenuSelection;
++            g.b.Setting_set_tmr = gSubMenuSelection;
+             break;
+         case MENU_TX_LOCK:
+             gTxVfo->TX_LOCK = gSubMenuSelection;
+@@ -1328,7 +1328,7 @@ void MENU_ShowCurrentSetting(void)
+             gSubMenuSelection = gSetting_set_pwr;
+             break;
+         case MENU_SET_PTT:
+-            gSubMenuSelection = gSetting_set_ptt_session;
++            gSubMenuSelection = g.b.Setting_set_ptt_session;
+             break;
+         case MENU_SET_TOT:
+             gSubMenuSelection = gSetting_set_tot;
+@@ -1340,19 +1340,19 @@ void MENU_ShowCurrentSetting(void)
+             gSubMenuSelection = gSetting_set_ctr;
+             break;
+         case MENU_SET_INV:
+-            gSubMenuSelection = gSetting_set_inv;
++            gSubMenuSelection = g.b.Setting_set_inv;
+             break;
+         case MENU_SET_LCK:
+-            gSubMenuSelection = gSetting_set_lck;
++            gSubMenuSelection = g.b.Setting_set_lck;
+             break;
+         case MENU_SET_MET:
+-            gSubMenuSelection = gSetting_set_met;
++            gSubMenuSelection = g.b.Setting_set_met;
+             break;
+         case MENU_SET_GUI:
+-            gSubMenuSelection = gSetting_set_gui;
++            gSubMenuSelection = g.b.Setting_set_gui;
+             break;
+         case MENU_SET_TMR:
+-            gSubMenuSelection = gSetting_set_tmr;
++            gSubMenuSelection = g.b.Setting_set_tmr;
+             break;
+         case MENU_TX_LOCK:
+             gSubMenuSelection = gTxVfo->TX_LOCK;
+diff --git a/driver/st7565.c b/driver/st7565.c
+index fc3723d..68e3369 100644
+--- a/driver/st7565.c
++++ b/driver/st7565.c
+@@ -199,7 +199,7 @@ uint8_t cmds[] = {
+     {
+         switch(i) {
+             case 3:
+-                ST7565_WriteByte(ST7565_CMD_INVERSE_DISPLAY | gSetting_set_inv);
++                ST7565_WriteByte(ST7565_CMD_INVERSE_DISPLAY | g.b.Setting_set_inv);
+                 break;
+             case 7:
+                 ST7565_WriteByte(21 + gSetting_set_ctr);
+diff --git a/misc.c b/misc.c
+index 3ea8111..02f5bf1 100644
+--- a/misc.c
++++ b/misc.c
+@@ -116,23 +116,16 @@ enum BacklightOnRxTx_t gSetting_backlight_on_tx_rx;
+ 
+ #ifdef ENABLE_FEAT_F4HWN
+     uint8_t       gSetting_set_pwr = 1;
+-    bool          gSetting_set_ptt = 0;
+     uint8_t       gSetting_set_tot = 0;
+     uint8_t       gSetting_set_ctr = 11;
+-    bool          gSetting_set_inv = false;
+     uint8_t       gSetting_set_eot = 0;
+-    bool          gSetting_set_lck = false;
+-    bool          gSetting_set_met = 0;
+-    bool          gSetting_set_gui = 0;
+-    bool          gSetting_set_tmr = 0;
+-    bool          gSetting_set_ptt_session;
+     uint8_t       gDebug;
+     uint8_t       gDW = 0;
+     uint8_t       gCB = 0;
+-    bool          gSaveRxMode = false;
+     uint8_t       crc[15] = { 0 };
+     uint8_t       lErrorsDuringAirCopy = 0;
+     uint8_t       gAircopyStep = 0;
++    boolsword     g = {0};
+ #endif
+ 
+ #ifdef ENABLE_AUDIO_BAR
+diff --git a/misc.h b/misc.h
+index a9ac2b6..f5c423f 100644
+--- a/misc.h
++++ b/misc.h
+@@ -163,30 +163,40 @@ extern enum BacklightOnRxTx_t gSetting_backlight_on_tx_rx;
+     extern bool              gSetting_AM_fix;
+ #endif
+ 
+-#ifdef ENABLE_FEAT_F4HWN_SLEEP
+-#define F4HWN_SLEEP_VALUE 128
+-    extern uint8_t           gSetting_set_off;
+-#endif
++typedef struct __attribute__((__packed__)) {
++    uint8_t          Setting_set_ptt : 1;
++    uint8_t          Setting_set_inv : 1;
++    uint8_t          Setting_set_lck : 1;
++    uint8_t          Setting_set_met : 1;
++    uint8_t          Setting_set_gui : 1;
++    uint8_t          Setting_set_tmr : 1;
++    uint8_t          Setting_set_ptt_session : 1;
++    uint8_t          SaveRxMode : 1;
++} _s_boolsword;
++
++typedef union __attribute__((__aligned__(1))) {
++    _s_boolsword     b;
++    uint8_t          u;
++} boolsword;
+ 
+ #ifdef ENABLE_FEAT_F4HWN
+     extern uint8_t            gSetting_set_pwr;
+-    extern bool               gSetting_set_ptt;
+     extern uint8_t            gSetting_set_tot;
+     extern uint8_t            gSetting_set_ctr;
+-    extern bool               gSetting_set_inv;
+     extern uint8_t            gSetting_set_eot;
+-    extern bool               gSetting_set_lck;
+-    extern bool               gSetting_set_met;
+-    extern bool               gSetting_set_gui;
+-    extern bool               gSetting_set_tmr;
+-    extern bool               gSetting_set_ptt_session;
+     extern uint8_t            gDebug;
+     extern uint8_t            gDW;
+     extern uint8_t            gCB;
+-    extern bool               gSaveRxMode;
+     extern uint8_t            crc[15];
+     extern uint8_t            lErrorsDuringAirCopy;
+     extern uint8_t            gAircopyStep;
++    extern boolsword          g;
++#endif
++
++#ifdef ENABLE_FEAT_F4HWN_SLEEP
++#define F4HWN_SLEEP_VALUE 128
++    extern boolsword          g;
++    extern uint8_t            gSetting_set_off;
+ #endif
+ 
+ #ifdef ENABLE_AUDIO_BAR
+diff --git a/settings.c b/settings.c
+index 639b7b7..46ba555 100644
+--- a/settings.c
++++ b/settings.c
+@@ -322,7 +322,7 @@ void SETTINGS_InitEEPROM(void)
+         // 1FF0..0x1FF7
+         EEPROM_ReadBuffer(0x1FF0, Data, 8);
+         gSetting_set_pwr = (((Data[7] & 0xF0) >> 4) < 7) ? ((Data[7] & 0xF0) >> 4) : 0;
+-        gSetting_set_ptt = (((Data[7] & 0x0F)) < 2) ? ((Data[7] & 0x0F)) : 0;
++        g.b.Setting_set_ptt = (((Data[7] & 0x0F)) < 2) ? ((Data[7] & 0x0F)) : 0;
+ 
+         gSetting_set_tot = (((Data[6] & 0xF0) >> 4) < 4) ? ((Data[6] & 0xF0) >> 4) : 0;
+         gSetting_set_eot = (((Data[6] & 0x0F)) < 4) ? ((Data[6] & 0x0F)) : 0;
+@@ -330,26 +330,26 @@ void SETTINGS_InitEEPROM(void)
+         /*
+         int tmp = ((Data[5] & 0xF0) >> 4);
+ 
+-        gSetting_set_inv = (((tmp >> 0) & 0x01) < 2) ? ((tmp >> 0) & 0x01): 0;
+-        gSetting_set_lck = (((tmp >> 1) & 0x01) < 2) ? ((tmp >> 1) & 0x01): 0;
+-        gSetting_set_met = (((tmp >> 2) & 0x01) < 2) ? ((tmp >> 2) & 0x01): 0;
+-        gSetting_set_gui = (((tmp >> 3) & 0x01) < 2) ? ((tmp >> 3) & 0x01): 0;
++        g.b.Setting_set_inv = (((tmp >> 0) & 0x01) < 2) ? ((tmp >> 0) & 0x01): 0;
++        g.b.Setting_set_lck = (((tmp >> 1) & 0x01) < 2) ? ((tmp >> 1) & 0x01): 0;
++        g.b.Setting_set_met = (((tmp >> 2) & 0x01) < 2) ? ((tmp >> 2) & 0x01): 0;
++        g.b.Setting_set_gui = (((tmp >> 3) & 0x01) < 2) ? ((tmp >> 3) & 0x01): 0;
+         gSetting_set_ctr = (((Data[5] & 0x0F)) > 00 && ((Data[5] & 0x0F)) < 16) ? ((Data[5] & 0x0F)) : 10;
+ 
+-        gSetting_set_tmr = ((Data[4] & 1) < 2) ? (Data[4] & 1): 0;
++        g.b.Setting_set_tmr = ((Data[4] & 1) < 2) ? (Data[4] & 1): 0;
+         */
+ 
+         int tmp = (Data[5] & 0xF0) >> 4;
+ 
+-        gSetting_set_inv = (tmp >> 0) & 0x01;
+-        gSetting_set_lck = (tmp >> 1) & 0x01;
+-        gSetting_set_met = (tmp >> 2) & 0x01;
+-        gSetting_set_gui = (tmp >> 3) & 0x01;
++        g.b.Setting_set_inv = (tmp >> 0) & 0x01;
++        g.b.Setting_set_lck = (tmp >> 1) & 0x01;
++        g.b.Setting_set_met = (tmp >> 2) & 0x01;
++        g.b.Setting_set_gui = (tmp >> 3) & 0x01;
+ 
+         int ctr_value = Data[5] & 0x0F;
+         gSetting_set_ctr = (ctr_value > 0 && ctr_value < 16) ? ctr_value : 10;
+ 
+-        gSetting_set_tmr = Data[4] & 0x01;
++        g.b.Setting_set_tmr = Data[4] & 0x01;
+ #ifdef ENABLE_FEAT_F4HWN_SLEEP
+         //RAF: original values were 120:1000, now 2^3 F4HWN_SLEEP_VALUE 2^-1
+         gSetting_set_off = (Data[4] >> 7) ? F4HWN_SLEEP_VALUE >> 1 : Data[4];
+@@ -360,8 +360,8 @@ void SETTINGS_InitEEPROM(void)
+         // Warning
+ 
+         // And set special session settings for actions
+-        gSetting_set_ptt_session = gSetting_set_ptt;
+-        gEeprom.KEY_LOCK_PTT = gSetting_set_lck;
++        g.b.Setting_set_ptt_session = g.b.Setting_set_ptt;
++        gEeprom.KEY_LOCK_PTT = g.b.Setting_set_lck;
+     #endif
+ }
+ 
+@@ -593,7 +593,7 @@ void SETTINGS_SaveSettings(void)
+     State[4] = gEeprom.DUAL_WATCH;
+ 
+     #ifdef ENABLE_FEAT_F4HWN
+-        if(!gSaveRxMode)
++        if(!g.b.SaveRxMode)
+         {
+             State[2] = gCB;
+             State[4] = gDW;
+@@ -735,39 +735,39 @@ void SETTINGS_SaveSettings(void)
+     /*
+     tmp = 0;
+ 
+-    if(gSetting_set_tmr == 1)
++    if(g.b.Setting_set_tmr == 1)
+         tmp = tmp | (1 << 0);
+ 
+     State[4] = tmp;
+ 
+     tmp = 0;
+ 
+-    if(gSetting_set_inv == 1)
++    if(g.b.Setting_set_inv == 1)
+         tmp = tmp | (1 << 0);
+-    if (gSetting_set_lck == 1)
++    if (g.b.Setting_set_lck == 1)
+         tmp = tmp | (1 << 1);
+-    if (gSetting_set_met == 1)
++    if (g.b.Setting_set_met == 1)
+         tmp = tmp | (1 << 2);
+-    if (gSetting_set_gui == 1)
++    if (g.b.Setting_set_gui == 1)
+         tmp = tmp | (1 << 3);
+     */
+ 
+ #ifdef ENABLE_FEAT_F4HWN_SLEEP 
+-    State[4] = (gSetting_set_off << 1) | (gSetting_set_tmr & 0x01);
++    State[4] = (gSetting_set_off << 1) | (g.b.Setting_set_tmr & 0x01);
+ #else
+-    State[4] = gSetting_set_tmr ? (1 << 0) : 0;
++    State[4] = g.b.Setting_set_tmr ? (1 << 0) : 0;
+ #endif
+ 
+-    tmp =   (gSetting_set_inv << 0) |
+-            (gSetting_set_lck << 1) |
+-            (gSetting_set_met << 2) |
+-            (gSetting_set_gui << 3);
++    tmp =   (g.b.Setting_set_inv << 0) |
++            (g.b.Setting_set_lck << 1) |
++            (g.b.Setting_set_met << 2) |
++            (g.b.Setting_set_gui << 3);
+ 
+     State[5] = ((tmp << 4) | (gSetting_set_ctr & 0x0F));
+     State[6] = ((gSetting_set_tot << 4) | (gSetting_set_eot & 0x0F));
+-    State[7] = ((gSetting_set_pwr << 4) | (gSetting_set_ptt & 0x0F));
++    State[7] = ((gSetting_set_pwr << 4) | (g.b.Setting_set_ptt & 0x0F));
+ 
+-    gEeprom.KEY_LOCK_PTT = gSetting_set_lck;
++    gEeprom.KEY_LOCK_PTT = g.b.Setting_set_lck;
+ 
+     EEPROM_WriteBuffer(0x1FF0, State);
+ #endif
+diff --git a/ui/main.c b/ui/main.c
+index 321f54a..9484919 100644
+--- a/ui/main.c
++++ b/ui/main.c
+@@ -61,7 +61,7 @@ center_line_t center_line = CENTER_LINE_NONE;
+     {
+         if(checkGui)
+         {
+-            if(((gEeprom.DUAL_WATCH != DUAL_WATCH_OFF) + (gEeprom.CROSS_BAND_RX_TX != CROSS_BAND_OFF) * 2 == 0) || gSetting_set_gui)
++            if(((gEeprom.DUAL_WATCH != DUAL_WATCH_OFF) + (gEeprom.CROSS_BAND_RX_TX != CROSS_BAND_OFF) * 2 == 0) || g.b.Setting_set_gui)
+                 return true;
+             else
+                 return false;
+@@ -128,7 +128,7 @@ static void DrawLevelBar(uint8_t xpos, uint8_t line, uint8_t level, uint8_t bars
+ 
+     for(uint8_t i = 0; i < level; i++) {
+ #ifdef ENABLE_FEAT_F4HWN
+-        if(gSetting_set_met)
++        if(g.b.Setting_set_met)
+         {
+             const char hollowBar[] = {
+                 0b01111111,
+diff --git a/ui/status.c b/ui/status.c
+index 707c4d8..5712c01 100644
+--- a/ui/status.c
++++ b/ui/status.c
+@@ -147,7 +147,7 @@ void UI_DisplayStatus()
+         if(!SCANNER_IsScanning()) {
+         #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
+             //RAF: reworked on 22.10.2024 by github/robang74
+-            if(gSetting_set_tmr == true) {
++            if(g.b.Setting_set_tmr == true) {
+                 convertTime(line, FUNCTION_IsRx());
+             }
+             else
+@@ -183,7 +183,7 @@ void UI_DisplayStatus()
+ 
+ #ifdef ENABLE_FEAT_F4HWN
+     // PTT indicator
+-    if (gSetting_set_ptt_session) {
++    if (g.b.Setting_set_ptt_session) {
+         memcpy(line + x, gFontPttOnePush, sizeof(gFontPttOnePush));
+         x1 = x + sizeof(gFontPttOnePush) + 1;
+     }
+-- 
+2.34.1
+
