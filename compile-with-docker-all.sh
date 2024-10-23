@@ -45,14 +45,18 @@ TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
     ENABLE_FEAT_F4HWN_SLEEP=0 \
     ENABLE_FEAT_F4HWN_SPECTRUM=0"
 
-# REDUCE_LOW_MID_TX_POWER   0b
-# FLASHLIGHT               64b
-# FEAT_F4HWN_CA            64b
-# SHOW_CHARGE_LEVEL       104b
-# F4HWN_RX_TX_TIMER       148b
-# COPY_CHAN_TO_VFO        192b
-# AUDIO_BAR               386b
-# FEAT_F4HWN_SLEEP        512b
+# no torch & no charge lvl, need (bytes) (*next)
+# REDUCE_LOW_MID_TX_POWER   0b   (incl.)
+# FLASHLIGHT               64b   (avail)    *
+# FEAT_F4HWN_CA            64b   (excl.)
+# SHOW_CHARGE_LEVEL       104b   (avail)    *
+# F4HWN_RX_TX_TIMER       148b   (avail) ( -128)
+# COPY_CHAN_TO_VFO        192b   (incl.)
+# AUDIO_BAR               386b   ( -184)
+# FEAT_F4HWN_SLEEP        512b   ( -440)
+# VOX                            ( -776)
+# AIRCOPY                        (-1996)
+# ALL THE OPTIONS                (-3900)
 
 make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
     ENABLE_VOX=0 \
@@ -62,12 +66,12 @@ make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
     ENABLE_FEAT_F4HWN_SPECTRUM=1 \
     ENABLE_REDUCE_LOW_MID_TX_POWER=1 \
     ENABLE_FEAT_F4HWN_RX_TX_TIMER=0 \
-    ENABLE_SHOW_CHARGE_LEVEL=0 \
+    ENABLE_SHOW_CHARGE_LEVEL=1 \
     ENABLE_COPY_CHAN_TO_VFO=1 \
     ENABLE_ROBANG74_UI_MENU=1 \
     ENABLE_FLOCK_SHORT_MENU=1 \
     ENABLE_SIXTH_CHARS_MENU=1 \
-    ENABLE_FLASHLIGHT=0"
+    ENABLE_FLASHLIGHT=1"
 
 # RAF: to test the new code is compiling
 ret=$?; test "$1" == "x" && exit $ret
