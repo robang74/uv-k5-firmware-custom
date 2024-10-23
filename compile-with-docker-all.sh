@@ -61,7 +61,7 @@ make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
     ENABLE_FEAT_F4HWN_CA=0 \
     ENABLE_ROBANG74_UI_MENU=1 \
     ENABLE_FLOCK_SHORT_MENU=0 \
-    ENABLE_FLASHLIGHT=0"
+    ENABLE_FLASHLIGHT=1"
 
 make_in_docker "f4hwn.voxless" "${TVOXLESS}"
 make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0"
