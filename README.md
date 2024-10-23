@@ -1,8 +1,25 @@
-# Stats
+# Status
 
-![Alt](https://repobeats.axiom.co/api/embed/947813147857755cef60a960d13734044b3b2c22.svg "Repobeats analytics image")
+This repository contains **UNTESTED** code on two serving branches:
 
-# Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware
+- **main**: cherry picking from devel, it compiles but it is untested
+
+- **devel**: seeking for insparation, might not even compile (WARNING)
+
+I have managed to fill the flash at 99.96% and to reduce the size of it, enough to start being interesting.
+
+There is still space for improvements but the mass of untested code is skyrocketing and going to be overwhelming for almost everyone else who wishes leverage it.
+
+Time to share this challenge with other people and spawning more branches like stable, testing, etc. with two small commits to test per week? Wanna join?
+
+I have a **JucJet UV-K5**, it works well with `CHIRP`, `CSP` and [k5prog](https://github.com/robang74/k5prog) but not tried to flash it, yet
+
+Those are interested in this development, please drop an e-mail `roberto.foglietta@gmail.com`.
+
+***
+***
+
+## Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware
 
 This repository is a fork of [Egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom), who was a merge of [OneOfEleven custom firmware](https://github.com/OneOfEleven/uv-k5-firmware-custom) with [fagci spectrum analizer](https://github.com/fagci/uv-k5-firmware-fagci-mod/tree/refactor) plus my few changes.
 
@@ -24,7 +41,7 @@ Anyway, have fun.
 >
 > _FR - Je recommande de sauvegarder votre eeprom avec [k5prog](https://github.com/sq5bpf/k5prog) avant de jouer avec des firmwares alternatifs. C'est un bon réflexe à avoir._
 
-# Donations
+## Donations
 
 Special thanks to Jean-Cyrille F6IWW, Fabrice 14RC123, David F4BPP, Olivier 14RC206, Frédéric F4ESO, Stéphane F5LGW, Jorge Ornelas, Laurent F4AXK, Christophe Morel, Clayton W0LED, Pierre Antoine F6FWB, Jean-Claude 14FRS3306, Thierry F4GVO, Eric F1NOU, PricelessToolkit, Ady M6NYJ, Tom McGovern, Joseph Roth, Pierre-Yves Colin, Frank DJ7FG, Marcel Testaz, Brian Frobisher, Yannick F4JFO, Paolo Bussola, Dirk DL8DF, Levente Szőke (2 times), Bernard-Michel Herrera, Jérôme Saintespes, Paul Davies, RS and Johan F4WAT for their [donations](https://www.paypal.com/paypalme/F4HWN). That’s so kind of them. Thanks so much 🙏🏻
 
@@ -41,7 +58,7 @@ Special thanks to Jean-Cyrille F6IWW, Fabrice 14RC123, David F4BPP, Olivier 14RC
 * [License](#license)
 * [Example changes/updates](#example-changesupdates)
 
-## Main features:
+### Main features:
 
 * improve default power settings level: 
     * Low1 to Low5 (<~20mW, ~125mW, ~250mW, ~500mW, ~1W), 
@@ -139,7 +156,7 @@ Special thanks to Jean-Cyrille F6IWW, Fabrice 14RC123, David F4BPP, Olivier 14RC
 * code refactoring and many memory optimization,
 * and more...
 
-## Main features from Egzumer:
+### Main features from Egzumer:
 * many of OneOfEleven mods:
    * AM fix, huge improvement in reception quality
    * long press buttons functions replicating F+ action
@@ -170,7 +187,7 @@ Special thanks to Jean-Cyrille F6IWW, Fabrice 14RC123, David F4BPP, Olivier 14RC
    * LCD interference crash fix
    * many others...
 
- ## Manual
+## Manual
 
 Up to date manual is available in the [Wiki section](https://github.com/armel/uv-k5-firmware-custom/wiki)
 
