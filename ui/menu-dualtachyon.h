@@ -16,6 +16,19 @@
  *     limitations under the License.
  */
 
+#define MENU_VOICE_LENGHT 7
+
+#define UI_PrintMenuVoice(a, b) \
+    UI_PrintString((a).name, 0, 0, (b), 8)
+
+#define UI_PrintMenuVoiceSmallNormal(a, b) \
+    UI_PrintStringSmallNormal((a).name, 0, 0, (b))
+
+typedef struct {
+    const char     name[MENU_VOICE_LENGHT]; //menu display area only has room for 7 characters
+    const uint8_t  menu_id;
+} __attribute__((__packed__)) t_menu_item;
+
 const t_menu_item MenuList[] =
 {
 //   text,          menu ID

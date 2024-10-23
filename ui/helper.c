@@ -65,9 +65,19 @@ void UI_GenerateChannelStringEx(char *pString, const bool bShowPrefix, const uin
     }
 }
 
-void UI_PrintStringBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font)
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     https://github.com/robang74
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ **START(C)**/
+
+static void _UI_PrintBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font, const size_t Length)
 {
-    const size_t Length = strlen(pString);
     const unsigned int char_spacing = char_width + 1;
     for (size_t i = 0; i < Length; i++) {
         const unsigned int index = pString[i] - ' ' - 1;
@@ -78,42 +88,72 @@ void UI_PrintStringBuffer(const char *pString, uint8_t * buffer, uint32_t char_w
     }
 }
 
-void UI_PrintString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width)
+inline void UI_PrintStringBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font)
 {
-    size_t i;
-    size_t Length = strlen(pString);
+    _UI_PrintBuffer(pString, buffer, char_width, font, strlen(pString));
+}
 
-    if (End > Start)
-        Start += (((End - Start) - (Length * Width)) + 1) / 2;
+inline void UI_PrintStrLenBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font, const size_t length)
+{
+    _UI_PrintBuffer(pString, buffer, char_width, font, length);
+}
+
+static void _UI_PrintString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width, bool menuVoice)
+{
+    size_t i, Length;
+
+    if (menuVoice) {
+        Length = MENU_VOICE_LENGHT;
+    }
+    else
+    {
+        Length = strlen(pString);
+        if (End > Start)
+            Start += (((End - Start) - (Length * Width)) + 1) >> 1; //RAF: >>1 is faster than /2
+    }
 
     for (i = 0; i < Length; i++)
     {
-        const unsigned int ofs   = (unsigned int)Start + (i * Width);
         if (pString[i] > ' ' && pString[i] < 127)
         {
             const unsigned int index = pString[i] - ' ' - 1;
+            const unsigned int ofs   = (unsigned int)Start + (i * Width); //RAF: first check then calculate
             memcpy(gFrameBuffer[Line + 0] + ofs, &gFontBig[index][0], 7);
             memcpy(gFrameBuffer[Line + 1] + ofs, &gFontBig[index][7], 7);
         }
     }
 }
 
+inline void UI_PrintString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width)
+{
+    _UI_PrintString(pString, Start, End, Line, Width, 0);
+}
+
+inline void UI_PrintMenuString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width)
+{
+    _UI_PrintString(pString, Start, End, Line, Width, 1);
+}
+
+
 void UI_PrintStringSmall(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t char_width, const uint8_t *font)
 {
     const size_t Length = strlen(pString);
-    const unsigned int char_spacing = char_width + 1;
 
     if (End > Start) {
+        const unsigned int char_spacing = char_width + 1; //RAF: first check and then calculate
         Start += (((End - Start) - Length * char_spacing) + 1) / 2;
     }
 
-    UI_PrintStringBuffer(pString, gFrameBuffer[Line] + Start, char_width, font);
+    UI_PrintStrLenBuffer(pString, gFrameBuffer[Line] + Start, char_width, font, Length);
 }
 
-void UI_PrintStringSmallNormal(const char *pString, uint8_t Start, uint8_t End, uint8_t Line)
+inline void UI_PrintStringSmallNormal(const char *pString, uint8_t Start, uint8_t End, uint8_t Line)
 {
     UI_PrintStringSmall(pString, Start, End, Line, ARRAY_SIZE(gFontSmall[0]), (const uint8_t *)gFontSmall);
 }
+
+/*
+ ***********************************************************************END(C)**/
 
 void UI_PrintStringSmallBold(const char *pString, uint8_t Start, uint8_t End, uint8_t Line)
 {
@@ -128,7 +168,7 @@ void UI_PrintStringSmallBold(const char *pString, uint8_t Start, uint8_t End, ui
     UI_PrintStringSmall(pString, Start, End, Line, char_width, font);
 }
 
-void UI_PrintStringSmallBufferNormal(const char *pString, uint8_t * buffer)
+inline void UI_PrintStringSmallBufferNormal(const char *pString, uint8_t * buffer)
 {
     UI_PrintStringBuffer(pString, buffer, ARRAY_SIZE(gFontSmall[0]), (uint8_t *)gFontSmall);
 }

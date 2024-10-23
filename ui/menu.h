@@ -23,11 +23,6 @@
 #include "audio.h"     // VOICE_ID_t
 #include "settings.h"
 
-typedef struct {
-    const char  name[7];    // menu display area only has room for 6 characters
-    uint8_t     menu_id;
-} __attribute__((__packed__)) t_menu_item;
-
 enum
 {
     MENU_SQL = 0,

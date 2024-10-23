@@ -51,6 +51,8 @@ ENABLE_FEAT_F4HWN_SLEEP         ?= 1
 ENABLE_ROBANG74_UI_MENU         ?= 1
 # requires ENABLE_ROBANG74_UI_MENU=1
 ENABLE_FLOCK_SHORT_MENU         ?= 1
+# requires ENABLE_ROBANG74_UI_MENU=1
+ENABLE_SIXTH_CHARS_MENU         ?= 1
 # real short? all these set to zero!
 ENABLE_FEAT_F4HWN_PMR         	?= 0
 ENABLE_FEAT_F4HWN_GMRS_FRS_MURS	?= 0
@@ -286,7 +288,7 @@ else
 endif
 CFLAGS += -DVERSION_STRING=\"$(VERSION_STRING)\"
 
-ifeq ($(ENABLE_FLOCK_SHORT_MENU),1) 
+ifeq ($(ENABLE_FLOCK_SHORT_MENU),1)
 ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
 	$(info "")
 	$(error "ENABLE_ROBANG74_UI_MENU missing, exit")
@@ -297,11 +299,26 @@ ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
 endif
 endif
 
+ifeq ($(ENABLE_SIXTH_CHARS_MENU),1)
+ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
+	$(info "")
+	$(error "ENABLE_ROBANG74_UI_MENU missing, exit")
+	$(info "")
+	$(info  "ENABLE_SIXTH_CHARS_MENU requires it")
+	$(info "")
+	$(exit -1)
+endif
+endif
+ENABLE_SIXTH_CHARS_MENU
+
 ifeq ($(ENABLE_ROBANG74_UI_MENU),1)
 	CFLAGS += -DENABLE_ROBANG74_UI_MENU
 endif
 ifeq ($(ENABLE_FLOCK_SHORT_MENU),1)
 	CFLAGS += -DENABLE_FLOCK_SHORT_MENU
+endif
+ifeq ($(ENABLE_SIXTH_CHARS_MENU),1)
+	CFLAGS += -ENABLE_SIXTH_CHARS_MENU
 endif
 ifeq ($(ENABLE_SPECTRUM),1)
 	CFLAGS += -DENABLE_SPECTRUM
