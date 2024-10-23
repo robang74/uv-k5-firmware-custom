@@ -644,6 +644,23 @@ static void DualwatchAlternate(void)
     #endif
 }
 
+//#define B0						(1<<0) /// unused atm
+#define FSKRX_SYNC					(1<<1)
+#define SQL_LOST					(1<<2)
+#define SQL_FOUND					(1<<3)
+#define VOX_LOST					(1<<4)
+#define VOX_FOUND					(1<<5)
+#define CTCSS_LOST					(1<<6)
+#define CTCSS_FOUND					(1<<7)
+#define CDCSS_LOST					(1<<8)
+#define CDCSS_FOUND					(1<<9)
+#define CSSTAIL_FOUND				(1<<10)
+#define DMTF5_TONE_FOUND			(1<<11)
+#define FSKFIFO_ALMOST_FULL			(1<<12)
+//#define FSK_RX_END					(1<<13) /// unused atm
+//#define FXKFIFO_ALMOST_EMPTY			(1<<14) /// unused atm
+//#define FSK_TX_FINISHED				(1<<15) /// unused atm
+
 static void CheckRadioInterrupts(void)
 {
     if (SCANNER_IsScanning())
@@ -653,30 +670,7 @@ static void CheckRadioInterrupts(void)
         // clear interrupts
         BK4819_WriteRegister(BK4819_REG_02, 0);
         // fetch interrupt status bits
-
-        union {
-            struct {
-                uint16_t __UNUSED : 1;
-                uint16_t fskRxSync : 1;
-                uint16_t sqlLost : 1;
-                uint16_t sqlFound : 1;
-                uint16_t voxLost : 1;
-                uint16_t voxFound : 1;
-                uint16_t ctcssLost : 1;
-                uint16_t ctcssFound : 1;
-                uint16_t cdcssLost : 1;
-                uint16_t cdcssFound : 1;
-                uint16_t cssTailFound : 1;
-                uint16_t dtmf5ToneFound : 1;
-                uint16_t fskFifoAlmostFull : 1;
-                uint16_t fskRxFinied : 1;
-                uint16_t fskFifoAlmostEmpty : 1;
-                uint16_t fskTxFinied : 1;
-            };
-            uint16_t __raw;
-        } interrupts;
-
-        interrupts.__raw = BK4819_ReadRegister(BK4819_REG_02);
+        uint16_t reg = BK4819_ReadRegister(BK4819_REG_02);
 
         // 0 = no phase shift
         // 1 = 120deg phase shift
@@ -686,7 +680,7 @@ static void CheckRadioInterrupts(void)
 //      if (ctcss_shift > 0)
 //          g_CTCSS_Lost = true;
 
-        if (interrupts.dtmf5ToneFound) {    
+        if (reg & DMTF5_TONE_FOUND) {
             const char c = DTMF_GetCharacter(BK4819_GetDTMF_5TONE_Code()); // save the RX'ed DTMF character
             if (c != 0xff) {
                 if (gCurrentFunction != FUNCTION_TRANSMIT) {
@@ -721,25 +715,25 @@ static void CheckRadioInterrupts(void)
             }
         }
 
-        if (interrupts.cssTailFound)
+        if (reg & CSSTAIL_FOUND)
             g_CxCSS_TAIL_Found = true;
 
-        if (interrupts.cdcssLost) {
+        if (reg & CDCSS_LOST) {
             g_CDCSS_Lost = true;
             gCDCSSCodeType = BK4819_GetCDCSSCodeType();
         }
 
-        if (interrupts.cdcssFound)
+        if (reg & CDCSS_FOUND)
             g_CDCSS_Lost = false;
 
-        if (interrupts.ctcssLost)
+        if (reg & CTCSS_LOST)
             g_CTCSS_Lost = true;
 
-        if (interrupts.ctcssFound)
+        if (reg & CTCSS_FOUND)
             g_CTCSS_Lost = false;
 
 #ifdef ENABLE_VOX
-        if (interrupts.voxLost) {
+        if (reg & VOX_LOST) {
             g_VOX_Lost         = true;
             gVoxPauseCountdown = 10;
 
@@ -760,13 +754,13 @@ static void CheckRadioInterrupts(void)
             }
         }
 
-        if (interrupts.voxFound) {
+        if (reg & VOX_FOUND) {
             g_VOX_Lost         = false;
             gVoxPauseCountdown = 0;
         }
 #endif
 
-        if (interrupts.sqlLost) {
+        if (reg & SQL_LOST) {
             g_SquelchLost = true;
             BK4819_ToggleGpioOut(BK4819_GPIO6_PIN2_GREEN, true);
             #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
@@ -774,13 +768,13 @@ static void CheckRadioInterrupts(void)
             #endif
         }
 
-        if (interrupts.sqlFound) {
+        if (reg & SQL_FOUND) {
             g_SquelchLost = false;
             BK4819_ToggleGpioOut(BK4819_GPIO6_PIN2_GREEN, false);
         }
 
 #ifdef ENABLE_AIRCOPY
-        if (interrupts.fskFifoAlmostFull &&
+        if ((reg & FSKFIFO_ALMOST_FULL) &&
             gScreenToDisplay == DISPLAY_AIRCOPY &&
             gAircopyState == AIRCOPY_TRANSFER &&
             gAirCopyIsSendMode == 0)
@@ -1129,7 +1123,7 @@ void APP_Update(void)
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
             if(gWakeUp)
             {
-                gPowerSave_10ms = 1000; // Why ? Why not :) 10s
+                gPowerSave_10ms = gEeprom.BATTERY_SAVE * 250; // deep sleep now indexed on BatSav
             }
             else
             {
