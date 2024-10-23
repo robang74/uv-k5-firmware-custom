@@ -156,13 +156,7 @@ void Main(void)
     }
 
     // count the number of menu items
-    gMenuListCount = 0;
-    while (MenuList[gMenuListCount].name[0] != '\0') {
-        if(!gF_LOCK && MenuList[gMenuListCount].menu_id == FIRST_HIDDEN_MENU_ITEM)
-            break;
-
-        gMenuListCount++;
-    }
+    gMenuListCount = UI_MENU_GetMenuSize(gF_LOCK);
 
     // wait for user to release all butts before moving on
     if (!GPIO_CheckBit(&GPIOC->DATA, GPIOC_PIN_PTT) ||

@@ -69,6 +69,9 @@ make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
     ENABLE_SIXTH_CHARS_MENU=1 \
     ENABLE_FLASHLIGHT=0"
 
+# RAF: to test the new code is compiling
+ret=$?; test "$1" == "x" && exit $ret
+
 make_in_docker "f4hwn.voxless" "${TVOXLESS}"
 make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0"
 make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1"

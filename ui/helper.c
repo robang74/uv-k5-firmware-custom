@@ -76,7 +76,7 @@ void UI_GenerateChannelStringEx(char *pString, const bool bShowPrefix, const uin
  *
  **START(C)**/
 
-static void _UI_PrintBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font, const size_t Length)
+void _UI_PrintBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font, const size_t Length)
 {
     const unsigned int char_spacing = char_width + 1;
     for (size_t i = 0; i < Length; i++) {
@@ -98,14 +98,11 @@ inline void UI_PrintStrLenBuffer(const char *pString, uint8_t * buffer, uint32_t
     _UI_PrintBuffer(pString, buffer, char_width, font, length);
 }
 
-static void _UI_PrintString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width, bool menuVoice)
+void _UI_PrintString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width, size_t Length)
 {
-    size_t i, Length;
+    size_t i;
 
-    if (menuVoice) {
-        Length = MENU_VOICE_LENGHT;
-    }
-    else
+    if (!Length)
     {
         Length = strlen(pString);
         if (End > Start)
@@ -153,7 +150,7 @@ inline void UI_PrintStringSmallNormal(const char *pString, uint8_t Start, uint8_
 }
 
 /*
- ***********************************************************************END(C)**/
+ **********************************************************************END(C)**/
 
 void UI_PrintStringSmallBold(const char *pString, uint8_t Start, uint8_t End, uint8_t Line)
 {
@@ -345,7 +342,7 @@ void UI_DisplayPopup(const char *string)
     UI_PrintStringSmallNormal("Press EXIT", 9, 118, 6);
 }
 
-void UI_DisplayClear()
+inline void UI_DisplayClear()
 {
     memset(gFrameBuffer, 0, sizeof(gFrameBuffer));
 }

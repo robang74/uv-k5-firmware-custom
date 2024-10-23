@@ -23,7 +23,17 @@
 #include "audio.h"     // VOICE_ID_t
 #include "settings.h"
 
-enum
+// RAF: menu display area only has room for 6 characters + the end-of-string
+//      zero. Avoid to store that zero, will save some space in .data, when
+//      as more menu voice as more space is strongly requires, expecially.
+
+#ifdef ENABLE_SIXTH_CHARS_MENU
+#define MENU_VOICE_LENGHT 6
+#else
+#define MENU_VOICE_LENGHT 7
+#endif
+
+enum menu_id_enum : uint8_t
 {
     MENU_SQL = 0,
     MENU_STEP,
@@ -147,7 +157,6 @@ enum
 };
 
 extern const uint8_t FIRST_HIDDEN_MENU_ITEM;
-extern const t_menu_item MenuList[];
 
 extern const char        gSubMenu_TXP[8][6];
 extern const char        gSubMenu_SFT_D[3][4];
@@ -210,5 +219,6 @@ extern int               edit_index;
 void UI_DisplayMenu(void);
 int UI_MENU_GetCurrentMenuId();
 uint8_t UI_MENU_GetMenuIdx(uint8_t id);
+uint8_t UI_MENU_GetMenuSize(bool lock);
 
 #endif

@@ -18,15 +18,6 @@
  *     limitations under the License.
  */
 
-
-// RAF: menu display area only has room for 7 characters
-//      using just 6 of them reduces the usage in .data.
-#ifdef ENABLE_SIXTH_CHARS_MENU
-#define MENU_VOICE_LENGHT 6
-#else
-#define MENU_VOICE_LENGHT 7
-#endif
-
 #if 0
 static void UI_PrintMenuVoice(t_menu_item *item, uint8_t Line)
 {
@@ -58,14 +49,9 @@ static void UI_PrintMenuVoiceSmallNormal(t_menu_item *item, uint8_t Line)
         memcpy(gFrameBuffer[Line] + ofs, ((const uint8_t *)gFontSmall) + (char_width * idx), char_width);
     }
 }
-#else
-inline void UI_PrintStrLenBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font, const size_t length)
-#define UI_PrintMenuVoiceSmallNormal(a,b) UI_PrintStrLenBuffer((a).name, gFrameBuffer[(b)], ARRAY_SIZE(gFontSmall[0]), gFontSmall, MENU_VOICE_LENGHT);
-inline void UI_PrintMenuString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width);
-#define UI_PrintMenuVoice(a, b) UI_PrintMenuString((a).name, 0, 0, (b), 8)
 #endif
 
-typedef struct __attribute((__aligned(1))) {
+typedef struct __attribute__((__aligned__(1))) {
     const char     name[MENU_VOICE_LENGHT];
     const uint8_t  menu_id;
 } __attribute__((__packed__)) t_menu_item;

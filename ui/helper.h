@@ -19,13 +19,11 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 
 void UI_GenerateChannelString(char *pString, const uint8_t Channel);
 void UI_GenerateChannelStringEx(char *pString, const bool bShowPrefix, const uint8_t ChannelNumber);
-inline void UI_PrintString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width);
-inline void UI_PrintStringSmallNormal(const char *pString, uint8_t Start, uint8_t End, uint8_t Line);
 void UI_PrintStringSmallBold(const char *pString, uint8_t Start, uint8_t End, uint8_t Line);
-inline void UI_PrintStringSmallBufferNormal(const char *pString, uint8_t *buffer);
 void UI_PrintStringSmallBufferBold(const char *pString, uint8_t * buffer);
 void UI_DisplayFrequency(const char *string, uint8_t X, uint8_t Y, bool center);
 
@@ -40,6 +38,17 @@ void UI_DrawPixelBuffer(uint8_t (*buffer)[128], uint8_t x, uint8_t y, bool black
 #endif
 void UI_DrawLineBuffer(uint8_t (*buffer)[128], int16_t x1, int16_t y1, int16_t x2, int16_t y2, bool black);
 void UI_DrawRectangleBuffer(uint8_t (*buffer)[128], int16_t x1, int16_t y1, int16_t x2, int16_t y2, bool black);
+
+/* RAF: inline functions ******************************************************/
+
+#include "font.h"
+
+void UI_PrintStringSmallNormal(const char *pString, uint8_t Start, uint8_t End, uint8_t Line);
+void UI_PrintStringBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font);
+void UI_PrintStrLenBuffer(const char *pString, uint8_t * buffer, uint32_t char_width, const uint8_t *font, const size_t length);
+void UI_PrintMenuString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width);
+void UI_PrintString(const char *pString, uint8_t Start, uint8_t End, uint8_t Line, uint8_t Width);
+void UI_PrintStringSmallBufferNormal(const char *pString, uint8_t * buffer);
 
 void UI_DisplayClear();
 

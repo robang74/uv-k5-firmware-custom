@@ -44,6 +44,53 @@
 #include "ui/menu-dualtachyon.h"
 #endif
 
+/*******************************************************************************
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     https://github.com/robang74
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ **START(C)**/
+
+#ifdef ENABLE_ROBANG74_UI_MENU
+
+#define UI_PrintMenuVoiceSmallNormal(a,b) do { \
+    UI_PrintStrLenBuffer((a).name, gFrameBuffer[(b)], ARRAY_SIZE(gFontSmall[0]), \
+        (const uint8_t *)gFontSmall, MENU_VOICE_LENGHT); \
+} while(0)
+
+#define UI_PrintMenuVoice(a, b) do { \
+    UI_PrintMenuString((a).name, 0, 0, (b), 8); \
+} while(0)
+
+#else
+
+#define UI_PrintMenuVoice(a, b) do { \
+    UI_PrintString((a).name, 0, 0, (b), 8); \
+} while(0)
+
+#define UI_PrintMenuVoiceSmallNormal(a, b) do { \
+    UI_PrintStringSmallNormal((a).name, 0, 0, (b)); \
+} while(0)
+
+#endif
+
+uint8_t UI_MENU_GetMenuSize(bool lock)
+{
+    uint8_t idx = 0;
+    while (MenuList[idx].name[0]) {
+        if(!lock && MenuList[idx].menu_id == FIRST_HIDDEN_MENU_ITEM)
+            break;
+        idx++;
+    }
+    return idx;
+}
+
+/*
+ **********************************************************************END(C)**/
+
 const uint8_t gSubMenu_SIDEFUNCTIONS_size = ARRAY_SIZE(gSubMenu_SIDEFUNCTIONS);
 
 bool    gIsInSubMenu;
