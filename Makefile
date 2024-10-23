@@ -17,9 +17,6 @@ ENABLE_DTMF_CALLING           	?= 0
 ENABLE_FLASHLIGHT             	?= 1
 
 # ---- CUSTOM MODS ----
-ENABLE_ROBANG74_UI_MENU         ?= 1
-# requires ENABLE_ROBANG74_UI_MENU=1
-ENABLE_FLOCK_SHORT_MENU         ?= 0
 ENABLE_SPECTRUM               	?= 1
 ENABLE_BIG_FREQ               	?= 1
 ENABLE_SMALL_BOLD             	?= 1
@@ -49,9 +46,15 @@ ENABLE_FEAT_F4HWN_SPECTRUM    	?= 1
 ENABLE_FEAT_F4HWN_RX_TX_TIMER   ?= 1
 ENABLE_FEAT_F4HWN_CHARGING_C    ?= 1
 ENABLE_FEAT_F4HWN_SLEEP         ?= 1
+
+# ---- CUSTOM MENU ----
+ENABLE_ROBANG74_UI_MENU         ?= 1
+# requires ENABLE_ROBANG74_UI_MENU=1
+ENABLE_FLOCK_SHORT_MENU         ?= 1
+# real short? all these set to zero!
 ENABLE_FEAT_F4HWN_PMR         	?= 0
 ENABLE_FEAT_F4HWN_GMRS_FRS_MURS	?= 0
-ENABLE_FEAT_F4HWN_CA         	?= 1
+ENABLE_FEAT_F4HWN_CA         	?= 0
 
 # ---- DEBUGGING ----
 ENABLE_AM_FIX_SHOW_DATA       	?= 0
