@@ -1,5 +1,6 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +13,10 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
 
 #include <assert.h>
@@ -1594,12 +1599,21 @@ void APP_TimeSlice500ms(void)
     }
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
-     /* RAF: reworked on 22.10.2024 by github/robang74
-            (c) Roberto A. Foglietta, under APL v2.0
+/*******************************************************************************
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     https://github.com/robang74
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ **START(C)**/
 
-        original F4HWN was using 120x which is similar to (1<<7) = 128x (faster)
-        moreover, first checking the boolean (quick) then the other stuff (slow)
-    */
+ // RAF: reworked on 22.10.2024 by github/robang74
+ //
+ // original F4HWN was using 120x which is similar to (1<<7) = 128x (faster)
+ //  moreover, first checking the boolean (quick) then the other stuff (slow)
+ //
     if (bitchk(BF_DS_WAKE_UP) && gSleepModeCountdown_500ms == (gSetting_set_off << 7)) {
         //ST7565_Init();
         ST7565_FixInterfGlitch();
@@ -1640,11 +1654,13 @@ void APP_TimeSlice500ms(void)
 
     if (bitchk(BF_DS_WAKE_UP)) {
         static uint8_t counter = 0;
-        counter = (counter + 1) & 3;
+        counter = (counter + 1) & 3; //RAF: &3 is %4
         BK4819_ToggleGpioOut(BK4819_GPIO5_PIN1_RED, !counter);
     }
 #endif //ENABLE_FEAT_F4HWN_SLEEP
 
+/*
+ **********************************************************************END(C)**/
     if (gReducedService)
     {
         BOARD_ADC_GetBatteryInfo(&gBatteryCurrentVoltage, &gBatteryCurrent);

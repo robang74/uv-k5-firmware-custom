@@ -1,5 +1,6 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +13,10 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
 
 #include <string.h>
@@ -34,11 +39,21 @@
 #include "ui/ui.h"
 #include "ui/status.h"
 
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     https://github.com/robang74
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ **START(C)**/
+
 #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
 static void convertTime(uint8_t *line, uint8_t type) 
 {
     //RAF: reworked on 22.10.2024 by github/robang74
-    //     (c) Roberto A. Foglietta, under APL v2.0
     uint16_t t;
     char str[6];
 
@@ -54,6 +69,9 @@ static void convertTime(uint8_t *line, uint8_t type)
     gUpdateStatus = true;
 }
 #endif
+
+/*
+ **********************************************************************END(C)**/
 
 void UI_DisplayStatus()
 {

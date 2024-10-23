@@ -1,3 +1,25 @@
+/*******************************************************************************
+ *
+ * Copyright 2023 Juan Antonio <JuantAldea@users.noreply.github.com>
+ * Copyright 2024 Armel FAUVEAU <armel.fauveau@globalis-ms.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
+ */
+
 #ifdef ENABLE_FLASHLIGHT
 
 #include "flashlight.h"
@@ -66,22 +88,14 @@
 #else
 
 /*******************************************************************************
+ *
  * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
  *
  *     https://github.com/robang74
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *     Unless required by applicable law or agreed to in writing, software
- *     distributed under the License is distributed on an "AS IS" BASIS,
- *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *     See the License for the specific language governing permissions and
- *     limitations under the License.
- */
+ **START(C)**/
 
 #include "bitflags.h"
 
@@ -94,6 +108,9 @@ void ACTION_FlashLight(void)
     }
     bitflp(BF_FLASHLIGHT);
 }
+
+/*
+ **********************************************************************END(C)**/
 
 #endif //ENABLE_FEAT_F4HWN
 

@@ -1,7 +1,6 @@
 /*******************************************************************************
  *
- * Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +13,10 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
 
 #include <string.h>
@@ -38,12 +41,6 @@
 #include "menu.h"
 #include "ui.h"
 
-#ifdef ENABLE_ROBANG74_UI_MENU
-#include "ui/menu-robang74.h"
-#else
-#include "ui/menu-dualtachyon.h"
-#endif
-
 /*******************************************************************************
  *
  * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
@@ -55,6 +52,7 @@
  **START(C)**/
 
 #ifdef ENABLE_ROBANG74_UI_MENU
+#include "ui/menu-robang74.h"
 
 #define UI_PrintMenuVoiceSmallNormal(a,b) do { \
     UI_PrintStrLenBuffer((a).name, gFrameBuffer[(b)], ARRAY_SIZE(gFontSmall[0]), \
@@ -66,6 +64,7 @@
 } while(0)
 
 #else
+#include "ui/menu-dualtachyon.h"
 
 #define UI_PrintMenuVoice(a, b) do { \
     UI_PrintString((a).name, 0, 0, (b), 8); \

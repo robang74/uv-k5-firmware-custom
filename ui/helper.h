@@ -1,5 +1,9 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     https://github.com/robang74
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,16 +30,15 @@ void UI_GenerateChannelStringEx(char *pString, const bool bShowPrefix, const uin
 void UI_PrintStringSmallBold(const char *pString, uint8_t Start, uint8_t End, uint8_t Line);
 void UI_PrintStringSmallBufferBold(const char *pString, uint8_t * buffer);
 void UI_DisplayFrequency(const char *string, uint8_t X, uint8_t Y, bool center);
-
 void UI_DisplayPopup(const char *string);
-
 void UI_DrawPixelBuffer(uint8_t (*buffer)[128], uint8_t x, uint8_t y, bool black);
+
 #ifdef ENABLE_FEAT_F4HWN
-    //void UI_DrawLineDottedBuffer(uint8_t (*buffer)[128], int16_t x1, int16_t y1, int16_t x2, int16_t y2, bool black);
-    void PutPixel(uint8_t x, uint8_t y, bool fill);
-    void PutPixelStatus(uint8_t x, uint8_t y, bool fill);
-    void GUI_DisplaySmallest(const char *pString, uint8_t x, uint8_t y, bool statusbar, bool fill);
+void PutPixel(uint8_t x, uint8_t y, bool fill);
+void PutPixelStatus(uint8_t x, uint8_t y, bool fill);
+void GUI_DisplaySmallest(const char *pString, uint8_t x, uint8_t y, bool statusbar, bool fill);
 #endif
+
 void UI_DrawLineBuffer(uint8_t (*buffer)[128], int16_t x1, int16_t y1, int16_t x2, int16_t y2, bool black);
 void UI_DrawRectangleBuffer(uint8_t (*buffer)[128], int16_t x1, int16_t y1, int16_t x2, int16_t y2, bool black);
 

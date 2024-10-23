@@ -18,39 +18,6 @@
  *     limitations under the License.
  */
 
-#if 0
-static void UI_PrintMenuVoice(t_menu_item *item, uint8_t Line)
-{
-    uint8_t i, ch;
-
-    for (i = 0; i < MENU_VOICE_LENGHT; i++)
-    {
-        ch = item->name[i];
-        if (ch < 31 || ch > 126)
-            continue;
-        const int8_t  idx = ch - ' ' - 1;
-        const int16_t ofs = (int16_t)i << 3;
-        memcpy(gFrameBuffer[Line + 0] + ofs, &gFontBig[idx][0], 7);
-        memcpy(gFrameBuffer[Line + 1] + ofs, &gFontBig[idx][7], 7);
-    }
-}
-
-static void UI_PrintMenuVoiceSmallNormal(t_menu_item *item, uint8_t Line)
-{
-    uint8_t i, ch;
-
-    for (i = 0; i < MENU_VOICE_LENGHT; i++) {
-        ch = item->name[i];
-        if (ch < 31 || ch > 126)
-            continue;
-        const int8_t idx = ch - ' ' - 1;
-        const uint32_t char_width = ARRAY_SIZE(gFontSmall[0]);
-        const uint32_t ofs = (uint32_t)i * (char_width + 1) + 1;
-        memcpy(gFrameBuffer[Line] + ofs, ((const uint8_t *)gFontSmall) + (char_width * idx), char_width);
-    }
-}
-#endif
-
 typedef struct __attribute__((__aligned__(1))) {
     const char     name[MENU_VOICE_LENGHT];
     const uint8_t  menu_id;
@@ -58,7 +25,9 @@ typedef struct __attribute__((__aligned__(1))) {
 
 const t_menu_item MenuList[] =
 {
-//   text,          menu ID
+/******************************************
+ *   text 6 chars,  menu ID
+ *****************************************/
     {"SQL",         MENU_SQL           },
     {"W/N",         MENU_W_N           },
     {"STP",         MENU_STEP          },
@@ -77,7 +46,7 @@ const t_menu_item MenuList[] =
 #ifdef ENABLE_FEAT_F4HWN
     {"TxLCK",       MENU_TX_LOCK       },
 #endif
-    {"TxPW",        MENU_TXP           }, // was "TXP"
+    {"TxPWR",       MENU_TXP           }, // was "TXP"
     {"RxDCS",       MENU_R_DCS         }, // was "R_DCS"
     {"RxCTCS",      MENU_R_CTCS        }, // was "R_CTCS"
     {"TxDCS",       MENU_T_DCS         }, // was "T_DCS"
@@ -93,9 +62,9 @@ const t_menu_item MenuList[] =
     {"SCN+1",       MENU_S_ADD1        },
     {"SCN+2",       MENU_S_ADD2        },
     {"SCN+3",       MENU_S_ADD3        },
-    {"MEMCH",       MENU_MEM_CH        }, // was "MEM-CH"
-    {"DELCH",       MENU_DEL_CH        }, // was "DEL-CH"
-    {"CHNAM",       MENU_MEM_NAME      },
+    {"MEM-CH",      MENU_MEM_CH        }, // was "MEM-CH"
+    {"DEL-CH",      MENU_DEL_CH        }, // was "DEL-CH"
+    {"NAM-CH",      MENU_MEM_NAME      },
 
     {"S-LIST",      MENU_S_LIST        },
     {"SCN-L1",      MENU_SLIST1        },
@@ -110,7 +79,7 @@ const t_menu_item MenuList[] =
     {"F2-SHR",      MENU_F2SHRT        },
     {"F2-LNG",      MENU_F2LONG        },
     {"M-Long",      MENU_MLONG         },
-    {"ALK",         MENU_AUTOLK        }, // was "AUTOLk"
+    {"AUTOLK",      MENU_AUTOLK        }, // was "AUTOLk"
     {"TOT",         MENU_TOT           }, // was "TOT"
     {"BatSav",      MENU_SAVE          }, // was "SAVE"
     {"BatTxt",      MENU_BAT_TXT       },
@@ -147,9 +116,9 @@ const t_menu_item MenuList[] =
 #endif
     {"D-Live",      MENU_D_LIVE_DEC    }, // live DTMF decoder
 #ifndef ENABLE_FEAT_F4HWN
-    #ifdef ENABLE_AM_FIX
-        {"AM-Fix",      MENU_AM_FIX    },
-    #endif
+#ifdef ENABLE_AM_FIX
+    {"AM-Fix",      MENU_AM_FIX        }, //RAF,TODO: to move below MENU_AM ?
+#endif
 #endif
 #ifdef ENABLE_FEAT_F4HWN
     {"SysInf",      MENU_VOL           }, // was "VOL"
@@ -171,24 +140,28 @@ const t_menu_item MenuList[] =
     {"S-OFF",       MENU_SET_OFF       },
 #endif
 #endif
-    // hidden menu items from here on
-    // enabled if pressing both the PTT and upper side button at power-on
+    {"Reset",       MENU_RESET         },
+/******************************************
+ * hidden menu voices, those below
+ * enable pressing PTT + KEY1 + ON
+ *****************************************/
     {"FqLck",       MENU_F_LOCK        },
-#ifndef ENABLE_FEAT_F4HWN
-    {"Tx-200",      MENU_200TX         }, // was "200TX"
-    {"Tx-350",      MENU_350TX         }, // was "350TX"
-    {"Tx-500",      MENU_500TX         }, // was "500TX"
-#endif
-    {"350-En",      MENU_350EN         }, // was "350EN"
-#ifndef ENABLE_FEAT_F4HWN
-    {"Scr-En",      MENU_SCREN         }, // was "SCREN"
-#endif
 #ifdef ENABLE_F_CAL_MENU
     {"FqClb",       MENU_F_CALI        }, // reference xtal calibration
 #endif
-    {"Reset",       MENU_RESET         }, // might be better to move this to the hidden menu items ?
-
-    {"",            0xff               }  // end of list - DO NOT delete or move this this
+#ifndef ENABLE_FEAT_F4HWN
+    {"200TX",       MENU_200TX         }, // was "200TX"
+    {"350TX",       MENU_350TX         }, // was "350TX"
+    {"500TX",       MENU_500TX         }, // was "500TX"
+#endif
+    {"350EN",       MENU_350EN         }, // was "350EN"
+#ifndef ENABLE_FEAT_F4HWN
+    {"SCREN",       MENU_SCREN         }, // was "SCREN"
+#endif
+/******************************************
+ * end of list - do NOT delete or move
+ *****************************************/
+    {"",            0xff               }
 };
 
 const uint8_t FIRST_HIDDEN_MENU_ITEM = MENU_F_LOCK;
@@ -242,12 +215,12 @@ const char* const gSubMenu_RXMode[] =
 };
 
 #ifdef ENABLE_VOICE
-    const char gSubMenu_VOICE[][4] =
-    {
-        "--",
-        "CH",
-        "EN"
-    };
+const char gSubMenu_VOICE[][4] =
+{
+    "--",
+    "CH",
+    "EN"
+};
 #endif
 
 const char* const gSubMenu_MDF[] =
@@ -259,11 +232,11 @@ const char* const gSubMenu_MDF[] =
 };
 
 #ifdef ENABLE_ALARM
-    const char gSubMenu_AL_MOD[][5] =
-    {
-        "SITE",
-        "TONE"
-    };
+const char gSubMenu_AL_MOD[][5] =
+{
+    "SITE",
+    "TONE"
+};
 #endif
 
 #ifdef ENABLE_DTMF_CALLING
@@ -384,42 +357,42 @@ const char gSubMenu_SCRAMBLER[][7] =
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN
-    const char gSubMenu_SET_PWR[][6] =
-    {
-        "<20",
-        "125",
-        "250",
-        "500",
-        "1W",
-        "2W",
-        "5W"
-    };
+const char gSubMenu_SET_PWR[][6] =
+{
+    "<20",
+    "125",
+    "250",
+    "500",
+    "1W",
+    "2W",
+    "5W"
+};
 
-    const char gSubMenu_SET_PTT[][8] =
-    {
-        "PRESS",
-        "1PUSH"
-    };
+const char gSubMenu_SET_PTT[][8] =
+{
+    "PRESS",
+    "1PUSH"
+};
 
-    const char gSubMenu_SET_TOT[][7] =  // Use by SET_EOT too
-    {
-        "OFF",
-        "SND",
-        "SEE",
-        "ALL"
-    };
+const char gSubMenu_SET_TOT[][7] =  // Use by SET_EOT too
+{
+    "OFF",
+    "SND",
+    "SEE",
+    "ALL"
+};
 
-    const char gSubMenu_SET_LCK[][9] =
-    {
-        "KEYS",
-        "+PTT"
-    };
+const char gSubMenu_SET_LCK[][9] =
+{
+    "KEYS",
+    "+PTT"
+};
 
-    const char gSubMenu_SET_MET[][8] =
-    {
-        "TINY",
-        "NRML"
-    };
+const char gSubMenu_SET_MET[][8] =
+{
+    "TINY",
+    "NRML"
+};
 #endif
 
 const t_sidefunction gSubMenu_SIDEFUNCTIONS[] =
