@@ -1131,9 +1131,9 @@ void APP_Update(void)
                 //RAF: original values were 120:1000, now 2^3 F4HWN_SLEEP_VALUE
                 gPowerSave_10ms = F4HWN_SLEEP_VALUE << 3; // Why ? Why not :) 10s
             else
-#else
-            gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
 #endif
+            gPowerSave_10ms = gEeprom.BATTERY_SAVE * 10;
+
             gRxIdleMode = true;
             goToSleep = false;
 
