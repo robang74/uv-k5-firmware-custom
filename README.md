@@ -14,7 +14,11 @@ Time to share this challenge with other people and spawning more branches like s
 
 I have a **JucJet UV-K5**, it works well with `CHIRP`, `CSP` and [k5prog](https://github.com/robang74/k5prog) but not tried to flash it, yet
 
-Those are interested in this development, please drop an e-mail `roberto.foglietta@gmail.com`.
+Those are interested in this development, please drop an e-mail `roberto.foglietta@gmail.com` 
+
+or get in touch by the Zello channel `UV-K5-mods` - [zello.com/uv-k5-mods](zello.com/uv-k5-mods)
+
+<img src="https://zello.com/channels/qr?name=UV-K5-mods" alt="zello.com/uv-k5-mods" style="float:center; width:145px; heigth:145px;"/>
 
 ***
 ***
