@@ -650,22 +650,22 @@ static void DualwatchAlternate(void)
     #endif
 }
 
-///UNUSED	#define B0			(1<<0)
-#define FSKRX_SYNC				(1<<1)
-#define SQL_LOST				(1<<2)
-#define SQL_FOUND				(1<<3)
-#define VOX_LOST				(1<<4)
-#define VOX_FOUND				(1<<5)
-#define CTCSS_LOST				(1<<6)
-#define CTCSS_FOUND				(1<<7)
-#define CDCSS_LOST				(1<<8)
-#define CDCSS_FOUND				(1<<9)
-#define CSSTAIL_FOUND				(1<<10)
-#define DMTF5_TONE_FOUND			(1<<11)
-#define FSKFIFO_ALMOST_FULL			(1<<12) // pls define almost ?
-///UNUSED_ATM	#define FSK_RX_END		(1<<13)
-///UNUSED_ATM	#define FXKFIFO_ALMOST_EMPTY	(1<<14)
-///UNUSED_ATM	#define FSK_TX_FINISHED		(1<<15)
+#define B0						     (1<<0) /// unused atm
+#define FSK_RX_SYNC					 (1<<1)
+#define SQL_LOST					 (1<<2)
+#define SQL_FOUND					 (1<<3)
+#define VOX_LOST					 (1<<4)
+#define VOX_FOUND					 (1<<5)
+#define CTCSS_LOST					 (1<<6)
+#define CTCSS_FOUND					 (1<<7)
+#define CDCSS_LOST					 (1<<8)
+#define CDCSS_FOUND					 (1<<9)
+#define CSS_TAIL_FOUND				(1<<10)
+#define DTMF5_TONE_FOUND			(1<<11)
+#define FSK_FIFO_ALMOST_FULL		(1<<12)
+#define FSK_RX_COMPLETED			(1<<13) /// unused atm
+#define FXK_FIFO_ALMOST_EMPTY		(1<<14) /// unused atm
+#define FSK_TX_FINISHED				(1<<15) /// unused atm
 
 static void CheckRadioInterrupts(void)
 {
@@ -673,124 +673,124 @@ static void CheckRadioInterrupts(void)
         return;
 
     while (BK4819_ReadRegister(BK4819_REG_0C) & 1u) { // BK chip interrupt request
-	// clear interrupts
-	BK4819_WriteRegister(BK4819_REG_02, 0);
-	// fetch interrupt status bits
-	uint16_t reg = BK4819_ReadRegister(BK4819_REG_02);
+        // clear interrupts
+        BK4819_WriteRegister(BK4819_REG_02, 0);
+        // fetch interrupt status bits
+        uint16_t reg = BK4819_ReadRegister(BK4819_REG_02);
 
-// 0 = no phase shift
-// 1 = 120deg phase shift
-// 2 = 180deg phase shift
-// 3 = 240deg phase shift
+        // 0 = no phase shift
+        // 1 = 120deg phase shift
+        // 2 = 180deg phase shift
+        // 3 = 240deg phase shift
 //      const uint8_t ctcss_shift = BK4819_GetCTCShift();
 //      if (ctcss_shift > 0)
 //          g_CTCSS_Lost = true;
 
-	if (reg & DMTF5_TONE_FOUND) {
-		const char c = DTMF_GetCharacter(BK4819_GetDTMF_5TONE_Code()); // save the RX'ed DTMF character
-		if (c != 0xff) {
-			if (gCurrentFunction != FUNCTION_TRANSMIT) {
-				if (gSetting_live_DTMF_decoder) {
-					size_t len = strlen(gDTMF_RX_live);
-					if (len >= sizeof(gDTMF_RX_live) - 1) { // make room
-						memmove(&gDTMF_RX_live[0], &gDTMF_RX_live[1], sizeof(gDTMF_RX_live) - 1);
-						len--;
-					}
-					gDTMF_RX_live[len++]  = c;
-					gDTMF_RX_live[len]    = 0;
-					gDTMF_RX_live_timeout = DTMF_RX_live_timeout_500ms;  // time till we delete it
-					gUpdateDisplay        = true;
-				}
+        if (reg & DTMF5_TONE_FOUND) {
+            const char c = DTMF_GetCharacter(BK4819_GetDTMF_5TONE_Code()); // save the RX'ed DTMF character
+            if (c != 0xff) {
+                if (gCurrentFunction != FUNCTION_TRANSMIT) {
+                    if (gSetting_live_DTMF_decoder) {
+                        size_t len = strlen(gDTMF_RX_live);
+                        if (len >= sizeof(gDTMF_RX_live) - 1) { // make room
+                            memmove(&gDTMF_RX_live[0], &gDTMF_RX_live[1], sizeof(gDTMF_RX_live) - 1);
+                            len--;
+                        }
+                        gDTMF_RX_live[len++]  = c;
+                        gDTMF_RX_live[len]    = 0;
+                        gDTMF_RX_live_timeout = DTMF_RX_live_timeout_500ms;  // time till we delete it
+                        gUpdateDisplay        = true;
+                    }
 
 #ifdef ENABLE_DTMF_CALLING
-				if (gRxVfo->DTMF_DECODING_ENABLE || gSetting_KILLED) {
-					if (gDTMF_RX_index >= sizeof(gDTMF_RX) - 1) { // make room
-						memmove(&gDTMF_RX[0], &gDTMF_RX[1], sizeof(gDTMF_RX) - 1);
-						gDTMF_RX_index--;
-					}
-					gDTMF_RX[gDTMF_RX_index++] = c;
-					gDTMF_RX[gDTMF_RX_index]   = 0;
-					gDTMF_RX_timeout           = DTMF_RX_timeout_500ms;  // time till we delete it
-					gDTMF_RX_pending           = true;
-
-					SYSTEM_DelayMs(3);//fix DTMF not reply@Yurisu
-					DTMF_HandleRequest();
-				}
+                    if (gRxVfo->DTMF_DECODING_ENABLE || gSetting_KILLED) {
+                        if (gDTMF_RX_index >= sizeof(gDTMF_RX) - 1) { // make room
+                            memmove(&gDTMF_RX[0], &gDTMF_RX[1], sizeof(gDTMF_RX) - 1);
+                            gDTMF_RX_index--;
+                        }
+                        gDTMF_RX[gDTMF_RX_index++] = c;
+                        gDTMF_RX[gDTMF_RX_index]   = 0;
+                        gDTMF_RX_timeout           = DTMF_RX_timeout_500ms;  // time till we delete it
+                        gDTMF_RX_pending           = true;
+                        
+                        SYSTEM_DelayMs(3);//fix DTMF not reply@Yurisu
+                        DTMF_HandleRequest();
+                    }
 #endif
-			}
-		}
-	}
+                }
+            }
+        }
 
-	if (reg & CSSTAIL_FOUND)
-		g_CxCSS_TAIL_Found = true;
+        if (reg & CSS_TAIL_FOUND)
+            g_CxCSS_TAIL_Found = true;
 
-	if (reg & CDCSS_LOST) {
-		g_CDCSS_Lost = true;
-		gCDCSSCodeType = BK4819_GetCDCSSCodeType();
-	}
+        if (reg & CDCSS_LOST) {
+            g_CDCSS_Lost = true;
+            gCDCSSCodeType = BK4819_GetCDCSSCodeType();
+        }
 
-	if (reg & CDCSS_FOUND)
-		g_CDCSS_Lost = false;
+        if (reg & CDCSS_FOUND)
+            g_CDCSS_Lost = false;
 
-	if (reg & CTCSS_LOST)
-		g_CTCSS_Lost = true;
+        if (reg & CTCSS_LOST)
+            g_CTCSS_Lost = true;
 
-	if (reg & CTCSS_FOUND)
-		g_CTCSS_Lost = false;
+        if (reg & CTCSS_FOUND)
+            g_CTCSS_Lost = false;
 
 #ifdef ENABLE_VOX
-	if (reg & VOX_LOST) {
-		g_VOX_Lost         = true;
-		gVoxPauseCountdown = 10;
+        if (reg & VOX_LOST) {
+            g_VOX_Lost         = true;
+            gVoxPauseCountdown = 10;
 
-		if (gEeprom.VOX_SWITCH) {
-			if (gCurrentFunction == FUNCTION_POWER_SAVE && !gRxIdleMode) {
-				gPowerSave_10ms            = power_save2_10ms;
-				gPowerSaveCountdownExpired = 0;
-			}
+            if (gEeprom.VOX_SWITCH) {
+                if (gCurrentFunction == FUNCTION_POWER_SAVE && !gRxIdleMode) {
+                    gPowerSave_10ms            = power_save2_10ms;
+                    gPowerSaveCountdownExpired = 0;
+                }
 
-			if (gEeprom.DUAL_WATCH != DUAL_WATCH_OFF && (gScheduleDualWatch || gDualWatchCountdown_10ms < dual_watch_count_after_vox_10ms)) {
-				gDualWatchCountdown_10ms = dual_watch_count_after_vox_10ms;
-				gScheduleDualWatch = false;
+                if (gEeprom.DUAL_WATCH != DUAL_WATCH_OFF && (gScheduleDualWatch || gDualWatchCountdown_10ms < dual_watch_count_after_vox_10ms)) {
+                    gDualWatchCountdown_10ms = dual_watch_count_after_vox_10ms;
+                    gScheduleDualWatch = false;
 
-				// let the user see DW is not active
-				gDualWatchActive = false;
-				gUpdateStatus    = true;
-			}
-		}
-	}
+                    // let the user see DW is not active
+                    gDualWatchActive = false;
+                    gUpdateStatus    = true;
+                }
+            }
+        }
 
-	if (reg & VOX_FOUND) {
-		g_VOX_Lost         = false;
-		gVoxPauseCountdown = 0;
-	}
+        if (reg & VOX_FOUND) {
+            g_VOX_Lost         = false;
+            gVoxPauseCountdown = 0;
+        }
 #endif
 
-	if (reg & SQL_LOST) {
-		g_SquelchLost = true;
-		BK4819_ToggleGpioOut(BK4819_GPIO6_PIN2_GREEN, true);
-		#ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
-			gRxTimerCountdown_500ms = 7200;
-		#endif
-	}
+        if (reg & SQL_LOST) {
+            g_SquelchLost = true;
+            BK4819_ToggleGpioOut(BK4819_GPIO6_PIN2_GREEN, true);
+            #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
+                gRxTimerCountdown_500ms = 7200;
+            #endif
+        }
 
-	if (reg & SQL_FOUND) {
-		g_SquelchLost = false;
-		BK4819_ToggleGpioOut(BK4819_GPIO6_PIN2_GREEN, false);
-	}
+        if (reg & SQL_FOUND) {
+            g_SquelchLost = false;
+            BK4819_ToggleGpioOut(BK4819_GPIO6_PIN2_GREEN, false);
+        }
 
 #ifdef ENABLE_AIRCOPY
-	if ((reg & FSKFIFO_ALMOST_FULL) &&
-		gScreenToDisplay == DISPLAY_AIRCOPY &&
-		gAircopyState == AIRCOPY_TRANSFER &&
-		gAirCopyIsSendMode == 0)
-	{
-		for (unsigned int i = 0; i < 4; i++) {
-			g_FSK_Buffer[gFSKWriteIndex++] = BK4819_ReadRegister(BK4819_REG_5F);
-		}
+        if ((reg & FSK_FIFO_ALMOST_FULL) &&
+            gScreenToDisplay == DISPLAY_AIRCOPY &&
+            gAircopyState == AIRCOPY_TRANSFER &&
+            gAirCopyIsSendMode == 0)
+        {
+            for (unsigned int i = 0; i < 4; i++) {
+                g_FSK_Buffer[gFSKWriteIndex++] = BK4819_ReadRegister(BK4819_REG_5F);
+            }
 
-		AIRCOPY_StorePacket();
-	}
+            AIRCOPY_StorePacket();
+        }
 #endif
     }
 }
