@@ -644,22 +644,22 @@ static void DualwatchAlternate(void)
     #endif
 }
 
-//#define B0						(1<<0) /// unused atm
-#define FSKRX_SYNC					(1<<1)
-#define SQL_LOST					(1<<2)
-#define SQL_FOUND					(1<<3)
-#define VOX_LOST					(1<<4)
-#define VOX_FOUND					(1<<5)
-#define CTCSS_LOST					(1<<6)
-#define CTCSS_FOUND					(1<<7)
-#define CDCSS_LOST					(1<<8)
-#define CDCSS_FOUND					(1<<9)
-#define CSSTAIL_FOUND				(1<<10)
-#define DMTF5_TONE_FOUND			(1<<11)
-#define FSKFIFO_ALMOST_FULL			(1<<12)
-//#define FSK_RX_END					(1<<13) /// unused atm
-//#define FXKFIFO_ALMOST_EMPTY			(1<<14) /// unused atm
-//#define FSK_TX_FINISHED				(1<<15) /// unused atm
+#define B0						     (1<<0) /// unused atm
+#define FSK_RX_SYNC					 (1<<1)
+#define SQL_LOST					 (1<<2)
+#define SQL_FOUND					 (1<<3)
+#define VOX_LOST					 (1<<4)
+#define VOX_FOUND					 (1<<5)
+#define CTCSS_LOST					 (1<<6)
+#define CTCSS_FOUND					 (1<<7)
+#define CDCSS_LOST					 (1<<8)
+#define CDCSS_FOUND					 (1<<9)
+#define CSS_TAIL_FOUND				(1<<10)
+#define DTMF5_TONE_FOUND			(1<<11)
+#define FSK_FIFO_ALMOST_FULL		(1<<12)
+#define FSK_RX_COMPLETED			(1<<13) /// unused atm
+#define FXK_FIFO_ALMOST_EMPTY		(1<<14) /// unused atm
+#define FSK_TX_FINISHED				(1<<15) /// unused atm
 
 static void CheckRadioInterrupts(void)
 {
@@ -680,7 +680,7 @@ static void CheckRadioInterrupts(void)
 //      if (ctcss_shift > 0)
 //          g_CTCSS_Lost = true;
 
-        if (reg & DMTF5_TONE_FOUND) {
+        if (reg & DTMF5_TONE_FOUND) {
             const char c = DTMF_GetCharacter(BK4819_GetDTMF_5TONE_Code()); // save the RX'ed DTMF character
             if (c != 0xff) {
                 if (gCurrentFunction != FUNCTION_TRANSMIT) {
@@ -715,7 +715,7 @@ static void CheckRadioInterrupts(void)
             }
         }
 
-        if (reg & CSSTAIL_FOUND)
+        if (reg & CSS_TAIL_FOUND)
             g_CxCSS_TAIL_Found = true;
 
         if (reg & CDCSS_LOST) {
@@ -774,7 +774,7 @@ static void CheckRadioInterrupts(void)
         }
 
 #ifdef ENABLE_AIRCOPY
-        if ((reg & FSKFIFO_ALMOST_FULL) &&
+        if ((reg & FSK_FIFO_ALMOST_FULL) &&
             gScreenToDisplay == DISPLAY_AIRCOPY &&
             gAircopyState == AIRCOPY_TRANSFER &&
             gAirCopyIsSendMode == 0)
