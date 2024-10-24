@@ -276,7 +276,11 @@ If you have docker installed you can use [compile-with-docker.bat](./compile-wit
 
 1. follow this instrctions [page](https://docs.docker.com/engine/install/ubuntu/) from docker.io
 
-2. run the script `compile-with-docker.sh` or the script `compile-with-docker-all.sh`
+2. run the script `compile-with-docker.sh` or the script `compile-with-docker-all.sh` with `sudo`
+
+Note that the root provilegs are needed just the first time for the first installation (download images) 
+
+or even better `sudo docker build -t ukv5 .` which build the uvk5:latest on the local system.
 
 ### Windows environment build method
 
