@@ -20,6 +20,26 @@ or get in touch by the Zello channel `UV-K5-mods` - [zello.com/uv-k5-mods](zello
 
 <img src="https://zello.com/channels/qr?name=UV-K5-mods" alt="zello.com/uv-k5-mods" style="float:center; width:145px; heigth:145px;"/>
 
+## Links
+
+* [UV-K5 Wiki (repo)](https://github.com/ludwich66/Quansheng_UV-K5_Wiki)
+
+* [UV-K5 Wiki (home)](https://github.com/ludwich66/Quansheng_UV-K5_Wiki/wiki)
+
+* [amnemonic (tools)](https://github.com/amnemonic/Quansheng_UV-K5_Firmware)
+
+* [losehu (mod)](https://github.com/losehu/uv-k5-firmware-custom)
+
+* [fagci reborn (FW)](https://github.com/fagci/uvk5-fagci-reborn)
+
+* [fagci modder (tool)](https://github.com/fagci/qs-uvk5-firmware-modder)
+
+* [selevo WebUSBserial (tool)](https://github.com/selevo/WebUsbSerialTerminal)
+
+* [piotr022 playground (mesg)](https://github.com/piotr022/UV_K5_playground)
+
+* [tunas1337 18-to-1300 (fork)](https://github.com/fagci/UV-K5-Modded-Firmwares)
+
 ***
 ***
 
