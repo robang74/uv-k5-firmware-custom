@@ -272,6 +272,12 @@ This is the least demanding option as you don't have to install enything on your
 
 If you have docker installed you can use [compile-with-docker.bat](./compile-with-docker.bat) (Windows) or [compile-with-docker.sh](./compile-with-docker.sh) (Linux/Mac), the output files are created in `compiled-firmware` folder. This method gives significantly smaller binaries, I've seen differences up to 1kb, so it can fit more functionalities this way. The challenge can be (or not) installing docker itself.
 
+### Linux Docker installation
+
+1. follow this instrctions [page](https://docs.docker.com/engine/install/ubuntu/) from docker.io
+
+2. run the script `compile-with-docker.sh` or the script `compile-with-docker-all.sh`
+
 ### Windows environment build method
 
 1. Open windows command line and run:
