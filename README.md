@@ -20,6 +20,42 @@ or get in touch by the Zello channel `UV-K5-mods` - [zello.com/uv-k5-mods](zello
 
 <img src="https://zello.com/channels/qr?name=UV-K5-mods" alt="zello.com/uv-k5-mods" style="float:center; width:145px; heigth:145px;"/>
 
+## Fork scope
+
+This github repository and related ativities are part of a broader project named **Guy Fawkes Starting Pack** started with a [LinkedIn article](https://www.linkedin.com/pulse/guy-fawkes-starting-pack-roberto-a-foglietta-jm9kf) on 15th January 2023 and continously updated after its 1st draft pubblication. It consultation is public but because LinkedIn is a proprietary medium platform that usually prevents people printing their own PDF copy of the article, then it is also available in [PDF](https://drive.google.com/file/d/1DveGE1CbTdQ8xOOhGyEOS_hilnxMM_XK/view) format by a Google Driver link.
+
+## Fork goals
+
+Which is the reason for this fork from the well-known **armel** repo?
+
+1. I do things for me myself and in doing that I am using cloud-based tools
+
+2. which are giving more free-of-charge resources to people who share their work.
+
+3. sharing information is a well-assessed attitude rooted in my 20 year-long private teacher experience
+
+4. and it fits with my idea that Open Source and Bazaar principles are sounding valid,
+
+5. plus I felt that Mr. Armel is more interested in donations and its own business,
+
+6. rather than collecting, organizing and integrating attributes for UV-K5 firmware.
+
+I wish to be clear about the last two points: nothing personal and everyone does what s/he wants. In fact, here I am, forking a githup repo and carrying on my way.
+
+In case you wish to contribute with a commit or a technical information or an insightful grasp or with fixing or highlighting a shortcoming or a constructive critic, you are welcome whoever you are or doing in your own life.
+
+## On my own way
+
+For everybody else, silence is gold plus quick middle fingering is my way to go (cfr. the [bullsh*t asymmetry principle](https://statmodeling.stat.columbia.edu/2019/01/28/bullshit-asymmetry-principle/)) and you are invited to do something the same: take *the bright side of the life* (cit.), and skip the rest.
+
+> I don't have a short temper, I just have a quick reaction to bullshit -- Elizabeth Taylor
+
+<img src="colazione-da-tiffany.jpg" width="420" heigh="153" alt="Audrey Hepburn in Colazione da Tiffany">
+
+Audrey Hepburn in the picture, not Elizabeth Taylor, Ada Lovelace, Hedwig Eva Maria Kiesler (aka Hedy Lamarr) or any other lovely nerdishly Morticia Addams. LOL
+
+Hackers, we will never ask for your permission to do things that we know or learning how to do. Keep it stick in the mind and write it down in a post-it and attach to your PC screen nearby the one you are using for your login password.
+
 ## Links
 
 * [UV-K5 Wiki (repo)](https://github.com/ludwich66/Quansheng_UV-K5_Wiki)
