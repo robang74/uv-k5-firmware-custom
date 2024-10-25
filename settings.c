@@ -36,7 +36,7 @@ static const uint32_t gDefaultFrequencyTable[] =
     43350000     //
 };
 
-EEPROM_Config_t gEeprom = { 0 };
+EEPROM_Config_t gEeprom = (EEPROM_Config_t){ 0 };
 
 void SETTINGS_InitEEPROM(void)
 {
