@@ -121,6 +121,7 @@ if true; then #RAF: there are few but good reasons to use tar here
 else
     docker cp . $DOCK_NME:$WRKG_DIR
 fi 2>&1 | grep -v " records "
+echo "Building ${1:+ALL }firmware ..."
 echo
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
