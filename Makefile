@@ -265,6 +265,8 @@ else
 	# Oz needed to make it fit on flash
 	CFLAGS  += -Oz -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c2x   -MMD
 endif
+#RAF: just for testing but commented
+#CFLAGS += -fno-strict-aliasing
 
 ifeq ($(ENABLE_LTO),1)
 	CFLAGS += -flto=auto
@@ -282,7 +284,7 @@ CFLAGS += -Wextra
 
 CFLAGS += -DPRINTF_INCLUDE_CONFIG_H
 ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
-	CFLAGS += -DAUTHOR_STRING=\"$(AUTHOR_STRING)\" 
+	CFLAGS += -DAUTHOR_STRING=\"$(AUTHOR_STRING)\"
 else
 	CFLAGS += -DAUTHOR_STRING=\"$(AUTHOR_STRING)+ROBANG_UI\"
 endif
@@ -556,6 +558,12 @@ bsp/dp32g030/%.h: hardware/dp32g030/%.def
 
 clean:
 	$(RM) $(call FixPath, $(TARGET).bin $(TARGET).packed.bin $(TARGET) $(OBJS) $(DEPS))
+#RAF: make clean can be called with a different enviroment from the previous build
+	find .  -type f -name \*.d -delete
+	find .  -type f -name \*.o -delete
+
+distclean: clean
+	$(RM) compiled-firmware/*
 
 doxygen:
 	doxygen
