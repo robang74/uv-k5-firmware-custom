@@ -36,7 +36,12 @@ static const uint32_t gDefaultFrequencyTable[] =
     43350000     //
 };
 
-EEPROM_Config_t *gpEeprom;// = (EEPROM_Config_t *)NULL; 
+#ifdef ENABLE_RUNDATA_MEMORY
+EEPROM_Config_t *gpEeprom = (EEPROM_Config_t *)NULL;
+#else
+EEPROM_Config_t gEeprom;
+EEPROM_Config_t *gpEeprom = &gEeprom;
+#endif
 
 void SETTINGS_InitEEPROM(void)
 {
@@ -185,8 +190,10 @@ void SETTINGS_InitEEPROM(void)
     EEPROM_ReadBuffer(0x0EE0, Data, sizeof(gpEeprom->ANI_DTMF_ID));
     if (DTMF_ValidateCodes((char *)Data, sizeof(gpEeprom->ANI_DTMF_ID))) {
         memcpy(gpEeprom->ANI_DTMF_ID, Data, sizeof(gpEeprom->ANI_DTMF_ID));
+    #ifndef ENABLE_RUNDATA_MEMORY
     } else {
         strcpy(gpEeprom->ANI_DTMF_ID, "123");
+    #endif
     }
 
 
@@ -194,33 +201,41 @@ void SETTINGS_InitEEPROM(void)
     EEPROM_ReadBuffer(0x0EE8, Data, sizeof(gpEeprom->KILL_CODE));
     if (DTMF_ValidateCodes((char *)Data, sizeof(gpEeprom->KILL_CODE))) {
         memcpy(gpEeprom->KILL_CODE, Data, sizeof(gpEeprom->KILL_CODE));
+    #ifndef ENABLE_RUNDATA_MEMORY
     } else {
         strcpy(gpEeprom->KILL_CODE, "ABCD9");
+    #endif
     }
 
     // 0EF0..0EF7
     EEPROM_ReadBuffer(0x0EF0, Data, sizeof(gpEeprom->REVIVE_CODE));
     if (DTMF_ValidateCodes((char *)Data, sizeof(gpEeprom->REVIVE_CODE))) {
         memcpy(gpEeprom->REVIVE_CODE, Data, sizeof(gpEeprom->REVIVE_CODE));
+    #ifndef ENABLE_RUNDATA_MEMORY
     } else {
         strcpy(gpEeprom->REVIVE_CODE, "9DCBA");
+    #endif
     }
-#endif
+#endif //ENABLE_DTMF_CALLING
 
     // 0EF8..0F07
     EEPROM_ReadBuffer(0x0EF8, Data, sizeof(gpEeprom->DTMF_UP_CODE));
     if (DTMF_ValidateCodes((char *)Data, sizeof(gpEeprom->DTMF_UP_CODE))) {
         memcpy(gpEeprom->DTMF_UP_CODE, Data, sizeof(gpEeprom->DTMF_UP_CODE));
+#ifndef ENABLE_RUNDATA_MEMORY
     } else {
         strcpy(gpEeprom->DTMF_UP_CODE, "12345");
+#endif
     }
 
     // 0F08..0F17
     EEPROM_ReadBuffer(0x0F08, Data, sizeof(gpEeprom->DTMF_DOWN_CODE));
     if (DTMF_ValidateCodes((char *)Data, sizeof(gpEeprom->DTMF_DOWN_CODE))) {
         memcpy(gpEeprom->DTMF_DOWN_CODE, Data, sizeof(gpEeprom->DTMF_DOWN_CODE));
+#ifndef ENABLE_RUNDATA_MEMORY
     } else {
         strcpy(gpEeprom->DTMF_DOWN_CODE, "54321");
+#endif
     }
 
     // 0F18..0F1F

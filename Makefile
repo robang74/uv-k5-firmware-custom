@@ -58,6 +58,9 @@ ENABLE_FEAT_F4HWN_PMR         	?= 0
 ENABLE_FEAT_F4HWN_GMRS_FRS_MURS	?= 0
 ENABLE_FEAT_F4HWN_CA         	?= 0
 
+# ---- RUNDATA MEMORY ----
+ENABLE_RUNDATA_MEMORY           ?= 1
+
 # ---- DEBUGGING ----
 ENABLE_AM_FIX_SHOW_DATA       	?= 0
 ENABLE_AGC_SHOW_DATA          	?= 0
@@ -312,6 +315,10 @@ ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
 endif
 endif
 
+ifeq ($(ENABLE_RUNDATA_MEMORY), 1)
+    FIRMWARE_LD = firmware-rundata.ld
+    CFLAGS += -DENABLE_RUNDATA_MEMORY
+endif
 ifeq ($(ENABLE_ROBANG74_UI_MENU),1)
 	CFLAGS += -DENABLE_ROBANG74_UI_MENU
 endif
@@ -478,8 +485,10 @@ ifeq ($(ENABLE_FEAT_F4HWN_CA),1)
 	CFLAGS  += -DENABLE_FEAT_F4HWN_CA
 endif
 
+FIRMWARE_LD ?= firmware.ld
+
 LDFLAGS =
-LDFLAGS += -z noexecstack -mcpu=cortex-m0 -nostartfiles -Wl,-T,firmware.ld -Wl,--gc-sections
+LDFLAGS += -z noexecstack -mcpu=cortex-m0 -nostartfiles -Wl,-T,$(FIRMWARE_LD) -Wl,--gc-sections
 
 # Use newlib-nano instead of newlib
 LDFLAGS += --specs=nano.specs

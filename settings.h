@@ -284,7 +284,6 @@ typedef struct {
     uint8_t               S9_LEVEL;
 #endif
 } EEPROM_Config_t;
-
 //__attribute__((__aligned__(4))) EEPROM_Config_t;
 
 extern EEPROM_Config_t *gpEeprom;

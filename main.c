@@ -68,6 +68,7 @@ void _putchar(__attribute__((unused)) char c)
 
 }
 
+#ifdef ENABLE_RUNDATA_MEMORY
 //RAF: defined in firmware.ld
 extern uint32_t __rundata_start;
 extern uint32_t __rundata_end;
@@ -81,8 +82,17 @@ void __attribute__((section(".preinit_array"))) init_rundata_ramseg(void) {
     }
 */
     memset(start, 0, end-start);
-    gpEeprom = (EEPROM_Config_t *)__rundata_start;
+    memcpy(gpEeprom, &start, 4);
+
+    #ifdef ENABLE_DTMF_CALLING
+    strcpy(gpEeprom->ANI_DTMF_ID, "123");
+    strcpy(gpEeprom->KILL_CODE, "ABCD9");
+    strcpy(gpEeprom->REVIVE_CODE, "9DCBA");
+    #endif
+    strcpy(gpEeprom->DTMF_UP_CODE, "12345");
+    strcpy(gpEeprom->DTMF_DOWN_CODE, "54321");
 }
+#endif
 
 void Main(void)
 {
@@ -110,15 +120,6 @@ void Main(void)
 #endif
 
     // Not implementing authentic device checks
-    
-    //gpEeprom = (EEPROM_Config_t *)__rundata_start;
-    /*
-    {
-        uint32_t addr = 0x4006F000;
-        memcpy(&gpEeprom, &addr, 4);
-    }
-    */
-    //memset((void *)gpEeprom, '0', sizeof(EEPROM_Config_t));
 
     memset(gDTMF_String, '-', sizeof(gDTMF_String));
     gDTMF_String[sizeof(gDTMF_String) - 1] = 0;
