@@ -148,6 +148,21 @@ echo
 
 #exec_in_docker "rm -f ./${DEST_DIR}/*"
 
+default_first=0
+
+if [ $default_first -ne 0 ]; then
+    make_in_docker "f4hwn.default"
+
+    # RAF: to test the new code is compiling
+    ret=$?;
+    if [ "$1" != "all" ]; then
+        show_firmware_filesize
+        exit $ret
+    fi
+fi
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
     ENABLE_VOX=0 \
     ENABLE_AIRCOPY=0 \
@@ -168,15 +183,6 @@ TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
 # AIRCOPY                        (-1996)
 # ALL THE OPTIONS                (-3900)
 
-make_in_docker "f4hwn.default"
-
-# RAF: to test the new code is compiling
-ret=$?;
-if [ "$1" != "all" ]; then
-    show_firmware_filesize
-    exit $ret
-fi
-
 make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
     ENABLE_VOX=0 \
     ENABLE_AIRCOPY=0 \
@@ -191,6 +197,18 @@ make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
     ENABLE_FLOCK_SHORT_MENU=1 \
     ENABLE_SIXTH_CHARS_MENU=1 \
     ENABLE_FLASHLIGHT=0"
+
+if [ $default_first -eq 0 ]; then
+    # RAF: to test the new code is compiling
+    ret=$?;
+    if [ "$1" != "all" ]; then
+        show_firmware_filesize
+        exit $ret
+    fi
+    make_in_docker "f4hwn.default"
+fi
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 make_in_docker "f4hwn.voxless" "${TVOXLESS}"
 make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0"
