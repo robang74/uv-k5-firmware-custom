@@ -68,6 +68,7 @@ void _putchar(__attribute__((unused)) char c)
 
 }
 
+extern uint32_t rundata_ramseg; //RAF: defined in firmware.ld
 
 void Main(void)
 {
@@ -96,7 +97,7 @@ void Main(void)
 
     // Not implementing authentic device checks
     
-    //gpEeprom = (EEPROM_Config_t *)((uint8_t volatile *)0x4006F000);
+    //gpEeprom = (EEPROM_Config_t *)&rundata_ramseg;
     /*
     {
         uint32_t addr = 0x4006F000;
