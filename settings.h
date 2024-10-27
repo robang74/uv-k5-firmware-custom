@@ -152,6 +152,7 @@ enum CHANNEL_DisplayMode_t {
 };
 typedef enum CHANNEL_DisplayMode_t CHANNEL_DisplayMode_t;
 
+//typedef struct __attribute__((packed)) {
 typedef struct {
     uint8_t               ScreenChannel[2]; // current channels set in the radio (memory or frequency channels)
     uint8_t               FreqChannel[2]; // last frequency channels used
@@ -284,7 +285,9 @@ typedef struct {
 #endif
 } EEPROM_Config_t;
 
-extern EEPROM_Config_t gEeprom;
+//__attribute__((__aligned__(4))) EEPROM_Config_t;
+
+extern EEPROM_Config_t *gpEeprom;
 
 void     SETTINGS_InitEEPROM(void);
 void     SETTINGS_LoadCalibration(void);

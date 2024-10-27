@@ -1576,7 +1576,7 @@ static void Tick()
 void APP_RunSpectrum()
 {
     // TX here coz it always? set to active VFO
-    vfo = gEeprom.TX_VFO;
+    vfo = gpEeprom->TX_VFO;
 #ifdef ENABLE_FEAT_F4HWN_SPECTRUM
     LoadSettings();
 #endif

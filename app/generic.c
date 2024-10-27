@@ -110,10 +110,10 @@ void GENERIC_Key_PTT(bool bKeyPressed)
             else {
                 APP_EndTransmission();
 
-                if (gEeprom.REPEATER_TAIL_TONE_ELIMINATION == 0)
+                if (gpEeprom->REPEATER_TAIL_TONE_ELIMINATION == 0)
                     FUNCTION_Select(FUNCTION_FOREGROUND);
                 else
-                    gRTTECountdown_10ms = gEeprom.REPEATER_TAIL_TONE_ELIMINATION * 10;
+                    gRTTECountdown_10ms = gpEeprom->REPEATER_TAIL_TONE_ELIMINATION * 10;
             }
 
             gFlagEndTransmission = false;

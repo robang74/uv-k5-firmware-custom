@@ -49,7 +49,7 @@ void AUDIO_PlayBeep(BEEP_Type_t Beep)
         Beep != BEEP_500HZ_30MS &&
         Beep != BEEP_600HZ_30MS &&
 #endif
-       !gEeprom.BEEP_CONTROL)
+       !gpEeprom->BEEP_CONTROL)
         return;
 
 #ifdef ENABLE_AIRCOPY
@@ -264,9 +264,9 @@ void AUDIO_PlaySingleVoice(bool bFlag)
 
     VoiceID = gVoiceID[0];
 
-    if (gEeprom.VOICE_PROMPT != VOICE_PROMPT_OFF && gVoiceWriteIndex > 0)
+    if (gpEeprom->VOICE_PROMPT != VOICE_PROMPT_OFF && gVoiceWriteIndex > 0)
     {
-        if (gEeprom.VOICE_PROMPT == VOICE_PROMPT_CHINESE)
+        if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_CHINESE)
         {   // Chinese
             if (VoiceID >= ARRAY_SIZE(VoiceClipLengthChinese))
                 goto Bailout;
@@ -402,10 +402,10 @@ void AUDIO_PlayQueuedVoice(void)
 
     Skip = false;
 
-    if (gVoiceReadIndex != gVoiceWriteIndex && gEeprom.VOICE_PROMPT != VOICE_PROMPT_OFF)
+    if (gVoiceReadIndex != gVoiceWriteIndex && gpEeprom->VOICE_PROMPT != VOICE_PROMPT_OFF)
     {
         VoiceID = gVoiceID[gVoiceReadIndex];
-        if (gEeprom.VOICE_PROMPT == VOICE_PROMPT_CHINESE)
+        if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_CHINESE)
         {
             if (VoiceID < ARRAY_SIZE(VoiceClipLengthChinese))
             {

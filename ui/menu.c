@@ -537,15 +537,15 @@ void UI_DisplayMenu(void)
 
 #ifdef ENABLE_DTMF_CALLING
         case MENU_ANI_ID:
-            strcpy(String, gEeprom.ANI_DTMF_ID);
+            strcpy(String, gpEeprom->ANI_DTMF_ID);
             break;
 #endif
         case MENU_UPCODE:
-            sprintf(String, "%.8s\n%.8s", gEeprom.DTMF_UP_CODE, gEeprom.DTMF_UP_CODE + 8);
+            sprintf(String, "%.8s\n%.8s", gpEeprom->DTMF_UP_CODE, gpEeprom->DTMF_UP_CODE + 8);
             break;
 
         case MENU_DWCODE:
-            sprintf(String, "%.8s\n%.8s", gEeprom.DTMF_DOWN_CODE, gEeprom.DTMF_DOWN_CODE + 8);
+            sprintf(String, "%.8s\n%.8s", gpEeprom->DTMF_DOWN_CODE, gpEeprom->DTMF_DOWN_CODE + 8);
             break;
 
 #ifdef ENABLE_DTMF_CALLING
@@ -688,7 +688,7 @@ void UI_DisplayMenu(void)
             break;
 
         case MENU_TX_LOCK:
-            if(TX_freq_check(gEeprom.VfoInfo[gEeprom.TX_VFO].pRX->Frequency) == 0)
+            if(TX_freq_check(gpEeprom->VfoInfo[gpEeprom->TX_VFO].pRX->Frequency) == 0)
             {
                 strcpy(String, "Inside\nF Lock\nPlan");
             }
@@ -806,18 +806,18 @@ void UI_DisplayMenu(void)
         pPrintStr = String[0] ? String : "--";
 
         // channel name and scan-list
-        if (gSubMenuSelection < 0 || !gEeprom.SCAN_LIST_ENABLED[i]) {
+        if (gSubMenuSelection < 0 || !gpEeprom->SCAN_LIST_ENABLED[i]) {
             UI_PrintString(pPrintStr, menu_item_x1, menu_item_x2, 2, 8);
         } else {
             UI_PrintStringSmallNormal(pPrintStr, menu_item_x1, menu_item_x2, 2);
 
-            if (IS_MR_CHANNEL(gEeprom.SCANLIST_PRIORITY_CH1[i])) {
-                sprintf(String, "PRI%d:%u", 1, gEeprom.SCANLIST_PRIORITY_CH1[i] + 1);
+            if (IS_MR_CHANNEL(gpEeprom->SCANLIST_PRIORITY_CH1[i])) {
+                sprintf(String, "PRI%d:%u", 1, gpEeprom->SCANLIST_PRIORITY_CH1[i] + 1);
                 UI_PrintString(String, menu_item_x1, menu_item_x2, 3, 8);
             }
 
-            if (IS_MR_CHANNEL(gEeprom.SCANLIST_PRIORITY_CH2[i])) {
-                sprintf(String, "PRI%d:%u", 2, gEeprom.SCANLIST_PRIORITY_CH2[i] + 1);
+            if (IS_MR_CHANNEL(gpEeprom->SCANLIST_PRIORITY_CH2[i])) {
+                sprintf(String, "PRI%d:%u", 2, gpEeprom->SCANLIST_PRIORITY_CH2[i] + 1);
                 UI_PrintString(String, menu_item_x1, menu_item_x2, 5, 8);
             }
         }

@@ -64,7 +64,7 @@ uint8_t gUnlockAllTxConfCnt;
                 uint8_t  DAC_GAIN;
             } __attribute__((packed)) misc;
 
-            gEeprom.BK4819_XTAL_FREQ_LOW = value;
+            gpEeprom->BK4819_XTAL_FREQ_LOW = value;
 
             // radio 1 .. 04 00 46 00 50 00 2C 0E
             // radio 2 .. 05 00 46 00 50 00 2C 0E
@@ -446,7 +446,7 @@ void MENU_AcceptSetting(void)
             return;
 
         case MENU_SQL:
-            gEeprom.SQUELCH_LEVEL = gSubMenuSelection;
+            gpEeprom->SQUELCH_LEVEL = gSubMenuSelection;
             gVfoConfigureMode     = VFO_CONFIGURE;
             break;
 
@@ -543,9 +543,9 @@ void MENU_AcceptSetting(void)
         case MENU_MEM_CH:
             gTxVfo->CHANNEL_SAVE = gSubMenuSelection;
             #if 0
-                gEeprom.MrChannel[0] = gSubMenuSelection;
+                gpEeprom->MrChannel[0] = gSubMenuSelection;
             #else
-                gEeprom.MrChannel[gEeprom.TX_VFO] = gSubMenuSelection;
+                gpEeprom->MrChannel[gpEeprom->TX_VFO] = gSubMenuSelection;
             #endif
             gRequestSaveChannel = 2;
             gVfoConfigureMode   = VFO_CONFIGURE_RELOAD;
@@ -563,14 +563,14 @@ void MENU_AcceptSetting(void)
             return;
 
         case MENU_SAVE:
-            gEeprom.BATTERY_SAVE = gSubMenuSelection;
+            gpEeprom->BATTERY_SAVE = gSubMenuSelection;
             break;
 
         #ifdef ENABLE_VOX
             case MENU_VOX:
-                gEeprom.VOX_SWITCH = gSubMenuSelection != 0;
-                if (gEeprom.VOX_SWITCH)
-                    gEeprom.VOX_LEVEL = gSubMenuSelection - 1;
+                gpEeprom->VOX_SWITCH = gSubMenuSelection != 0;
+                if (gpEeprom->VOX_SWITCH)
+                    gpEeprom->VOX_LEVEL = gSubMenuSelection - 1;
                 SETTINGS_LoadCalibration();
                 gFlagReconfigureVfos = true;
                 gUpdateStatus        = true;
@@ -578,20 +578,20 @@ void MENU_AcceptSetting(void)
         #endif
 
         case MENU_ABR:
-            gEeprom.BACKLIGHT_TIME = gSubMenuSelection;
+            gpEeprom->BACKLIGHT_TIME = gSubMenuSelection;
             #ifdef ENABLE_FEAT_F4HWN
                 gBackLight = false;
             #endif
             break;
 
         case MENU_ABR_MIN:
-            gEeprom.BACKLIGHT_MIN = gSubMenuSelection;
-            gEeprom.BACKLIGHT_MAX = MAX(gSubMenuSelection + 1 , gEeprom.BACKLIGHT_MAX);
+            gpEeprom->BACKLIGHT_MIN = gSubMenuSelection;
+            gpEeprom->BACKLIGHT_MAX = MAX(gSubMenuSelection + 1 , gpEeprom->BACKLIGHT_MAX);
             break;
 
         case MENU_ABR_MAX:
-            gEeprom.BACKLIGHT_MAX = gSubMenuSelection;
-            gEeprom.BACKLIGHT_MIN = MIN(gSubMenuSelection - 1, gEeprom.BACKLIGHT_MIN);
+            gpEeprom->BACKLIGHT_MAX = gSubMenuSelection;
+            gpEeprom->BACKLIGHT_MIN = MIN(gSubMenuSelection - 1, gpEeprom->BACKLIGHT_MIN);
             break;
 
         case MENU_ABR_ON_TX_RX:
@@ -599,12 +599,12 @@ void MENU_AcceptSetting(void)
             break;
 
         case MENU_TDR:
-            gEeprom.DUAL_WATCH = (gEeprom.TX_VFO + 1) * (gSubMenuSelection & 1);
-            gEeprom.CROSS_BAND_RX_TX = (gEeprom.TX_VFO + 1) * ((gSubMenuSelection & 2) > 0);
+            gpEeprom->DUAL_WATCH = (gpEeprom->TX_VFO + 1) * (gSubMenuSelection & 1);
+            gpEeprom->CROSS_BAND_RX_TX = (gpEeprom->TX_VFO + 1) * ((gSubMenuSelection & 2) > 0);
 
             #ifdef ENABLE_FEAT_F4HWN
-                gDW = gEeprom.DUAL_WATCH;
-                gCB = gEeprom.CROSS_BAND_RX_TX;
+                gDW = gpEeprom->DUAL_WATCH;
+                gCB = gpEeprom->CROSS_BAND_RX_TX;
                 gSaveRxMode = true;
             #endif
 
@@ -613,31 +613,31 @@ void MENU_AcceptSetting(void)
             break;
 
         case MENU_BEEP:
-            gEeprom.BEEP_CONTROL = gSubMenuSelection;
+            gpEeprom->BEEP_CONTROL = gSubMenuSelection;
             break;
 
         case MENU_TOT:
-            gEeprom.TX_TIMEOUT_TIMER = gSubMenuSelection;
+            gpEeprom->TX_TIMEOUT_TIMER = gSubMenuSelection;
             break;
 
         #ifdef ENABLE_VOICE
             case MENU_VOICE:
-                gEeprom.VOICE_PROMPT = gSubMenuSelection;
+                gpEeprom->VOICE_PROMPT = gSubMenuSelection;
                 gUpdateStatus        = true;
                 break;
         #endif
 
         case MENU_SC_REV:
-            gEeprom.SCAN_RESUME_MODE = gSubMenuSelection;
+            gpEeprom->SCAN_RESUME_MODE = gSubMenuSelection;
             break;
 
         case MENU_MDF:
-            gEeprom.CHANNEL_DISPLAY_MODE = gSubMenuSelection;
+            gpEeprom->CHANNEL_DISPLAY_MODE = gSubMenuSelection;
             break;
 
         case MENU_AUTOLK:
-            gEeprom.AUTO_KEYPAD_LOCK = gSubMenuSelection;
-            gKeyLockCountdown        = gEeprom.AUTO_KEYPAD_LOCK * 30; // 15 seconds step
+            gpEeprom->AUTO_KEYPAD_LOCK = gSubMenuSelection;
+            gKeyLockCountdown        = gpEeprom->AUTO_KEYPAD_LOCK * 30; // 15 seconds step
             break;
 
         case MENU_S_ADD1:
@@ -662,15 +662,15 @@ void MENU_AcceptSetting(void)
             return;
 
         case MENU_STE:
-            gEeprom.TAIL_TONE_ELIMINATION = gSubMenuSelection;
+            gpEeprom->TAIL_TONE_ELIMINATION = gSubMenuSelection;
             break;
 
         case MENU_RP_STE:
-            gEeprom.REPEATER_TAIL_TONE_ELIMINATION = gSubMenuSelection;
+            gpEeprom->REPEATER_TAIL_TONE_ELIMINATION = gSubMenuSelection;
             break;
 
         case MENU_MIC:
-            gEeprom.MIC_SENSITIVITY = gSubMenuSelection;
+            gpEeprom->MIC_SENSITIVITY = gSubMenuSelection;
             SETTINGS_LoadCalibration();
             gFlagReconfigureVfos = true;
             break;
@@ -690,34 +690,34 @@ void MENU_AcceptSetting(void)
             return;
 
         case MENU_1_CALL:
-            gEeprom.CHAN_1_CALL = gSubMenuSelection;
+            gpEeprom->CHAN_1_CALL = gSubMenuSelection;
             break;
 
         case MENU_S_LIST:
-            gEeprom.SCAN_LIST_DEFAULT = gSubMenuSelection;
+            gpEeprom->SCAN_LIST_DEFAULT = gSubMenuSelection;
             break;
 
         #ifdef ENABLE_ALARM
             case MENU_AL_MOD:
-                gEeprom.ALARM_MODE = gSubMenuSelection;
+                gpEeprom->ALARM_MODE = gSubMenuSelection;
                 break;
         #endif
 
         case MENU_D_ST:
-            gEeprom.DTMF_SIDE_TONE = gSubMenuSelection;
+            gpEeprom->DTMF_SIDE_TONE = gSubMenuSelection;
             break;
 
 #ifdef ENABLE_DTMF_CALLING
         case MENU_D_RSP:
-            gEeprom.DTMF_DECODE_RESPONSE = gSubMenuSelection;
+            gpEeprom->DTMF_DECODE_RESPONSE = gSubMenuSelection;
             break;
 
         case MENU_D_HOLD:
-            gEeprom.DTMF_auto_reset_time = gSubMenuSelection;
+            gpEeprom->DTMF_auto_reset_time = gSubMenuSelection;
             break;
 #endif
         case MENU_D_PRE:
-            gEeprom.DTMF_PRELOAD_TIME = gSubMenuSelection * 10;
+            gpEeprom->DTMF_PRELOAD_TIME = gSubMenuSelection * 10;
             break;
 
         case MENU_PTT_ID:
@@ -761,11 +761,11 @@ void MENU_AcceptSetting(void)
             return;
 #endif
         case MENU_PONMSG:
-            gEeprom.POWER_ON_DISPLAY_MODE = gSubMenuSelection;
+            gpEeprom->POWER_ON_DISPLAY_MODE = gSubMenuSelection;
             break;
 
         case MENU_ROGER:
-            gEeprom.ROGER = gSubMenuSelection;
+            gpEeprom->ROGER = gSubMenuSelection;
             break;
 
         case MENU_AM:
@@ -785,7 +785,7 @@ void MENU_AcceptSetting(void)
 
         #ifdef ENABLE_NOAA
             case MENU_NOAA_S:
-                gEeprom.NOAA_AUTO_SCAN = gSubMenuSelection;
+                gpEeprom->NOAA_AUTO_SCAN = gSubMenuSelection;
                 gFlagReconfigureVfos   = true;
                 break;
         #endif
@@ -862,7 +862,7 @@ void MENU_AcceptSetting(void)
         }
 
         case MENU_BATTYP:
-            gEeprom.BATTERY_TYPE = gSubMenuSelection;
+            gpEeprom->BATTERY_TYPE = gSubMenuSelection;
             break;
 
         case MENU_F1SHRT:
@@ -872,11 +872,11 @@ void MENU_AcceptSetting(void)
         case MENU_MLONG:
             {
                 uint8_t * fun[]= {
-                    &gEeprom.KEY_1_SHORT_PRESS_ACTION,
-                    &gEeprom.KEY_1_LONG_PRESS_ACTION,
-                    &gEeprom.KEY_2_SHORT_PRESS_ACTION,
-                    &gEeprom.KEY_2_LONG_PRESS_ACTION,
-                    &gEeprom.KEY_M_LONG_PRESS_ACTION};
+                    &(gpEeprom->KEY_1_SHORT_PRESS_ACTION),
+                    &(gpEeprom->KEY_1_LONG_PRESS_ACTION),
+                    &(gpEeprom->KEY_2_SHORT_PRESS_ACTION),
+                    &(gpEeprom->KEY_2_LONG_PRESS_ACTION),
+                    &(gpEeprom->KEY_M_LONG_PRESS_ACTION)};
                 *fun[UI_MENU_GetCurrentMenuId()-MENU_F1SHRT] = gSubMenu_SIDEFUNCTIONS[gSubMenuSelection].id;
             }
             break;
@@ -950,7 +950,7 @@ void MENU_ShowCurrentSetting(void)
     switch (UI_MENU_GetCurrentMenuId())
     {
         case MENU_SQL:
-            gSubMenuSelection = gEeprom.SQUELCH_LEVEL;
+            gSubMenuSelection = gpEeprom->SQUELCH_LEVEL;
             break;
 
         case MENU_STEP:
@@ -1040,23 +1040,23 @@ void MENU_ShowCurrentSetting(void)
 
         case MENU_MEM_CH:
             #if 0
-                gSubMenuSelection = gEeprom.MrChannel[0];
+                gSubMenuSelection = gpEeprom->MrChannel[0];
             #else
-                gSubMenuSelection = gEeprom.MrChannel[gEeprom.TX_VFO];
+                gSubMenuSelection = gpEeprom->MrChannel[gpEeprom->TX_VFO];
             #endif
             break;
 
         case MENU_MEM_NAME:
-            gSubMenuSelection = gEeprom.MrChannel[gEeprom.TX_VFO];
+            gSubMenuSelection = gpEeprom->MrChannel[gpEeprom->TX_VFO];
             break;
 
         case MENU_SAVE:
-            gSubMenuSelection = gEeprom.BATTERY_SAVE;
+            gSubMenuSelection = gpEeprom->BATTERY_SAVE;
             break;
 
 #ifdef ENABLE_VOX
         case MENU_VOX:
-            gSubMenuSelection = gEeprom.VOX_SWITCH ? gEeprom.VOX_LEVEL + 1 : 0;
+            gSubMenuSelection = gpEeprom->VOX_SWITCH ? gpEeprom->VOX_LEVEL + 1 : 0;
             break;
 #endif
 
@@ -1068,19 +1068,19 @@ void MENU_ShowCurrentSetting(void)
                 }
                 else
                 {
-                    gSubMenuSelection = gEeprom.BACKLIGHT_TIME;
+                    gSubMenuSelection = gpEeprom->BACKLIGHT_TIME;
                 }
             #else
-                gSubMenuSelection = gEeprom.BACKLIGHT_TIME;
+                gSubMenuSelection = gpEeprom->BACKLIGHT_TIME;
             #endif
             break;
 
         case MENU_ABR_MIN:
-            gSubMenuSelection = gEeprom.BACKLIGHT_MIN;
+            gSubMenuSelection = gpEeprom->BACKLIGHT_MIN;
             break;
 
         case MENU_ABR_MAX:
-            gSubMenuSelection = gEeprom.BACKLIGHT_MAX;
+            gSubMenuSelection = gpEeprom->BACKLIGHT_MAX;
             break;
 
         case MENU_ABR_ON_TX_RX:
@@ -1088,33 +1088,33 @@ void MENU_ShowCurrentSetting(void)
             break;
 
         case MENU_TDR:
-            gSubMenuSelection = (gEeprom.DUAL_WATCH != DUAL_WATCH_OFF) + (gEeprom.CROSS_BAND_RX_TX != CROSS_BAND_OFF) * 2;
+            gSubMenuSelection = (gpEeprom->DUAL_WATCH != DUAL_WATCH_OFF) + (gpEeprom->CROSS_BAND_RX_TX != CROSS_BAND_OFF) * 2;
             break;
 
         case MENU_BEEP:
-            gSubMenuSelection = gEeprom.BEEP_CONTROL;
+            gSubMenuSelection = gpEeprom->BEEP_CONTROL;
             break;
 
         case MENU_TOT:
-            gSubMenuSelection = gEeprom.TX_TIMEOUT_TIMER;
+            gSubMenuSelection = gpEeprom->TX_TIMEOUT_TIMER;
             break;
 
 #ifdef ENABLE_VOICE
         case MENU_VOICE:
-            gSubMenuSelection = gEeprom.VOICE_PROMPT;
+            gSubMenuSelection = gpEeprom->VOICE_PROMPT;
             break;
 #endif
 
         case MENU_SC_REV:
-            gSubMenuSelection = gEeprom.SCAN_RESUME_MODE;
+            gSubMenuSelection = gpEeprom->SCAN_RESUME_MODE;
             break;
 
         case MENU_MDF:
-            gSubMenuSelection = gEeprom.CHANNEL_DISPLAY_MODE;
+            gSubMenuSelection = gpEeprom->CHANNEL_DISPLAY_MODE;
             break;
 
         case MENU_AUTOLK:
-            gSubMenuSelection = gEeprom.AUTO_KEYPAD_LOCK;
+            gSubMenuSelection = gpEeprom->AUTO_KEYPAD_LOCK;
             break;
 
         case MENU_S_ADD1:
@@ -1130,15 +1130,15 @@ void MENU_ShowCurrentSetting(void)
             break;
 
         case MENU_STE:
-            gSubMenuSelection = gEeprom.TAIL_TONE_ELIMINATION;
+            gSubMenuSelection = gpEeprom->TAIL_TONE_ELIMINATION;
             break;
 
         case MENU_RP_STE:
-            gSubMenuSelection = gEeprom.REPEATER_TAIL_TONE_ELIMINATION;
+            gSubMenuSelection = gpEeprom->REPEATER_TAIL_TONE_ELIMINATION;
             break;
 
         case MENU_MIC:
-            gSubMenuSelection = gEeprom.MIC_SENSITIVITY;
+            gSubMenuSelection = gpEeprom->MIC_SENSITIVITY;
             break;
 
 #ifdef ENABLE_AUDIO_BAR
@@ -1152,11 +1152,11 @@ void MENU_ShowCurrentSetting(void)
             return;
 
         case MENU_1_CALL:
-            gSubMenuSelection = gEeprom.CHAN_1_CALL;
+            gSubMenuSelection = gpEeprom->CHAN_1_CALL;
             break;
 
         case MENU_S_LIST:
-            gSubMenuSelection = gEeprom.SCAN_LIST_DEFAULT;
+            gSubMenuSelection = gpEeprom->SCAN_LIST_DEFAULT;
             break;
 
         case MENU_SLIST1:
@@ -1173,25 +1173,25 @@ void MENU_ShowCurrentSetting(void)
 
         #ifdef ENABLE_ALARM
             case MENU_AL_MOD:
-                gSubMenuSelection = gEeprom.ALARM_MODE;
+                gSubMenuSelection = gpEeprom->ALARM_MODE;
                 break;
         #endif
 
         case MENU_D_ST:
-            gSubMenuSelection = gEeprom.DTMF_SIDE_TONE;
+            gSubMenuSelection = gpEeprom->DTMF_SIDE_TONE;
             break;
 
 #ifdef ENABLE_DTMF_CALLING
         case MENU_D_RSP:
-            gSubMenuSelection = gEeprom.DTMF_DECODE_RESPONSE;
+            gSubMenuSelection = gpEeprom->DTMF_DECODE_RESPONSE;
             break;
 
         case MENU_D_HOLD:
-            gSubMenuSelection = gEeprom.DTMF_auto_reset_time;
+            gSubMenuSelection = gpEeprom->DTMF_auto_reset_time;
             break;
 #endif
         case MENU_D_PRE:
-            gSubMenuSelection = gEeprom.DTMF_PRELOAD_TIME / 10;
+            gSubMenuSelection = gpEeprom->DTMF_PRELOAD_TIME / 10;
             break;
 
         case MENU_PTT_ID:
@@ -1216,11 +1216,11 @@ void MENU_ShowCurrentSetting(void)
             break;
 
         case MENU_PONMSG:
-            gSubMenuSelection = gEeprom.POWER_ON_DISPLAY_MODE;
+            gSubMenuSelection = gpEeprom->POWER_ON_DISPLAY_MODE;
             break;
 
         case MENU_ROGER:
-            gSubMenuSelection = gEeprom.ROGER;
+            gSubMenuSelection = gpEeprom->ROGER;
             break;
 
         case MENU_AM:
@@ -1237,15 +1237,15 @@ void MENU_ShowCurrentSetting(void)
                 
         #ifdef ENABLE_NOAA
             case MENU_NOAA_S:
-                gSubMenuSelection = gEeprom.NOAA_AUTO_SCAN;
+                gSubMenuSelection = gpEeprom->NOAA_AUTO_SCAN;
                 break;
         #endif
 
         case MENU_DEL_CH:
             #if 0
-                gSubMenuSelection = RADIO_FindNextChannel(gEeprom.MrChannel[0], 1, false, 1);
+                gSubMenuSelection = RADIO_FindNextChannel(gpEeprom->MrChannel[0], 1, false, 1);
             #else
-                gSubMenuSelection = RADIO_FindNextChannel(gEeprom.MrChannel[gEeprom.TX_VFO], 1, false, 1);
+                gSubMenuSelection = RADIO_FindNextChannel(gpEeprom->MrChannel[gpEeprom->TX_VFO], 1, false, 1);
             #endif
             break;
 
@@ -1281,7 +1281,7 @@ void MENU_ShowCurrentSetting(void)
 
         #ifdef ENABLE_F_CAL_MENU
             case MENU_F_CALI:
-                gSubMenuSelection = gEeprom.BK4819_XTAL_FREQ_LOW;
+                gSubMenuSelection = gpEeprom->BK4819_XTAL_FREQ_LOW;
                 break;
         #endif
 
@@ -1290,7 +1290,7 @@ void MENU_ShowCurrentSetting(void)
             break;
 
         case MENU_BATTYP:
-            gSubMenuSelection = gEeprom.BATTERY_TYPE;
+            gSubMenuSelection = gpEeprom->BATTERY_TYPE;
             break;
 
         case MENU_F1SHRT:
@@ -1300,11 +1300,11 @@ void MENU_ShowCurrentSetting(void)
         case MENU_MLONG:
         {
             uint8_t * fun[]= {
-                &gEeprom.KEY_1_SHORT_PRESS_ACTION,
-                &gEeprom.KEY_1_LONG_PRESS_ACTION,
-                &gEeprom.KEY_2_SHORT_PRESS_ACTION,
-                &gEeprom.KEY_2_LONG_PRESS_ACTION,
-                &gEeprom.KEY_M_LONG_PRESS_ACTION};
+                &(gpEeprom->KEY_1_SHORT_PRESS_ACTION),
+                &(gpEeprom->KEY_1_LONG_PRESS_ACTION),
+                &(gpEeprom->KEY_2_SHORT_PRESS_ACTION),
+                &(gpEeprom->KEY_2_LONG_PRESS_ACTION),
+                &(gpEeprom->KEY_M_LONG_PRESS_ACTION)};
             uint8_t id = *fun[UI_MENU_GetCurrentMenuId()-MENU_F1SHRT];
 
             for(int i = 0; i < gSubMenu_SIDEFUNCTIONS_size; i++) {
@@ -1571,7 +1571,7 @@ static void MENU_Key_EXIT(bool bKeyPressed, bool bKeyHeld)
 
         gRequestDisplayScreen = DISPLAY_MAIN;
 
-        if (gEeprom.BACKLIGHT_TIME == 0) // backlight set to always off
+        if (gpEeprom->BACKLIGHT_TIME == 0) // backlight set to always off
         {
             BACKLIGHT_TurnOff();    // turn the backlight OFF
         }
@@ -1832,7 +1832,7 @@ static void MENU_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
         if (UI_MENU_GetCurrentMenuId() != MENU_ABR
             && UI_MENU_GetCurrentMenuId() != MENU_ABR_MIN
             && UI_MENU_GetCurrentMenuId() != MENU_ABR_MAX
-            && gEeprom.BACKLIGHT_TIME == 0) // backlight always off and not in the backlight menu
+            && gpEeprom->BACKLIGHT_TIME == 0) // backlight always off and not in the backlight menu
         {
             BACKLIGHT_TurnOff();
         }

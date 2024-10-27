@@ -68,7 +68,7 @@ void BACKLIGHT_InitHardware()
 
 static void BACKLIGHT_Sound(void)
 {
-    if (gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_SOUND || gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_ALL)
+    if (gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_SOUND || gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_ALL)
     {
         AUDIO_PlayBeep(BEEP_880HZ_60MS_DOUBLE_BEEP);
         AUDIO_PlayBeep(BEEP_880HZ_60MS_DOUBLE_BEEP);
@@ -90,7 +90,7 @@ void BACKLIGHT_TurnOn(void)
         gBacklightBrightnessOld = BACKLIGHT_GetBrightness();
 #endif //ENABLE_FEAT_F4HWN
 
-    if (gEeprom.BACKLIGHT_TIME == 0) {
+    if (gpEeprom->BACKLIGHT_TIME == 0) {
         BACKLIGHT_TurnOff();
 #ifdef ENABLE_FEAT_F4HWN
         if(gK5startup == true) 
@@ -105,7 +105,7 @@ void BACKLIGHT_TurnOn(void)
 
 #ifdef ENABLE_FEAT_F4HWN
     if(gK5startup == true) {
-        for(uint8_t i = 0; i <= gEeprom.BACKLIGHT_MAX; i++)
+        for(uint8_t i = 0; i <= gpEeprom->BACKLIGHT_MAX; i++)
         {
             BACKLIGHT_SetBrightness(i);
             SYSTEM_DelayMs(50);
@@ -115,16 +115,16 @@ void BACKLIGHT_TurnOn(void)
     }
     else
     {
-        BACKLIGHT_SetBrightness(gEeprom.BACKLIGHT_MAX);
+        BACKLIGHT_SetBrightness(gpEeprom->BACKLIGHT_MAX);
     }
 #else
-    BACKLIGHT_SetBrightness(gEeprom.BACKLIGHT_MAX);
+    BACKLIGHT_SetBrightness(gpEeprom->BACKLIGHT_MAX);
 #endif
 
-    switch (gEeprom.BACKLIGHT_TIME) {
+    switch (gpEeprom->BACKLIGHT_TIME) {
         default:
         case 1 ... 60:  // 5 sec * value
-            gBacklightCountdown_500ms = 1 + (gEeprom.BACKLIGHT_TIME * 5) * 2;
+            gBacklightCountdown_500ms = 1 + (gpEeprom->BACKLIGHT_TIME * 5) * 2;
             break;
         case 61:    // always on
             gBacklightCountdown_500ms = 0;
@@ -137,14 +137,14 @@ void BACKLIGHT_TurnOff()
 #ifdef ENABLE_BLMIN_TMP_OFF
     register uint8_t tmp;
 
-    if (gEeprom.BACKLIGHT_MIN_STAT == BLMIN_STAT_ON)
-        tmp = gEeprom.BACKLIGHT_MIN;
+    if (gpEeprom->BACKLIGHT_MIN_STAT == BLMIN_STAT_ON)
+        tmp = gpEeprom->BACKLIGHT_MIN;
     else
         tmp = 0;
 
     BACKLIGHT_SetBrightness(tmp);
 #else
-    BACKLIGHT_SetBrightness(gEeprom.BACKLIGHT_MIN);
+    BACKLIGHT_SetBrightness(gpEeprom->BACKLIGHT_MIN);
 #endif
     gBacklightCountdown_500ms = 0;
     backlightOn = false;

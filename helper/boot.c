@@ -73,18 +73,18 @@ void BOOT_ProcessMode(BOOT_Mode_t Mode)
         else
         if (Mode == BOOT_MODE_AIRCOPY)
         {
-            gEeprom.DUAL_WATCH               = DUAL_WATCH_OFF;
-            gEeprom.BATTERY_SAVE             = 0;
+            gpEeprom->DUAL_WATCH               = DUAL_WATCH_OFF;
+            gpEeprom->BATTERY_SAVE             = 0;
             #ifdef ENABLE_VOX
-                gEeprom.VOX_SWITCH           = false;
+                gpEeprom->VOX_SWITCH           = false;
             #endif
-            gEeprom.CROSS_BAND_RX_TX         = CROSS_BAND_OFF;
-            gEeprom.AUTO_KEYPAD_LOCK         = false;
-            gEeprom.KEY_1_SHORT_PRESS_ACTION = ACTION_OPT_NONE;
-            gEeprom.KEY_1_LONG_PRESS_ACTION  = ACTION_OPT_NONE;
-            gEeprom.KEY_2_SHORT_PRESS_ACTION = ACTION_OPT_NONE;
-            gEeprom.KEY_2_LONG_PRESS_ACTION  = ACTION_OPT_NONE;
-            gEeprom.KEY_M_LONG_PRESS_ACTION  = ACTION_OPT_NONE;
+            gpEeprom->CROSS_BAND_RX_TX         = CROSS_BAND_OFF;
+            gpEeprom->AUTO_KEYPAD_LOCK         = false;
+            gpEeprom->KEY_1_SHORT_PRESS_ACTION = ACTION_OPT_NONE;
+            gpEeprom->KEY_1_LONG_PRESS_ACTION  = ACTION_OPT_NONE;
+            gpEeprom->KEY_2_SHORT_PRESS_ACTION = ACTION_OPT_NONE;
+            gpEeprom->KEY_2_LONG_PRESS_ACTION  = ACTION_OPT_NONE;
+            gpEeprom->KEY_M_LONG_PRESS_ACTION  = ACTION_OPT_NONE;
 
             RADIO_InitInfo(gRxVfo, FREQ_CHANNEL_LAST - 1, 43400000); // LPD
 
@@ -101,8 +101,8 @@ void BOOT_ProcessMode(BOOT_Mode_t Mode)
 
             gAircopyState = AIRCOPY_READY;
 
-            gEeprom.BACKLIGHT_TIME = 61;
-            gEeprom.KEY_LOCK = 0;
+            gpEeprom->BACKLIGHT_TIME = 61;
+            gpEeprom->KEY_LOCK = 0;
 
             GUI_SelectNextDisplay(DISPLAY_AIRCOPY);
         }

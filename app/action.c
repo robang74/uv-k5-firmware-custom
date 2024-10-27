@@ -160,7 +160,7 @@ void ACTION_Monitor(void)
     }
 
 #ifdef ENABLE_NOAA
-    if (gEeprom.DUAL_WATCH == DUAL_WATCH_OFF && gIsNoaaMode) {
+    if (gpEeprom->DUAL_WATCH == DUAL_WATCH_OFF && gIsNoaaMode) {
         gNOAA_Countdown_10ms = NOAA_countdown_10ms;
         gScheduleNOAA        = false;
     }
@@ -224,7 +224,7 @@ void ACTION_Scan(bool bRestart)
         }
 
         // channel mode. Keep scanning but toggle between scan lists
-        gEeprom.SCAN_LIST_DEFAULT = (gEeprom.SCAN_LIST_DEFAULT + 1) % 6;
+        gpEeprom->SCAN_LIST_DEFAULT = (gpEeprom->SCAN_LIST_DEFAULT + 1) % 6;
 
         // jump to the next channel
         CHFRSCANNER_Start(false, gScanStateDir);
@@ -240,7 +240,7 @@ void ACTION_Scan(bool bRestart)
 #endif
 
         // clear the other vfo's rssi level (to hide the antenna symbol)
-        gVFO_RSSI_bar_level[(gEeprom.RX_VFO + 1) & 1U] = 0;
+        gVFO_RSSI_bar_level[(gpEeprom->RX_VFO + 1) & 1U] = 0;
 
         // let the user see DW is not active
         gDualWatchActive = false;
@@ -296,15 +296,15 @@ void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
     enum ACTION_OPT_t funcLong  = ACTION_OPT_NONE;
     switch(Key) {
         case KEY_SIDE1:
-            funcShort = gEeprom.KEY_1_SHORT_PRESS_ACTION;
-            funcLong  = gEeprom.KEY_1_LONG_PRESS_ACTION;
+            funcShort = gpEeprom->KEY_1_SHORT_PRESS_ACTION;
+            funcLong  = gpEeprom->KEY_1_LONG_PRESS_ACTION;
             break;
         case KEY_SIDE2:
-            funcShort = gEeprom.KEY_2_SHORT_PRESS_ACTION;
-            funcLong  = gEeprom.KEY_2_LONG_PRESS_ACTION;
+            funcShort = gpEeprom->KEY_2_SHORT_PRESS_ACTION;
+            funcLong  = gpEeprom->KEY_2_LONG_PRESS_ACTION;
             break;
         case KEY_MENU:
-            funcLong  = gEeprom.KEY_M_LONG_PRESS_ACTION;
+            funcLong  = gpEeprom->KEY_M_LONG_PRESS_ACTION;
             break;
         default:
             break;
@@ -392,11 +392,11 @@ static void ACTION_Scan_FM(bool bRestart)
         gFM_AutoScan = true;
         gFM_ChannelPosition = 0;
         FM_EraseChannels();
-        freq = BK1080_GetFreqLoLimit(gEeprom.FM_Band);
+        freq = BK1080_GetFreqLoLimit(gpEeprom->FM_Band);
     } else {
         gFM_AutoScan = false;
         gFM_ChannelPosition = 0;
-        freq = gEeprom.FM_FrequencyPlaying;
+        freq = gpEeprom->FM_FrequencyPlaying;
     }
 
     BK1080_GetFrequencyDeviation(freq);
@@ -415,11 +415,11 @@ static void ACTION_Scan_FM(bool bRestart)
 static void ACTION_AlarmOr1750(const bool b1750)
 {
 
-    if(gEeprom.KEY_LOCK && gEeprom.KEY_LOCK_PTT)
+    if(gpEeprom->KEY_LOCK && gpEeprom->KEY_LOCK_PTT)
         return;
 
     #if defined(ENABLE_ALARM)
-        const AlarmState_t alarm_mode = (gEeprom.ALARM_MODE == ALARM_MODE_TONE) ? ALARM_STATE_TXALARM : ALARM_STATE_SITE_ALARM;
+        const AlarmState_t alarm_mode = (gpEeprom->ALARM_MODE == ALARM_MODE_TONE) ? ALARM_STATE_TXALARM : ALARM_STATE_SITE_ALARM;
         gAlarmRunningCounter = 0;
     #endif
 
@@ -446,7 +446,7 @@ static void ACTION_AlarmOr1750(const bool b1750)
 
 void ACTION_Vox(void)
 {
-    gEeprom.VOX_SWITCH   = !gEeprom.VOX_SWITCH;
+    gpEeprom->VOX_SWITCH   = !gpEeprom->VOX_SWITCH;
     gRequestSaveSettings = true;
     gFlagReconfigureVfos = true;
     gUpdateStatus        = true;
@@ -462,9 +462,9 @@ void ACTION_Vox(void)
 
 void ACTION_BlminTmpOff(void)
 {
-    if(++gEeprom.BACKLIGHT_MIN_STAT == BLMIN_STAT_UNKNOWN) {
-        gEeprom.BACKLIGHT_MIN_STAT = BLMIN_STAT_ON;
-        BACKLIGHT_SetBrightness(gEeprom.BACKLIGHT_MIN);
+    if(++gpEeprom->BACKLIGHT_MIN_STAT == BLMIN_STAT_UNKNOWN) {
+        gpEeprom->BACKLIGHT_MIN_STAT = BLMIN_STAT_ON;
+        BACKLIGHT_SetBrightness(gpEeprom->BACKLIGHT_MIN);
     } else {
         BACKLIGHT_SetBrightness(0);
     }
@@ -512,7 +512,7 @@ void ACTION_BackLight(void)
 {
     if(gBackLight)
     {
-        gEeprom.BACKLIGHT_TIME = gBacklightTimeOriginal;
+        gpEeprom->BACKLIGHT_TIME = gBacklightTimeOriginal;
     }
     gBackLight = false;
     BACKLIGHT_TurnOn();
@@ -522,19 +522,19 @@ void ACTION_BackLightOnDemand(void)
 {
     if(gBackLight == false)
     {
-        gBacklightTimeOriginal = gEeprom.BACKLIGHT_TIME;
-        gEeprom.BACKLIGHT_TIME = 61;
+        gBacklightTimeOriginal = gpEeprom->BACKLIGHT_TIME;
+        gpEeprom->BACKLIGHT_TIME = 61;
         gBackLight = true;
     }
     else
     {
-        if(gBacklightBrightnessOld == gEeprom.BACKLIGHT_MAX)
+        if(gBacklightBrightnessOld == gpEeprom->BACKLIGHT_MAX)
         {
-            gEeprom.BACKLIGHT_TIME = 0;
+            gpEeprom->BACKLIGHT_TIME = 0;
         }
         else
         {
-            gEeprom.BACKLIGHT_TIME = 61;
+            gpEeprom->BACKLIGHT_TIME = 61;
         }
     }
     
@@ -557,9 +557,9 @@ void ACTION_BackLightOnDemand(void)
 void ACTION_RxMode(void)
 {
     if(bitchk(BF_MODE_RX_DW))
-        gEeprom.CROSS_BAND_RX_TX = !gEeprom.CROSS_BAND_RX_TX;
+        gpEeprom->CROSS_BAND_RX_TX = !gpEeprom->CROSS_BAND_RX_TX;
     else
-        gEeprom.DUAL_WATCH = !gEeprom.DUAL_WATCH;
+        gpEeprom->DUAL_WATCH = !gpEeprom->DUAL_WATCH;
     bitflp(BF_MODE_RX_DW);
 
     ACTION_Update();
@@ -568,29 +568,29 @@ void ACTION_RxMode(void)
 void ACTION_MainOnly(void)
 {
     if(bitchk(BT_MONITOR_FN)) {
-        //RAF: can we use here the value gEeprom.TX_VFO + 1?
+        //RAF: can we use here the value gpEeprom->TX_VFO + 1?
         //     if this works, then we saved a whole bit! ;-)
         uint8_t txvfo;
-        txvfo = (gEeprom.TX_VFO & ~3) ? 0 : gEeprom.TX_VFO + 1;
-        gEeprom.DUAL_WATCH = bitchk(BF_DUAL_WATCH) ? txvfo : 0;
-        //RAF: can we use here the value gEeprom.TX_VFO + 1?
+        txvfo = (gpEeprom->TX_VFO & ~3) ? 0 : gpEeprom->TX_VFO + 1;
+        gpEeprom->DUAL_WATCH = bitchk(BF_DUAL_WATCH) ? txvfo : 0;
+        //RAF: can we use here the value gpEeprom->TX_VFO + 1?
         //     if this works, then we saved a whole bit! ;-)
-        gEeprom.CROSS_BAND_RX_TX = bitchk(BF_CROSS_BAND) ? txvfo : 0;
+        gpEeprom->CROSS_BAND_RX_TX = bitchk(BF_CROSS_BAND) ? txvfo : 0;
         //RAF: at this point these two variable have the same
         //     if this is (almost) true, a tristate is enough.
     } else {
-        //RAF: gEeprom.CROSS_BAND_RX_TX ?= _A _B or (TX_VFO + 1)
+        //RAF: gpEeprom->CROSS_BAND_RX_TX ?= _A _B or (TX_VFO + 1)
         //     allowed values: 0 (OFF), 1 (A), 2 (B) only.
-        //     if gEeprom.TX_VFO remains informative then
+        //     if gpEeprom->TX_VFO remains informative then
         //     the following instruction is superfluous.
-        bitset(BF_CROSS_BAND, gEeprom.CROSS_BAND_RX_TX);
-        //RAF: gEeprom.DUAL_WATCH ?= _A _B or (TX_VFO + 1)
+        bitset(BF_CROSS_BAND, gpEeprom->CROSS_BAND_RX_TX);
+        //RAF: gpEeprom->DUAL_WATCH ?= _A _B or (TX_VFO + 1)
         //     allowed values: 0 (OFF), 1 (A), 2 (B) only.
-        //     if gEeprom.TX_VFO remains informative then
+        //     if gpEeprom->TX_VFO remains informative then
         //     the following instruction is superfluous.
-        bitset(BF_DUAL_WATCH, gEeprom.DUAL_WATCH);
-        gEeprom.CROSS_BAND_RX_TX = 0;
-        gEeprom.DUAL_WATCH = 0;
+        bitset(BF_DUAL_WATCH, gpEeprom->DUAL_WATCH);
+        gpEeprom->CROSS_BAND_RX_TX = 0;
+        gpEeprom->DUAL_WATCH = 0;
     }
     bitflp(BT_MONITOR_FN);
 

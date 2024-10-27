@@ -1771,9 +1771,9 @@ void BK4819_PlayRogerMDC(void)
 
 void BK4819_PlayRoger(void)
 {
-    if (gEeprom.ROGER == ROGER_MODE_ROGER) {
+    if (gpEeprom->ROGER == ROGER_MODE_ROGER) {
         BK4819_PlayRogerNormal();
-    } else if (gEeprom.ROGER == ROGER_MODE_MDC) {
+    } else if (gpEeprom->ROGER == ROGER_MODE_MDC) {
         BK4819_PlayRogerMDC();
     }
 }

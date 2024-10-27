@@ -68,6 +68,7 @@ void _putchar(__attribute__((unused)) char c)
 
 }
 
+
 void Main(void)
 {
     // Enable clock gating of blocks we need
@@ -94,6 +95,15 @@ void Main(void)
 #endif
 
     // Not implementing authentic device checks
+    
+    //gpEeprom = (EEPROM_Config_t *)((uint8_t volatile *)0x4006F000);
+    /*
+    {
+        uint32_t addr = 0x4006F000;
+        memcpy(&gpEeprom, &addr, 4);
+    }
+    */
+    //memset(gpEeprom, '0', sizeof(EEPROM_Config_t));
 
     memset(gDTMF_String, '-', sizeof(gDTMF_String));
     gDTMF_String[sizeof(gDTMF_String) - 1] = 0;
@@ -110,8 +120,8 @@ void Main(void)
     gSleepModeCountdown_500ms = 0; //RAF: initialisation in the main? Right!
 #endif
     bitflags = 0; //RAF: not nessarly zero, but it is zero by now.
-    gDW = gEeprom.DUAL_WATCH;
-    gCB = gEeprom.CROSS_BAND_RX_TX;
+    gDW = gpEeprom->DUAL_WATCH;
+    gCB = gpEeprom->CROSS_BAND_RX_TX;
 #endif
 
     SETTINGS_WriteBuildOptions();
@@ -140,7 +150,7 @@ void Main(void)
 
         gF_LOCK = true;            // flag to say include the hidden menu items
         #ifdef ENABLE_FEAT_F4HWN
-            gEeprom.KEY_LOCK = 0;
+            gpEeprom->KEY_LOCK = 0;
             SETTINGS_SaveSettings();
             #ifndef ENABLE_VOX
                 gMenuCursor = 64; // move to hidden section, fix me if change... !!! Remove VOX and Mic Bar
@@ -181,7 +191,7 @@ void Main(void)
     {
         FUNCTION_Select(FUNCTION_POWER_SAVE);
 
-        if (gEeprom.BACKLIGHT_TIME < 61) // backlight is not set to be always on
+        if (gpEeprom->BACKLIGHT_TIME < 61) // backlight is not set to be always on
             BACKLIGHT_TurnOff();    // turn the backlight OFF
         else
             BACKLIGHT_TurnOn();     // turn the backlight ON
@@ -195,9 +205,9 @@ void Main(void)
         BACKLIGHT_TurnOn();
 
 #ifdef ENABLE_FEAT_F4HWN
-        if (gEeprom.POWER_ON_DISPLAY_MODE != POWER_ON_DISPLAY_MODE_NONE && gEeprom.POWER_ON_DISPLAY_MODE != POWER_ON_DISPLAY_MODE_SOUND)
+        if (gpEeprom->POWER_ON_DISPLAY_MODE != POWER_ON_DISPLAY_MODE_NONE && gpEeprom->POWER_ON_DISPLAY_MODE != POWER_ON_DISPLAY_MODE_SOUND)
 #else
-        if (gEeprom.POWER_ON_DISPLAY_MODE != POWER_ON_DISPLAY_MODE_NONE)
+        if (gpEeprom->POWER_ON_DISPLAY_MODE != POWER_ON_DISPLAY_MODE_NONE)
 #endif
         {   // 2.55 second boot-up screen
             while (boot_counter_10ms > 0)
@@ -212,7 +222,7 @@ void Main(void)
         }
 
 #ifdef ENABLE_PWRON_PASSWORD
-        if (gEeprom.POWER_ON_PASSWORD < 1000000)
+        if (gpEeprom->POWER_ON_PASSWORD < 1000000)
         {
             bIsInLockScreen = true;
             UI_DisplayLock();
@@ -232,7 +242,7 @@ void Main(void)
 
             AUDIO_SetVoiceID(0, VOICE_ID_WELCOME);
 
-            Channel = gEeprom.ScreenChannel[gEeprom.TX_VFO];
+            Channel = gpEeprom->ScreenChannel[gpEeprom->TX_VFO];
             if (IS_MR_CHANNEL(Channel))
             {
                 AUDIO_SetVoiceID(1, VOICE_ID_CHANNEL_MODE);

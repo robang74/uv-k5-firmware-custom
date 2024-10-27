@@ -91,7 +91,7 @@ static_assert(
 
 unsigned int BATTERY_VoltsToPercent(const unsigned int voltage_10mV)
 {
-    const uint16_t (*crv)[3] = Voltage2PercentageTable[gEeprom.BATTERY_TYPE];
+    const uint16_t (*crv)[3] = Voltage2PercentageTable[gpEeprom->BATTERY_TYPE];
     const int mulipl = 1000;
     for (unsigned int i = 1; i < ARRAY_SIZE(Voltage2PercentageTable[BATTERY_TYPE_2200_MAH]); i++) {
         if (voltage_10mV > crv[i][0]) {
@@ -114,9 +114,9 @@ void BATTERY_GetReadings(const bool bDisplayBatteryLevel)
 
     if(gBatteryVoltageAverage > 890)
         gBatteryDisplayLevel = 7; // battery overvoltage
-    else if(gBatteryVoltageAverage < 630 && (gEeprom.BATTERY_TYPE == BATTERY_TYPE_1600_MAH || gEeprom.BATTERY_TYPE == BATTERY_TYPE_2200_MAH))
+    else if(gBatteryVoltageAverage < 630 && (gpEeprom->BATTERY_TYPE == BATTERY_TYPE_1600_MAH || gpEeprom->BATTERY_TYPE == BATTERY_TYPE_2200_MAH))
         gBatteryDisplayLevel = 0; // battery critical
-    else if(gBatteryVoltageAverage < 600 && (gEeprom.BATTERY_TYPE == BATTERY_TYPE_3500_MAH))
+    else if(gBatteryVoltageAverage < 600 && (gpEeprom->BATTERY_TYPE == BATTERY_TYPE_3500_MAH))
         gBatteryDisplayLevel = 0; // battery critical
     else {
         gBatteryDisplayLevel = 1;
@@ -240,7 +240,7 @@ void BATTERY_TimeSlice500ms(void)
 
     ST7565_HardwareReset();
 
-    if (gEeprom.BACKLIGHT_TIME < 61) {
+    if (gpEeprom->BACKLIGHT_TIME < 61) {
         BACKLIGHT_TurnOff();
     }
 }

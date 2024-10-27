@@ -280,8 +280,8 @@ void AM_fix_10ms(const unsigned vfo)
 #endif
 
     static uint32_t lastFreq[2];
-    if(gEeprom.VfoInfo[vfo].pRX->Frequency != lastFreq[vfo]) {
-        lastFreq[vfo] = gEeprom.VfoInfo[vfo].pRX->Frequency;
+    if(gpEeprom->VfoInfo[vfo].pRX->Frequency != lastFreq[vfo]) {
+        lastFreq[vfo] = gpEeprom->VfoInfo[vfo].pRX->Frequency;
         AM_fix_reset(vfo);
     }
 

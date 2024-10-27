@@ -109,7 +109,7 @@ void UI_DisplayStatus()
     { // SCAN indicator
         if (gScanStateDir != SCAN_OFF || SCANNER_IsScanning()) {
             if (IS_MR_CHANNEL(gNextMrChannel) && !SCANNER_IsScanning()) { // channel mode
-                switch(gEeprom.SCAN_LIST_DEFAULT) {
+                switch(gpEeprom->SCAN_LIST_DEFAULT) {
                     case 0:
                         memcpy(line + 0, BITMAP_ScanList0, sizeof(BITMAP_ScanList0));
                         break;
@@ -155,7 +155,7 @@ void UI_DisplayStatus()
 
     #ifdef ENABLE_VOICE
         // VOICE indicator
-        if (gEeprom.VOICE_PROMPT != VOICE_PROMPT_OFF){
+        if (gpEeprom->VOICE_PROMPT != VOICE_PROMPT_OFF){
             memcpy(line + x, BITMAP_VoicePrompt, sizeof(BITMAP_VoicePrompt));
             x1 = x + sizeof(BITMAP_VoicePrompt);
         }
@@ -171,7 +171,7 @@ void UI_DisplayStatus()
             else
         #endif
             {
-                uint8_t dw = (gEeprom.DUAL_WATCH != DUAL_WATCH_OFF) + (gEeprom.CROSS_BAND_RX_TX != CROSS_BAND_OFF) * 2;
+                uint8_t dw = (gpEeprom->DUAL_WATCH != DUAL_WATCH_OFF) + (gpEeprom->CROSS_BAND_RX_TX != CROSS_BAND_OFF) * 2;
                 if(dw == 1 || dw == 3) { // DWR - dual watch + respond
                     if(gDualWatchActive)
                         memcpy(line + x + (dw==1?0:2), gFontDWR, sizeof(gFontDWR) - (dw==1?0:5));
@@ -192,7 +192,7 @@ void UI_DisplayStatus()
 
 #ifdef ENABLE_VOX
     // VOX indicator
-    if (gEeprom.VOX_SWITCH) {
+    if (gpEeprom->VOX_SWITCH) {
         memcpy(line + x, gFontVox, sizeof(gFontVox));
         x1 = x + sizeof(gFontVox) + 1;
     }
@@ -216,7 +216,7 @@ void UI_DisplayStatus()
     x = MAX(x1, 70u);
 
     // KEY-LOCK indicator
-    if (gEeprom.KEY_LOCK) {
+    if (gpEeprom->KEY_LOCK) {
         memcpy(line + x + 1, gFontKeyLock, sizeof(gFontKeyLock));
     }
     else if (gWasFKeyPressed) {

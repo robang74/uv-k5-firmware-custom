@@ -38,15 +38,15 @@ void UI_DisplayFM(void)
     UI_PrintString("FM", 2, 0, 0, 8);
 
     sprintf(String, "%d%s-%dM", 
-        BK1080_GetFreqLoLimit(gEeprom.FM_Band)/10,
-        gEeprom.FM_Band == 0 ? ".5" : "",
-        BK1080_GetFreqHiLimit(gEeprom.FM_Band)/10
+        BK1080_GetFreqLoLimit(gpEeprom->FM_Band)/10,
+        gpEeprom->FM_Band == 0 ? ".5" : "",
+        BK1080_GetFreqHiLimit(gpEeprom->FM_Band)/10
         );
     
     UI_PrintStringSmallNormal(String, 1, 0, 6);
 
     //uint8_t spacings[] = {20,10,5};
-    //sprintf(String, "%d0k", spacings[gEeprom.FM_Space % 3]);
+    //sprintf(String, "%d0k", spacings[gpEeprom->FM_Space % 3]);
     //UI_PrintStringSmallNormal(String, 127 - 4*7, 0, 6);
 
     if (gAskToSave) {
@@ -54,13 +54,13 @@ void UI_DisplayFM(void)
     } else if (gAskToDelete) {
         pPrintStr = "DEL?";
     } else if (gFM_ScanState == FM_SCAN_OFF) {
-        if (gEeprom.FM_IsMrMode) {
-            sprintf(String, "MR(CH%02u)", gEeprom.FM_SelectedChannel + 1);
+        if (gpEeprom->FM_IsMrMode) {
+            sprintf(String, "MR(CH%02u)", gpEeprom->FM_SelectedChannel + 1);
             pPrintStr = String;
         } else {
             pPrintStr = "VFO";
             for (unsigned int i = 0; i < 20; i++) {
-                if (gEeprom.FM_FrequencyPlaying == gFM_Channels[i]) {
+                if (gpEeprom->FM_FrequencyPlaying == gFM_Channels[i]) {
                     sprintf(String, "VFO(CH%02u)", i + 1);
                     pPrintStr = String;
                     break;
@@ -77,13 +77,13 @@ void UI_DisplayFM(void)
     UI_PrintString(pPrintStr, 0, 127, 3, 10); // memory, vfo, scan
 
     memset(String, 0, sizeof(String));
-    if (gAskToSave || (gEeprom.FM_IsMrMode && gInputBoxIndex > 0)) {
+    if (gAskToSave || (gpEeprom->FM_IsMrMode && gInputBoxIndex > 0)) {
         UI_GenerateChannelString(String, gFM_ChannelPosition);
     } else if (gAskToDelete) {
-        sprintf(String, "CH-%02u", gEeprom.FM_SelectedChannel + 1);
+        sprintf(String, "CH-%02u", gpEeprom->FM_SelectedChannel + 1);
     } else {
         if (gInputBoxIndex == 0) {
-            sprintf(String, "%3d.%d", gEeprom.FM_FrequencyPlaying / 10, gEeprom.FM_FrequencyPlaying % 10);
+            sprintf(String, "%3d.%d", gpEeprom->FM_FrequencyPlaying / 10, gpEeprom->FM_FrequencyPlaying % 10);
         } else {
             const char * ascii = INPUTBOX_GetAscii();
             sprintf(String, "%.3s.%.1s",ascii, ascii + 3);

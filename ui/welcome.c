@@ -60,10 +60,10 @@ void UI_DisplayWelcome(void)
     ST7565_BlitStatusLine();
     ST7565_BlitFullScreen();
     
-    if (gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_NONE || gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_SOUND) {
+    if (gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_NONE || gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_SOUND) {
         ST7565_FillScreen(0x00);
 #else
-    if (gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_NONE || gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_FULL_SCREEN) {
+    if (gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_NONE || gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_FULL_SCREEN) {
         ST7565_FillScreen(0xFF);
 #endif
     } else {
@@ -78,12 +78,12 @@ void UI_DisplayWelcome(void)
                 gBatteryVoltageAverage % 100,
                 BATTERY_VoltsToPercent(gBatteryVoltageAverage));
 
-        if (gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_VOLTAGE)
+        if (gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_VOLTAGE)
         {
             strcpy(WelcomeString0, "VOLTAGE");
             strcpy(WelcomeString1, WelcomeString2);
         }
-        else if(gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_ALL)
+        else if(gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_ALL)
         {
             if(strlen(WelcomeString0) == 0 && strlen(WelcomeString1) == 0)
             {
@@ -99,7 +99,7 @@ void UI_DisplayWelcome(void)
                 strcpy(WelcomeString1, WelcomeString2);
             }
         }
-        else if(gEeprom.POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_MESSAGE)
+        else if(gpEeprom->POWER_ON_DISPLAY_MODE == POWER_ON_DISPLAY_MODE_MESSAGE)
         {
             if(strlen(WelcomeString0) == 0)
             {
