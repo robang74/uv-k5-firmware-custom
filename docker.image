@@ -1,0 +1,18 @@
+#
+# RAF: pros vs cons of pre-built image instead of create from scratch
+#
+# pros:
+#
+# 1. if it works, it will work in the same way forver (repeatibility)
+# 2. saves time because it should not be updated with pacman -Syyu
+# 3. fixes and upgrades can be applied once, pushed and being kept
+#
+# cons:
+#
+# 1. if it creates problems, it does until fixed or upgraded
+# 2. mess-up with the image can lasts across the builds (persitency)
+#    however the related building procedure relies on containers
+# 3. it relies over a 3rd party image (continuity)
+#
+
+robang74/uvk5-fwbuild-archlinux:2024.10.25

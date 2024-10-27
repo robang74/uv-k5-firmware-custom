@@ -1,0 +1,194 @@
+#!/bin/bash
+#
+# Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+#
+#     https://github.com/robang74
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+name=${0##*/};
+issh=${name%.*};
+issh=${issh/*sh/SHELL}
+if [ "$issh" == "SHELL" ]; then
+    echo
+    echo "ERROR: this scrip cannot run as source, it needs bash, abort."
+    echo
+    exit 1
+fi >&2
+
+alive=0
+if [ "x${1:-1}" == "x-h" -o "x${1:-1}" == "x--help" ]; then
+    echo
+    echo "$name [-h|-a] [all]"
+    echo "  -h: this help"
+    echo "  -a: keep alive the container"
+    echo
+    exit 0
+elif [ "x${1:-1}" == "x-a" ]; then
+    echo
+    echo "WARNING: (-a) container started will remain alive"
+    echo '`->access with docker exec -ti uvk5-$id /bin/bash'
+    shift
+    alive=1
+fi
+
+cwd=${0%/*}
+cwd=${cwd:-.}
+cd $cwd
+
+if [ "$xtimex" == "" ]; then
+    xtimex=1 time -p $0 "$@"
+    exit $?
+fi
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+WRKG_DIR="/app"
+DEST_DIR="compiled-firmware/"
+LOCL_DIR="${PWD}/${DEST_DIR}/"
+
+DOCK_IMG="uvk5"
+DOCK_NME=$DOCK_IMG-$$
+FILE_IMG="docker.image"
+DOCK_RMT=$(cat $FILE_IMG | cut -d# -f1 | grep .)
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+function exec_in_docker() {
+    docker exec -w "$WRKG_DIR" $DOCK_NME /bin/bash -c "$@"
+}
+
+function make_in_docker() {
+    target="$1"; shift
+    cmd="
+find . -type f -name \*.o -delete;
+make -j -s TARGET=${target} $@ && \
+mv -f ./${target}* ./${DEST_DIR}/"
+    exec_in_docker "$cmd"
+}
+
+function dockimgchk() {
+    docker images | sed -ne "s,^$1 *\([^ ]*\) .*,$1:\\1,p"
+}
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+if ! dockimgchk $DOCK_IMG | grep -qe ":latest$"; then
+    if [ "$DOCK_RMT" == "" ]; then
+        echo
+        echo "ERROR: \$DOCK_RMT is null, check $FILE_IMG text file, abort."
+        echo
+        exit 1 
+    fi >&2
+    echo
+    echo "docker copying $DOCK_RMT in $DOCK_IMG:latest ..."
+    echo
+    echo "FROM $DOCK_RMT" | docker build -t $DOCK_IMG:latest -
+    echo
+    if ! dockimgchk $DOCK_IMG | grep -qe ":latest$"; then
+        exit 1
+    fi
+    docker images | grep -we "^uvk5" | tr -s ' '
+    echo
+fi
+
+echo
+echo "docker session $DOCK_NME starting ..."
+echo
+if [ "$alive" != "0" ]; then
+    trap "docker stop $DOCK_NME >/dev/null &" EXIT
+fi
+if ! docker run --name "$DOCK_NME" -d --rm -w "$WRKG_DIR" \
+    -v "${LOCL_DIR}:/app/${DEST_DIR}/" -ti uvk5 cat; then
+    exit 1
+fi
+make distclean >/dev/null 2>&1 #RAF: just in case
+if true; then #RAF: there are few but good reasons to use tar here
+    tar c -X docker-cptar-exclude.list . | dd bs=1M \
+        |  docker cp -a - $DOCK_NME:$WRKG_DIR
+else
+    docker cp . $DOCK_NME:$WRKG_DIR
+fi 2>&1 | grep -v " records "
+echo
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#exec_in_docker "rm -f ./${DEST_DIR}/*"
+
+TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
+    ENABLE_VOX=0 \
+    ENABLE_AIRCOPY=0 \
+    ENABLE_AUDIO_BAR=0 \
+    ENABLE_FEAT_F4HWN_SLEEP=0 \
+    ENABLE_FEAT_F4HWN_SPECTRUM=0"
+
+# no torch & no charge lvl, need (bytes) (*next)
+# REDUCE_LOW_MID_TX_POWER   0b   (incl.)
+# FLASHLIGHT               64b   (avail)    *
+# FEAT_F4HWN_CA            64b   (excl.)
+# SHOW_CHARGE_LEVEL       104b   (avail)    *
+# F4HWN_RX_TX_TIMER       148b   (avail) ( -128)
+# COPY_CHAN_TO_VFO        192b   (incl.)
+# AUDIO_BAR               386b   ( -184)
+# FEAT_F4HWN_SLEEP        512b   ( -440)
+# VOX                            ( -776)
+# AIRCOPY                        (-1996)
+# ALL THE OPTIONS                (-3900)
+
+make_in_docker "f4hwn.default"
+
+# RAF: to test the new code is compiling
+ret=$?;
+if [ "$1" != "all" ]; then
+    echo
+    exit $ret
+fi
+
+make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
+    ENABLE_VOX=0 \
+    ENABLE_AIRCOPY=0 \
+    ENABLE_AUDIO_BAR=0 \
+    ENABLE_FEAT_F4HWN_SLEEP=0 \
+    ENABLE_FEAT_F4HWN_SPECTRUM=1 \
+    ENABLE_REDUCE_LOW_MID_TX_POWER=1 \
+    ENABLE_FEAT_F4HWN_RX_TX_TIMER=0 \
+    ENABLE_SHOW_CHARGE_LEVEL=0 \
+    ENABLE_COPY_CHAN_TO_VFO=1 \
+    ENABLE_ROBANG74_UI_MENU=1 \
+    ENABLE_FLOCK_SHORT_MENU=1 \
+    ENABLE_SIXTH_CHARS_MENU=1 \
+    ENABLE_FLASHLIGHT=0"
+
+make_in_docker "f4hwn.voxless" "${TVOXLESS}"
+make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0"
+make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1"
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+echo
+echo "Packed firmware sorted per byte size:"
+echo
+sz=$[60*1024]
+cd compiled-firmware/
+for f in *.packed.bin; do
+    eval $(du -b $f | sed -e "s,\([0-9]*\)\t\(.*\)\.packed\.bin,bs=\\1; nm=\\2,")
+    ps=$[bs*100]; 
+    pa=$[ps/sz]
+    pb=$[((ps*100)/sz)%100]
+    test $pb -le 9 && pb="0$pb"
+    printf "  $bs  $pa.$pb%%  $nm\n"
+done | sort -k1 -n
+cd - >/dev/null
+echo
