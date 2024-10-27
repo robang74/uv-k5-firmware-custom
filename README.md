@@ -55,7 +55,7 @@ Those are interested in this development, please drop an e-mail `roberto.fogliet
 or get in touch by the Zello channel `UV-K5-mods` - [zello.com/uv-k5-mods](https://zello.com/uv-k5-mods)
 
 <!-- img src="https://zello.com/channels/qr?name=UV-K5-mods" alt="zello.com/uv-k5-mods" style="float:center; width:145px; heigth:145px;"/-->
-<img src="zello-uv-k5-mods-qrcode.png" alt="zello.com/uv-k5-mods" style="float:center; width:145px; heigth:145px;">
+<img src="README.d/zello-uv-k5-mods-qrcode.png" alt="zello.com/uv-k5-mods" width="145" heigth="145px">
 
 ## Fork scope
 
