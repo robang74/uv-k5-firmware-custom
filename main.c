@@ -68,19 +68,20 @@ void _putchar(__attribute__((unused)) char c)
 
 }
 
-extern uint32_t rundata_ramseg; //RAF: defined in firmware.ld
-
+//RAF: defined in firmware.ld
 extern uint32_t __rundata_start;
 extern uint32_t __rundata_end;
 
 void __attribute__((section(".preinit_array"))) init_rundata_ramseg(void) {
-  uint32_t* start = &__rundata_start;
-  uint32_t* end = &__rundata_end;
-
-  while (start < end) {
-    *start++ = 0;
-  }
-  gpEeprom = (EEPROM_Config_t *)&rundata_ramseg;
+    uint8_t *start = (uint8_t *)__rundata_start;
+    uint8_t *end = (uint8_t *)__rundata_end;
+/*
+    while (start < end) {
+        *start++ = 0;
+    }
+*/
+    memset(start, 0, end-start);
+    gpEeprom = (EEPROM_Config_t *)__rundata_start;
 }
 
 void Main(void)
@@ -110,14 +111,14 @@ void Main(void)
 
     // Not implementing authentic device checks
     
-    //gpEeprom = (EEPROM_Config_t *)&rundata_ramseg;
+    //gpEeprom = (EEPROM_Config_t *)__rundata_start;
     /*
     {
         uint32_t addr = 0x4006F000;
         memcpy(&gpEeprom, &addr, 4);
     }
     */
-    //memset(gpEeprom, '0', sizeof(EEPROM_Config_t));
+    //memset((void *)gpEeprom, '0', sizeof(EEPROM_Config_t));
 
     memset(gDTMF_String, '-', sizeof(gDTMF_String));
     gDTMF_String[sizeof(gDTMF_String) - 1] = 0;
