@@ -1,0 +1,2 @@
+alias docker-listall='docker ps -a -q'
+alias docker-stopall='for i in $( docker ps -a -q ); do docker stop $i & done'
