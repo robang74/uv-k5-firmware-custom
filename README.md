@@ -14,7 +14,7 @@ This home page is dedicated to the fork and its development.
 
 Quansheng UV-K5 is a name and a shell that contains an electronic PCB which is the same among various models (cfr. [here](docs/UV-K5.pdf)) included the UV-5R but compated with this, the UV-K5 can be modded also in terms of firmware. 
 
-![Source: oe1mww.work/UV-K5.pdf](docs/UV-K5-models.png)
+![Source: oe1mww.work/UV-K5.pdf](README.d/UV-K5-models.png)
 
 It microprocessor is an ARM Cortex M0 and in particular it is a STM32G030x8 which works at 64MHz and it is packaged with 32-pinout case. This chip contains 64Bb of program memory space (internal flash) and 16Kb of RAM. Plus a 64Kb EEPROM which is external to the uP chip. While the RF chip is a BK4819.
 
@@ -22,7 +22,7 @@ Hence, it allows 60Kb firmware files reasonably because the first 4Kb are used f
 
 The BK4819 is a half duplex TDD FM transceiver operating within 18 MHz ~ 660, MHz, 840 MHz ~1300 MHz band range. Besides speech communication, the BK4819 on-chip FSK data modem supports F2D and F1W emission to be used in both FRS and DPMR band for text message and GPS information exchange. 
 
-![uP 32 pins and PCB version](UV-K5_PCB_R51-V1.4.jpg)
+![uP 32 pins and PCB version](docs/UV-K5_PCB_R51-V1.4.jpg)
 
 The following branded STM32G031, STM32G041 Cortex G-series are two models providing the electrical pinout compatible with the STM32G030x8. Moreover, a quick investigation these two model are provided with a RAM that can vary between 8Kb upto 64Kb.
 
@@ -83,11 +83,11 @@ In case you wish to contribute with a commit or a technical information or an in
 
 ## On my own way
 
-For everybody else, silence is gold plus quick middle fingering is my way to go (cfr. the [bullsh*t asymmetry principle](https://statmodeling.stat.columbia.edu/2019/01/28/bullshit-asymmetry-principle/)) and you are invited to do something the same: take *the bright side of the life* (cit.), and skip the rest.
+For everybody else, silence is gold plus quick middle fingering is my way to go (cfr. the [bullsh+t asymmetry principle](https://statmodeling.stat.columbia.edu/2019/01/28/bullshit-asymmetry-principle/)) and you are invited to do something the same: take *the bright side of the life* (cit.), and skip the rest.
 
 > I don't have a short temper, I just have a quick reaction to bullshit -- Elizabeth Taylor
 
-<img src="colazione-da-tiffany.jpg" width="420" heigh="153" alt="Audrey Hepburn in Colazione da Tiffany">
+<img src="README.d/colazione-da-tiffany.jpg" width="420" heigh="153" alt="Audrey Hepburn in Colazione da Tiffany">
 
 Audrey Hepburn in the picture, not Elizabeth Taylor, Ada Lovelace, Hedwig Eva Maria Kiesler (aka Hedy Lamarr) or any other lovely nerdishly Morticia Addams. LOL
 
