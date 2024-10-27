@@ -83,6 +83,24 @@ function dockimgchk() {
     docker images | sed -ne "s,^$1 *\([^ ]*\) .*,$1:\\1,p"
 }
 
+function show_firmware_filesize() {
+    echo
+    echo "Packed firmware sorted per byte size:"
+    echo
+    sz=$[60*1024]
+    cd compiled-firmware/
+    for f in *.packed.bin; do
+        eval $(du -b $f | sed -e "s,\([0-9]*\)\t\(.*\)\.packed\.bin,bs=\\1; nm=\\2,")
+        ps=$[bs*100];
+        pa=$[ps/sz]
+        pb=$[((ps*100)/sz)%100]
+        test $pb -le 9 && pb="0$pb"
+        printf "  $bs  $pa.$pb%%  $nm\n"
+    done | sort -k1 -n
+    cd - >/dev/null
+    echo
+}
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 if ! dockimgchk $DOCK_IMG | grep -qe ":latest$"; then
@@ -153,7 +171,7 @@ make_in_docker "f4hwn.default"
 # RAF: to test the new code is compiling
 ret=$?;
 if [ "$1" != "all" ]; then
-    echo
+    show_firmware_filesize
     exit $ret
 fi
 
@@ -178,18 +196,4 @@ make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-echo
-echo "Packed firmware sorted per byte size:"
-echo
-sz=$[60*1024]
-cd compiled-firmware/
-for f in *.packed.bin; do
-    eval $(du -b $f | sed -e "s,\([0-9]*\)\t\(.*\)\.packed\.bin,bs=\\1; nm=\\2,")
-    ps=$[bs*100]; 
-    pa=$[ps/sz]
-    pb=$[((ps*100)/sz)%100]
-    test $pb -le 9 && pb="0$pb"
-    printf "  $bs  $pa.$pb%%  $nm\n"
-done | sort -k1 -n
-cd - >/dev/null
-echo
+show_firmware_filesize
