@@ -16,7 +16,7 @@ Quansheng UV-K5 is a name and a shell that contains an electronic PCB which is t
 
 ![Source: oe1mww.work/UV-K5.pdf](docs/UV-K5-models.png)
 
-It microprocessor is an ARM Cortex M0 and in particular it is a STM32G030x8 which works at 64MHz and it is packaged with 32-pinout case. This chip contains 64Bb of program memory space (internal flash) and 8Kb of RAM. Plus a 64Kb EEPROM which is external to the uP chip. While the RF chip is a BK4819.
+It microprocessor is an ARM Cortex M0 and in particular it is a STM32G030x8 which works at 64MHz and it is packaged with 32-pinout case. This chip contains 64Bb of program memory space (internal flash) and 16Kb of RAM. Plus a 64Kb EEPROM which is external to the uP chip. While the RF chip is a BK4819.
 
 Hence, it allows 60Kb firmware files reasonably because the first 4Kb are used for the bootloader which also deliver the firmware update from the serial port embedded into the hearphone/mic jacks.
 
