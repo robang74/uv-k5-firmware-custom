@@ -8,8 +8,9 @@ _Min_Stack_Size = 0x80;  /* required amount of stack */
 MEMORY
 {
 	FLASH (rx)      : ORIGIN = 0x00000000, LENGTH = 60K
-	RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 0x3C00
-	RUNDATA (rw)    : ORIGIN = 0x20003C00, LENGTH = 0x400
+	RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 0x2000
+	RUNDATA (rw)    : ORIGIN = 0x20002000, LENGTH = 0x400
+	BSS_RAM (xrw)   : ORIGIN = 0x20002400, LENGTH = 0x1C00
 }
 
 SECTIONS
@@ -53,10 +54,26 @@ SECTIONS
 
 	sram_data_end = .;
 
+	/* Reserved run-time data */
+	.rundata :
+	{
+		. = ALIGN(4);
+		rundata_ramseg = .;
+		. = ALIGN(4);
+	} >RUNDATA
+
+	.rundata_bss :
+	{
+		. = ALIGN(4);
+		__rundata_start = .;
+		*(.rundata_bss*)
+		__rundata_end = .;
+	} >RUNDATA
+
 	/* Uninitialized data */
-	. = ALIGN(4);
 	.bss :
 	{
+		. = ALIGN(4);
 		_sbss = .;         /* Global symbol at bss start */
 		__bss_start__ = _sbss;
 		*(.bss)
@@ -66,15 +83,7 @@ SECTIONS
 		. = ALIGN(4);
 		_ebss = .;         /* Global symbol at bss end */
 		__bss_end__ = _ebss;
-	} >RAM
-
-	/* Reserved run-time data */
-	. = ALIGN(4);
-	.rundata :
-	{
-		rundata_ramseg = .;
-		. = ALIGN(4);
-	} > RUNDATA
+	} >BSS_RAM
 
 	/* Check that there is enough RAM */
 	._user_heap_stack :
@@ -83,6 +92,5 @@ SECTIONS
 		. = . + _Min_Heap_Size;
 		. = . + _Min_Stack_Size;
 		. = ALIGN(4);
-	} >RAM
+	} >BSS_RAM
 }
-

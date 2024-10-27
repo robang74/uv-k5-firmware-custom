@@ -70,6 +70,19 @@ void _putchar(__attribute__((unused)) char c)
 
 extern uint32_t rundata_ramseg; //RAF: defined in firmware.ld
 
+extern uint32_t __rundata_start;
+extern uint32_t __rundata_end;
+
+void __attribute__((section(".preinit_array"))) init_rundata_ramseg(void) {
+  uint32_t* start = &__rundata_start;
+  uint32_t* end = &__rundata_end;
+
+  while (start < end) {
+    *start++ = 0;
+  }
+  gpEeprom = (EEPROM_Config_t *)&rundata_ramseg;
+}
+
 void Main(void)
 {
     // Enable clock gating of blocks we need
