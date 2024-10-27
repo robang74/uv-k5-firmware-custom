@@ -85,13 +85,15 @@ function dockimgchk() {
 
 function show_firmware_filesize() {
     echo
+    cd compiled-firmware/
+    files=$(ls -1 *.bin 2>/dev/null | grep -v packed)
+    test -n "$files" || return
     echo "Packed firmware sorted per byte size:"
     echo
     sz=$[60*1024]
-    cd compiled-firmware/
-    for f in *.packed.bin; do
-        eval $(du -b $f | sed -e "s,\([0-9]*\)\t\(.*\)\.packed\.bin,bs=\\1; nm=\\2,")
-        ps=$[bs*100];
+    for f in $files; do
+        eval $(du -b $f | sed -e "s,\([0-9]*\)\t\(.*\)\.bin,bs=\\1; nm=\\2,")
+        ps=$[bs*100]
         pa=$[ps/sz]
         pb=$[((ps*100)/sz)%100]
         test $pb -le 9 && pb="0$pb"
