@@ -16,54 +16,14 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 #
-#export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
-IMAGE_NAME="uvk5"
-DEST_DIR="compiled-firmware/"
-LOCL_DIR="${PWD}/${DEST_DIR}/"
+#RAF: this is just a wrapper for back-compatibility
 
-#sudo rm  -f ${LOCL_DIR}/*
-docker build -t $IMAGE_NAME .
-
-function exec_in_docker() {
-    docker run --rm -v "${LOCL_DIR}:/app/${DEST_DIR}/" \
-	    $IMAGE_NAME /bin/bash -c "$@"
-}
-
-function make_in_docker() {
-    target="$1"; shift
-    exec_in_docker "cd /app && make -s TARGET=${target} $@ \
-        && mv -f ./${target}* ./${DEST_DIR}/"
-}
-
-exec_in_docker "rm -f ./${DEST_DIR}/*"
-
-TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
-    ENABLE_VOX=0 \
-    ENABLE_AIRCOPY=0 \
-    ENABLE_AUDIO_BAR=0 \
-    ENABLE_FEAT_F4HWN_SLEEP=0 \
-    ENABLE_FEAT_F4HWN_SPECTRUM=0"
-
-# REDUCE_LOW_MID_TX_POWER   0b
-# FLASHLIGHT               64b
-# FEAT_F4HWN_CA            64b
-# SHOW_CHARGE_LEVEL       104b
-# F4HWN_RX_TX_TIMER       148b
-# COPY_CHAN_TO_VFO        192b
-# AUDIO_BAR               386b
-# FEAT_F4HWN_SLEEP        512b
-
-make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
-    ENABLE_FEAT_F4HWN_SPECTRUM=1 \
-    ENABLE_REDUCE_LOW_MID_TX_POWER=1 \
-    ENABLE_FEAT_F4HWN_RX_TX_TIMER=0 \
-    ENABLE_FEAT_F4HWN_CA=0 \
-    ENABLE_ROBANG74_UI_MENU=1 \
-    ENABLE_FLOCK_SHORT_MENU=0 \
-    ENABLE_FLASHLIGHT=1"
-
-make_in_docker "f4hwn.voxless" "${TVOXLESS}"
-make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0"
-make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1"
-
+name=${0##*/};
+issh=${name%.*};
+issh=${issh/*sh/SHELL}
+if [ "$issh" == "SHELL" ]; then
+    bash ./build.sh all
+else
+    source ./build.sh all
+fi

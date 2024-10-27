@@ -1,7 +1,29 @@
-#!/bin/sh
-#export DOCKER_DEFAULT_PLATFORM=linux/amd64
-IMAGE_NAME="uvk5"
-DEST_DIR="compiled-firmware"
-docker build -t $IMAGE_NAME .
-docker run --rm -v "${PWD}/${DEST_DIR}:/app/${DEST_DIR}" $IMAGE_NAME \
-  /bin/bash -c "rm ./${DEST_DIR}/*; cd /app && make && cp f4hwn* ${DEST_DIR}/"
+#!/bin/bash
+#
+# Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+#
+#     https://github.com/robang74
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#     Unless required by applicable law or agreed to in writing, software
+#     distributed under the License is distributed on an "AS IS" BASIS,
+#     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#     See the License for the specific language governing permissions and
+#     limitations under the License.
+#
+
+#RAF: this is just a wrapper for back-compatibility
+
+name=${0##*/};
+issh=${name%.*};
+issh=${issh/*sh/SHELL}
+if [ "$issh" == "SHELL" ]; then
+    bash ./build.sh
+else
+    source ./build.sh
+fi
