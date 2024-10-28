@@ -407,6 +407,9 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
             switch(Key) {
                 case KEY_0...KEY_5:
                     gpEeprom->SCAN_LIST_DEFAULT = Key;
+                    #ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
+                        SETTINGS_WriteCurrentState();
+                    #endif
                     break;
                 default:
                     break;
@@ -684,6 +687,17 @@ static void MAIN_Key_STAR(bool bKeyPressed, bool bKeyHeld)
         if (!bKeyPressed) // released
             return; 
 
+        #ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
+        if(gScanRangeStart == 0) // No ScanRange
+        {
+            gpEeprom->CURRENT_STATE = 1;
+        }
+        else // ScanRange
+        {
+            gpEeprom->CURRENT_STATE = 2;
+        }
+        SETTINGS_WriteCurrentState();
+        #endif
         ACTION_Scan(false);// toggle scanning
 
         gBeepToPlay = BEEP_1KHZ_60MS_OPTIONAL;
@@ -732,6 +746,7 @@ static void MAIN_Key_STAR(bool bKeyPressed, bool bKeyHeld)
         // scan the CTCSS/DCS code
         gBackup_CROSS_BAND_RX_TX  = gpEeprom->CROSS_BAND_RX_TX;
         gpEeprom->CROSS_BAND_RX_TX = CROSS_BAND_OFF;
+
         SCANNER_Start(true);
         gRequestDisplayScreen = DISPLAY_SCANNER;
     }

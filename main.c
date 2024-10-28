@@ -34,6 +34,16 @@
 #include "settings.h"
 #include "version.h"
 
+#ifdef ENABLE_FEAT_F4HWN
+    #ifdef ENABLE_FMRADIO
+        #include "app/fm.h"
+    #endif
+    #ifdef ENABLE_SPECTRUM
+        #include "app/spectrum.h"
+    #endif
+    #include "app/chFrScanner.h"
+#endif
+
 #include "app/app.h"
 #include "app/dtmf.h"
 #include "bsp/dp32g030/gpio.h"
@@ -290,6 +300,44 @@ void Main(void)
         RADIO_ConfigureNOAA();
 #endif
     }
+
+#ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
+    switch (gpEeprom->CURRENT_STATE) {
+        case 1:
+            //gScanRangeStart = 0;
+            //ACTION_Scan(false);
+            gpEeprom->SCAN_LIST_DEFAULT = gpEeprom->CURRENT_LIST;
+            CHFRSCANNER_Start(true, SCAN_FWD);
+            break;
+
+        case 2:
+            gScanRangeStart = gScanRangeStart ? 0 : gTxVfo->pRX->Frequency;
+            gScanRangeStop = gpEeprom->VfoInfo[!(gpEeprom->TX_VFO)].freq_config_RX.Frequency;
+            if(gScanRangeStart > gScanRangeStop)
+            {
+                SWAP(gScanRangeStart, gScanRangeStop);
+            }
+            //ACTION_Scan(false);
+            CHFRSCANNER_Start(true, SCAN_FWD);
+            break;
+
+        #ifdef ENABLE_FMRADIO
+        case 3:
+            FM_Start(); // For compiler alignments and paddings...
+            break;
+        #endif
+
+        #ifdef ENABLE_SPECTRUM
+        case 4:
+            APP_RunSpectrum(); // For compiler alignments and paddings...
+            break;
+        #endif
+
+        default:
+            // No action for CURRENT_STATE == 0 or other unexpected values
+            break;
+    }
+#endif //ENABLE_FEAT_F4HWN_RESTORE_SCAN
 
     while (true) {
         APP_Update();

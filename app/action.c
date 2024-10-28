@@ -225,6 +225,9 @@ void ACTION_Scan(bool bRestart)
 
         // channel mode. Keep scanning but toggle between scan lists
         gpEeprom->SCAN_LIST_DEFAULT = (gpEeprom->SCAN_LIST_DEFAULT + 1) % 6;
+#ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
+        SETTINGS_WriteCurrentState();
+#endif
 
         // jump to the next channel
         CHFRSCANNER_Start(false, gScanStateDir);

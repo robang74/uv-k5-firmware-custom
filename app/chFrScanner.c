@@ -196,6 +196,11 @@ void CHFRSCANNER_Stop(void)
         }
     }
 
+#ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
+    gpEeprom->CURRENT_STATE = 0;
+    SETTINGS_WriteCurrentState();
+#endif
+
     RADIO_SetupRegisters(true);
     gUpdateDisplay = true;
 }

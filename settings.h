@@ -204,6 +204,10 @@ typedef struct {
     bool                  SCAN_LIST_ENABLED[3];
     uint8_t               SCANLIST_PRIORITY_CH1[3];
     uint8_t               SCANLIST_PRIORITY_CH2[3];
+#ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
+    uint8_t               CURRENT_STATE;
+    uint8_t               CURRENT_LIST;
+#endif
 
     uint8_t               field29_0x26;
     uint8_t               field30_0x27;
@@ -302,5 +306,8 @@ void SETTINGS_SaveChannel(uint8_t Channel, uint8_t VFO, const VFO_Info_t *pVFO, 
 void SETTINGS_SaveBatteryCalibration(const uint16_t * batteryCalibration);
 void SETTINGS_UpdateChannel(uint8_t channel, const VFO_Info_t *pVFO, bool keep, bool check, bool save);
 void SETTINGS_WriteBuildOptions(void);
+#ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
+    void SETTINGS_WriteCurrentState(void);
+#endif
 
 #endif
