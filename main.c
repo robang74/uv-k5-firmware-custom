@@ -1,5 +1,6 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +13,10 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
 
 #include <stdint.h>
@@ -51,6 +56,23 @@
 #include "ui/welcome.h"
 #include "ui/menu.h"
 
+void _putchar(__attribute__((unused)) char c)
+{
+#ifdef ENABLE_UART
+    UART_Send((uint8_t *)&c, 1);
+#endif
+}
+
+/*******************************************************************************
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     https://github.com/robang74
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ **START(C)**/
+
 #ifdef ENABLE_FEAT_F4HWN
 #include "app/bitflags.h"
 // RAF: defined extern uint8_t in app/bitflags.h
@@ -58,15 +80,6 @@
 //      volatile is possibly superflous but ARM.
 volatile uint8_t bitflags;
 #endif
-
-void _putchar(__attribute__((unused)) char c)
-{
-
-#ifdef ENABLE_UART
-    UART_Send((uint8_t *)&c, 1);
-#endif
-
-}
 
 #ifdef ENABLE_RUNDATA_MEMORY
 //RAF: defined in firmware.ld
@@ -76,11 +89,7 @@ extern uint32_t __rundata_end;
 void __attribute__((section(".preinit_array"))) init_rundata_ramseg(void) {
     uint8_t *start = (uint8_t *)__rundata_start;
     uint8_t *end = (uint8_t *)__rundata_end;
-/*
-    while (start < end) {
-        *start++ = 0;
-    }
-*/
+
     memset(start, 0, end-start);
     memcpy(gpEeprom, &start, 4);
 
@@ -93,6 +102,9 @@ void __attribute__((section(".preinit_array"))) init_rundata_ramseg(void) {
     strcpy(gpEeprom->DTMF_DOWN_CODE, "54321");
 }
 #endif
+
+/*
+ **********************************************************************END(C)**/
 
 void Main(void)
 {
@@ -195,7 +207,10 @@ void Main(void)
         // 500ms
         for (int i = 0; i < 50;)
         {
-            i = (GPIO_CheckBit(&GPIOC->DATA, GPIOC_PIN_PTT) && KEYBOARD_Poll() == KEY_INVALID) ? i + 1 : 0;
+            //RAF: if the first check fail stop checking, compiler should do
+            //     as code optimisation in speed but not necessarly in space.
+            i = GPIO_CheckBit(&GPIOC->DATA, GPIOC_PIN_PTT) ? \
+                (KEYBOARD_Poll() == KEY_INVALID ? i + 1 : 0) : 0;
             SYSTEM_DelayMs(10);
         }
         gKeyReading0 = KEY_INVALID;
@@ -254,11 +269,11 @@ void Main(void)
 
 #ifdef ENABLE_VOICE
         {
-            uint8_t Channel;
-
             AUDIO_SetVoiceID(0, VOICE_ID_WELCOME);
 
-            Channel = gpEeprom->ScreenChannel[gpEeprom->TX_VFO];
+            //RAF, TODO: can this change during the code execution?
+            //           No, then use a #define. Anyway const type.
+            const uint8_t Channel (gpEeprom->ScreenChannel[gpEeprom->TX_VFO])
             if (IS_MR_CHANNEL(Channel))
             {
                 AUDIO_SetVoiceID(1, VOICE_ID_CHANNEL_MODE);
