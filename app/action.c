@@ -452,7 +452,7 @@ static void ACTION_AlarmOr1750(const bool b1750)
 
 void ACTION_Vox(void)
 {
-    gpEeprom->VOX_SWITCH   = !gpEeprom->VOX_SWITCH;
+    gpEeprom->VOX_SWITCH = !gpEeprom->VOX_SWITCH;
     gRequestSaveSettings = true;
     gFlagReconfigureVfos = true;
     gUpdateStatus        = true;
@@ -489,29 +489,28 @@ void ACTION_Update(void)
 
 void ACTION_Ptt(void)
 {
-    gSetting_set_ptt_session = (gSetting_set_ptt_session == 0) ? 1: 0;
+    gSetting_set_ptt_session = !gSetting_set_ptt_session;
 }
 
 void ACTION_Wn(void)
 {
-    if (FUNCTION_IsRx())
-    {
-        gRxVfo->CHANNEL_BANDWIDTH = (gRxVfo->CHANNEL_BANDWIDTH == 0) ? 1: 0;
-        #ifdef ENABLE_AM_FIX
-            BK4819_SetFilterBandwidth(gRxVfo->CHANNEL_BANDWIDTH, true);
-        #else
-            BK4819_SetFilterBandwidth(gRxVfo->CHANNEL_BANDWIDTH, false);
-        #endif
+    bool chbw;
+
+    if(FUNCTION_IsRx()) {
+        gRxVfo->CHANNEL_BANDWIDTH = !gRxVfo->CHANNEL_BANDWIDTH;
+        chbw = gRxVfo->CHANNEL_BANDWIDTH;
+    } else {
+        gTxVfo->CHANNEL_BANDWIDTH = !gTxVfo->CHANNEL_BANDWIDTH;
+        chbw = gTxVfo->CHANNEL_BANDWIDTH;
     }
-    else
-    {
-        gTxVfo->CHANNEL_BANDWIDTH = (gTxVfo->CHANNEL_BANDWIDTH == 0) ? 1: 0;
-        #ifdef ENABLE_AM_FIX
-            BK4819_SetFilterBandwidth(gTxVfo->CHANNEL_BANDWIDTH, true);
-        #else
-            BK4819_SetFilterBandwidth(gTxVfo->CHANNEL_BANDWIDTH, false);
-        #endif
-    }
+
+    BK4819_SetFilterBandwidth(chbw,
+#ifdef ENABLE_AM_FIX
+            true
+#else
+            false
+#endif
+        );
 }
 
 void ACTION_BackLight(void)
@@ -533,15 +532,13 @@ void ACTION_BackLightOnDemand(void)
         gBackLight = true;
     }
     else
+    if(gBacklightBrightnessOld == gpEeprom->BACKLIGHT_MAX)
     {
-        if(gBacklightBrightnessOld == gpEeprom->BACKLIGHT_MAX)
-        {
-            gpEeprom->BACKLIGHT_TIME = 0;
-        }
-        else
-        {
-            gpEeprom->BACKLIGHT_TIME = 61;
-        }
+        gpEeprom->BACKLIGHT_TIME = 0;
+    }
+    else
+    {
+        gpEeprom->BACKLIGHT_TIME = 61;
     }
     
     BACKLIGHT_TurnOn();
@@ -574,9 +571,9 @@ void ACTION_RxMode(void)
 void ACTION_MainOnly(void)
 {
     if(bitchk(BT_MONITOR_FN)) {
+        uint8_t txvfo;
         //RAF: can we use here the value gpEeprom->TX_VFO + 1?
         //     if this works, then we saved a whole bit! ;-)
-        uint8_t txvfo;
         txvfo = (gpEeprom->TX_VFO & ~3) ? 0 : gpEeprom->TX_VFO + 1;
         gpEeprom->DUAL_WATCH = bitchk(BF_DUAL_WATCH) ? txvfo : 0;
         //RAF: can we use here the value gpEeprom->TX_VFO + 1?

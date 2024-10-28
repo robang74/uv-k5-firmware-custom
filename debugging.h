@@ -9,6 +9,11 @@
 #include "external/printf/printf.h"
 #include "am_fix.h"
 
+static inline void uart_putchar(const uint8_t c)
+{
+    UART_Send(&c, 1);
+}
+
 static inline void LogUart(const char *const str)
 {
     UART_Send(str, strlen(str));

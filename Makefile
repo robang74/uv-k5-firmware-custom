@@ -1,7 +1,7 @@
-
-# compile options (see README.md for descriptions)
-# 0 = disable
-# 1 = enable
+# ---- DIS/ENABLING FERATURES -------
+#
+#                    disable <- ?= 0
+#                    enable  <- ?= 1
 
 # ---- STOCK QUANSHENG FERATURES ----
 ENABLE_FMRADIO                	?= 0
@@ -72,7 +72,7 @@ ENABLE_SWD                    	?= 0
 ENABLE_OVERLAY                	?= 0
 ENABLE_LTO                    	?= 1
 
-#############################################################
+################################################################################
 
 ifeq ($(ENABLE_FEAT_F4HWN),1)
 	TARGET = f4hwn

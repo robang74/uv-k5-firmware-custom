@@ -25,18 +25,17 @@
 #include "radio.h"
 #include <driver/backlight.h>
 
-enum POWER_OnDisplayMode_t {
+typedef enum {
 #ifdef ENABLE_FEAT_F4HWN
     POWER_ON_DISPLAY_MODE_ALL,
-    POWER_ON_DISPLAY_MODE_SOUND,
+    POWER_ON_DISPLAY_MODE_SOUND,                //RAF,TODO: put this in menu
 #else
     POWER_ON_DISPLAY_MODE_FULL_SCREEN = 0,
 #endif
     POWER_ON_DISPLAY_MODE_MESSAGE,
     POWER_ON_DISPLAY_MODE_VOLTAGE,
     POWER_ON_DISPLAY_MODE_NONE
-};
-typedef enum POWER_OnDisplayMode_t POWER_OnDisplayMode_t;
+} POWER_OnDisplayMode_t;
 
 enum TxLockModes_t {
     F_LOCK_DEF, //all default frequencies + configurable
@@ -59,7 +58,7 @@ enum TxLockModes_t {
     F_LOCK_LEN
 };
 
-/*
+/* RAF: replaced by gpEeprom->SCAN_RESUME_MODE but need to be investigated
 enum {
     SCAN_RESUME_TO = 0,
     SCAN_RESUME_CO,
@@ -216,7 +215,7 @@ typedef struct {
 #if defined(ENABLE_ALARM) || defined(ENABLE_TX1750)
     ALARM_Mode_t      ALARM_MODE;
 #endif
-    POWER_OnDisplayMode_t POWER_ON_DISPLAY_MODE;
+    POWER_OnDisplayMode_t POWER_ON_DISPLAY_MODE;            //RAF,TODO: 4bit 0000=none 1111=all
     ROGER_Mode_t          ROGER;
     uint8_t               REPEATER_TAIL_TONE_ELIMINATION;
     uint8_t               KEY_1_SHORT_PRESS_ACTION;
