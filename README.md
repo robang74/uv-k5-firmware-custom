@@ -64,19 +64,40 @@ The two most impacting are:
 The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to include many features
 
 ```
-# no torch & no charge lvl, need (bytes) (*next)  (rundata)
-# REDUCE_LOW_MID_TX_POWER   0b   (incl.)    *         *
-# FLASHLIGHT               64b   (avail)    *         *
-# FEAT_F4HWN_CA            64b   (excl.)    -         -
-# SHOW_CHARGE_LEVEL       104b   (avail)    *         *
-# F4HWN_RX_TX_TIMER       148b   (avail) ( -128)      *
-# COPY_CHAN_TO_VFO        192b   (incl.)    *         *
-# AUDIO_BAR               386b   ( -184)              *
-# FEAT_F4HWN_SLEEP        512b   ( -440)              *
-# VOX                            ( -776)           (avail)
-# AIRCOPY                        (-1996)           (-1028)
-# FEAT_F4HWN_SCREENSHOT          (avail)              *
-# ALL THE OPTIONS                (-3900)           (-2812)
+# no torch & no charge lvl,  need  (bytes)  (*next)  (rundata)
+# REDUCE_LOW_MID_TX_POWER      0b  (incl.)     *         *
+# FLASHLIGHT                  64b  (avail)     *         *
+# FEAT_F4HWN_CA               64b  (excl.)     .         .
+# SHOW_CHARGE_LEVEL          104b  (avail)     *         *
+# F4HWN_RX_TX_TIMER          148b  (avail)  ( -128)      *
+# COPY_CHAN_TO_VFO           192b  (incl.)     *         *
+# AUDIO_BAR                  386b  ( -184)               *
+# FEAT_F4HWN_SLEEP           512b  ( -440)               *
+# VOX                              (-1032)            (avail)
+# AIRCOPY                          (-1996)            (-1028)
+# -------------------------------------------------------------
+# ALL THE OPTIONS                  (-3900)               ?
+#
+# FEAT_F4HWN_SCREENSHOT            (avail)               *
+# FEAT_F4HWN_RESTORE_SCAN          (avail)               *
+# FEAT_F4HWN_RESET_CHANNEL         (avail)               *
+# -------------------------------------------------------------
+# ALL THE OPTIONS                     ?               (-2896)
+#
+#   text  data   bss    dec  filename
+#  58204    20  2748  60972  f4hwn.broadcast
+#  59736    52  3116  62904  f4hwn.bandscope
+#  59736    52  3116  62904  f4hwn.default
+#  60400    52  3060  63512  f4hwn.voxless
+#  61336    52  3068  64456  f4hwn.fullflash
+#
+# Binary firmware files sorted per byte size:
+#
+#  58224  94.76%  f4hwn.broadcast
+#  59788  97.31%  f4hwn.bandscope
+#  59788  97.31%  f4hwn.default
+#  60452  98.39%  f4hwn.voxless
+#  61388  99.91%  f4hwn.fullflash
 ```
 
 The target of shrinking the firmware of 4Kb is on its promising way and there is still space for improvements.
@@ -105,8 +126,8 @@ Another aspect of this fork that might interest you is related to the Docker con
 In particular, the [build.sh](https://github.com/robang74/uv-k5-firmware-custom/blob/experimental/build.sh) proposes a much faster approch and a more flexible one especially when it is time to debug and/or correct the code, also allowing an interactive access to the container.
 
 Plus, it relies over a pre-prepared image which is not built nor updated everytime. The project is copied into the container is always updated, instead. Each time a new compilation starts. From the [docker.image](https://github.com/robang74/uv-k5-firmware-custom/blob/experimental/docker.image) header:
+
 ```
-#
 # RAF: pros vs cons of pre-built image instead of create from scratch
 #
 # pros:
@@ -121,7 +142,6 @@ Plus, it relies over a pre-prepared image which is not built nor updated everyti
 # 2. mess-up with the image can lasts across the builds (persitency)
 #    however the related building procedure relies on containers
 # 3. it relies over a 3rd party image (continuity)
-#
 ```
 
 Finally `./build.sh` or `./build.sh all` is much shorter to digit rather the previuos scripts and it works without the need of an Internet connection. It is also back-compatible because the other scripts has been changed in a way to be just a wrappers of `build.sh`. Just in case someone has developed automatism based on the previous scripts.
