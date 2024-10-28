@@ -260,20 +260,28 @@ void ACTION_SwitchDemodul(void)
         gTxVfo->Modulation = MODULATION_FM;
 }
 
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     https://github.com/robang74
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ **START(C)**/
 
 void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 {
-    if (gScreenToDisplay == DISPLAY_MAIN && gDTMF_InputMode){
-         // entering DTMF code
-
+    if (gScreenToDisplay == DISPLAY_MAIN && gDTMF_InputMode)
+    {
+        // entering DTMF code
         gPttWasReleased = true;
 
-        if (Key != KEY_SIDE1 || bKeyHeld || !bKeyPressed){
+        if (Key != KEY_SIDE1 || bKeyHeld || !bKeyPressed)
             return;
-        }
 
         // side1 btn pressed
-
         gBeepToPlay = BEEP_1KHZ_60MS_OPTIONAL;
         gRequestDisplayScreen = DISPLAY_MAIN;
 
@@ -287,56 +295,54 @@ void ACTION_Handle(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
         gDTMF_InputBox[--gDTMF_InputBox_Index] = '-'; // delete one code
 
 #ifdef ENABLE_VOICE
-        gAnotherVoiceID   = VOICE_ID_CANCEL;
+        gAnotherVoiceID = VOICE_ID_CANCEL;
 #endif
         return;
     }
 
-    enum ACTION_OPT_t funcShort = ACTION_OPT_NONE;
-    enum ACTION_OPT_t funcLong  = ACTION_OPT_NONE;
-    switch(Key) {
-        case KEY_SIDE1:
-            funcShort = gpEeprom->KEY_1_SHORT_PRESS_ACTION;
-            funcLong  = gpEeprom->KEY_1_LONG_PRESS_ACTION;
-            break;
-        case KEY_SIDE2:
-            funcShort = gpEeprom->KEY_2_SHORT_PRESS_ACTION;
-            funcLong  = gpEeprom->KEY_2_LONG_PRESS_ACTION;
-            break;
-        case KEY_MENU:
-            funcLong  = gpEeprom->KEY_M_LONG_PRESS_ACTION;
-            break;
-        default:
-            break;
-    }
-
     if (!bKeyHeld && bKeyPressed) // button pushed
-    {
         return;
-    }
 
     // held or released beyond this point
 
     if(!(bKeyHeld && !bKeyPressed)) // don't beep on released after hold
         gBeepToPlay = BEEP_1KHZ_60MS_OPTIONAL;
 
-    if (bKeyHeld || bKeyPressed) // held
-    {
-        funcShort = funcLong;
 
-        // For screenshot
-        #ifdef ENABLE_FEAT_F4HWN_SCREENSHOT
-            getScreenShot();
-        #endif
-
-        if (!bKeyPressed) //ignore release if held
-            return;
+    //RAF: using an array, saved 4 bytes.
+    enum ACTION_OPT_t func[2] = { ACTION_OPT_NONE };
+    switch(Key) {
+        case KEY_SIDE1:
+        //RAF,TODO: these variables are not const, hence not in capital
+            func[0]  = gpEeprom->KEY_1_SHORT_PRESS_ACTION;
+            func[1]  = gpEeprom->KEY_1_LONG_PRESS_ACTION;
+            break;
+        case KEY_SIDE2:
+            func[0]  = gpEeprom->KEY_2_SHORT_PRESS_ACTION;
+            func[1]  = gpEeprom->KEY_2_LONG_PRESS_ACTION;
+            break;
+        case KEY_MENU:
+            func[1]  = gpEeprom->KEY_M_LONG_PRESS_ACTION;
+            break;
+        default:
+            break;
     }
 
-    // held or released after short press beyond this point
+    if(bKeyHeld || bKeyPressed) // held
+    {
+#ifdef ENABLE_FEAT_F4HWN_SCREENSHOT
+        getScreenShot();
+        if (!bKeyPressed) //ignore release if held
+            return;
+#endif
+        func[0] = func[1];
+    }
 
-    action_opt_table[funcShort]();
+    action_opt_table[func[0]]();
 }
+
+/*
+ **********************************************************************END(C)**/
 
 #ifdef ENABLE_FMRADIO
 
