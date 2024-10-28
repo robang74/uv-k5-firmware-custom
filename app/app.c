@@ -1128,8 +1128,7 @@ void APP_Update(void)
 
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
             if(bitchk(BF_DS_WAKE_UP)) {
-                //RAF: original multiplier was 250 but changed in << 8
-                gPowerSave_10ms = gpEeprom->BATTERY_SAVE << 8; // deep sleep now indexed on BatSav
+                gPowerSave_10ms = gpEeprom->BATTERY_SAVE * 250; // deep sleep now indexed on BatSav
             }
             else
 #endif
@@ -1624,21 +1623,22 @@ void APP_TimeSlice500ms(void)
     if(gCurrentFunction != FUNCTION_TRANSMIT && !FUNCTION_IsRx())
 #endif
     {
-        if(gSleepModeCountdown_500ms) {
-            --gSleepModeCountdown_500ms;
+        if(!gSleepModeCountdown_500ms)
+        {
+            gPowerSave_10ms = 1;
+            bitflags |= BF_DS_WAKE_UP;
+            PWM_PLUS0_CH0_COMP = 0;
+            ST7565_ShutDown();
+        }
+        else //RAF: compared to the original version -1 in counting
+        {
+            gSleepModeCountdown_500ms--;
 
             if(gSetting_set_off && gSleepModeCountdown_500ms < 61)
             {
                 PWM_PLUS0_CH0_COMP = (gSleepModeCountdown_500ms & 3) ? 0 : \
                     value[gpEeprom->BACKLIGHT_MAX] << 2; // Max brightness
             }
-        }
-        else
-        {
-            gPowerSave_10ms = 1;
-            bitflags |= BF_DS_WAKE_UP;
-            PWM_PLUS0_CH0_COMP = 0;
-            ST7565_ShutDown();
         }
     }
     else
