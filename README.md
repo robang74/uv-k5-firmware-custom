@@ -38,15 +38,56 @@ At this time, the compatibility with other uP chips is under investigation. The 
 
 This repository contains **UNTESTED** code on two serving branches:
 
-- **main**: cherry picking from devel, it compiles but it is untested
+- [main](https://github.com/robang74/uv-k5-firmware-custom/tree/main): cherry picking from others, it compiles but it is untested
 
-- **devel**: seeking for insparation, might not even compile (WARNING)
+- [devel](https://github.com/robang74/uv-k5-firmware-custom/tree/devel): seeking for inspiration, might not even compile
 
-I have managed to fill the flash at 99.96% and to reduce the size of it, enough to start being interesting.
+- [experimental](https://github.com/robang74/uv-k5-firmware-custom/tree/experimental): most interesting but totally unsafe
 
-There is still space for improvements but the mass of untested code is skyrocketing and going to be overwhelming for almost everyone else who wishes leverage it.
+The goal is to include as much feature as possible an in order to achieve this result, the size of the firmware should be shrinked a lot.
+
+There are several ways to operate on this aim:
+
+1. data management: `bool` is `uint8_t`, `struct` and `union` bloat, alignement vs packaging, etc.
+
+2. memory usage: (un)initialised `static` or `global` variables waste space useful for coding, etc.
+
+3. function stack: variables used by functions a tricking because uP align them at 32 bits.
+
+On the `experimental` branch has been used several technics to shrink the firmware size.
+The two most impacting are:
+
+- using bitflags packed into a `uint32_t` preferably, supported by `inline` functions or macros
+
+- allocate and initialize large structures into a reservede memory which not get in .bbs section
+
+The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to include many features
+
+```
+# no torch & no charge lvl, need (bytes) (*next)  (rundata)
+# REDUCE_LOW_MID_TX_POWER   0b   (incl.)    *         *
+# FLASHLIGHT               64b   (avail)    *         *
+# FEAT_F4HWN_CA            64b   (excl.)    -         -
+# SHOW_CHARGE_LEVEL       104b   (avail)    *         *
+# F4HWN_RX_TX_TIMER       148b   (avail) ( -128)      *
+# COPY_CHAN_TO_VFO        192b   (incl.)    *         *
+# AUDIO_BAR               386b   ( -184)              *
+# FEAT_F4HWN_SLEEP        512b   ( -440)              *
+# VOX                            ( -776)           (avail)
+# AIRCOPY                        (-1996)           (-1028)
+# FEAT_F4HWN_SCREENSHOT          (avail)              *
+# ALL THE OPTIONS                (-3900)           (-2812)
+```
+
+The target of shrinking the firmware of 4Kb is on its promising way and there is still space for improvements.
+
+However, the mass of untested code is skyrocketing and going to be overwhelming for almost everyone else who wishes leverage it.
+
+## Fork sharing
 
 Time to share this challenge with other people and spawning more branches like stable, testing, etc. with two small commits to test per week? Wanna join?
+
+In case you wish to contribute with a commit or a technical information or an insightful grasp or with fixing or highlighting a shortcoming or a constructive critic, you are welcome whoever you are or doing in your own life.
 
 I have a **JucJet UV-K5**, it works well with `CHIRP`, `CSP` and [k5prog](https://github.com/robang74/k5prog) but not tried to flash it, yet
 
@@ -61,7 +102,7 @@ or get in touch by the Zello channel `UV-K5-mods` - [zello.com/uv-k5-mods](https
 
 This github repository and related ativities are part of a broader project named **Guy Fawkes Starting Pack** started with a [LinkedIn article](https://www.linkedin.com/pulse/guy-fawkes-starting-pack-roberto-a-foglietta-jm9kf) on 15th January 2023 and continously updated after its 1st draft pubblication. It consultation is public but because LinkedIn is a proprietary medium platform that usually prevents people printing their own PDF copy of the article, then it is also available in [PDF](https://drive.google.com/file/d/1DveGE1CbTdQ8xOOhGyEOS_hilnxMM_XK/view) format by a Google Driver link.
 
-## Fork goals
+## Fork background
 
 Which is the reason for this fork from the well-known **armel** repo?
 
@@ -78,8 +119,6 @@ Which is the reason for this fork from the well-known **armel** repo?
 6. rather than collecting, organizing and integrating attributes for UV-K5 firmware.
 
 I wish to be clear about the last two points: nothing personal and everyone does what s/he wants. In fact, here I am, forking a githup repo and carrying on my way.
-
-In case you wish to contribute with a commit or a technical information or an insightful grasp or with fixing or highlighting a shortcoming or a constructive critic, you are welcome whoever you are or doing in your own life.
 
 ## On my own way
 
