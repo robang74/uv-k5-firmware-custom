@@ -98,6 +98,34 @@ or get in touch by the Zello channel `UV-K5-mods` - [zello.com/uv-k5-mods](https
 <!-- img src="https://zello.com/channels/qr?name=UV-K5-mods" alt="zello.com/uv-k5-mods" style="float:center; width:145px; heigth:145px;"/-->
 <img src="README.d/zello-uv-k5-mods-qrcode.png" alt="zello.com/uv-k5-mods" width="145" heigth="145px">
 
+## Fork Docker
+
+Another aspect of this fork that might interest you is related to the Docker container management that has been improved compared to the original repository forked.
+
+In particular, the [build.sh](https://github.com/robang74/uv-k5-firmware-custom/blob/experimental/build.sh) proposes a much faster approch and a more flexible one especially when it is time to debug and/or correct the code, also allowing an interactive access to the container.
+
+Plus, it relies over a pre-prepared image which is not built nor updated everytime. The project is copied into the container is always updated, instead. Each time a new compilation starts. From the [docker.image](https://github.com/robang74/uv-k5-firmware-custom/blob/experimental/docker.image) header:
+```
+#
+# RAF: pros vs cons of pre-built image instead of create from scratch
+#
+# pros:
+#
+# 1. if it works, it will work in the same way forver (repeatibility)
+# 2. saves time because it should not be updated with pacman -Syyu
+# 3. fixes and upgrades can be applied once, pushed and being kept
+#
+# cons:
+#
+# 1. if it creates problems, it does until fixed or upgraded
+# 2. mess-up with the image can lasts across the builds (persitency)
+#    however the related building procedure relies on containers
+# 3. it relies over a 3rd party image (continuity)
+#
+```
+
+Finally `./build.sh` or `./build.sh all` is much shorter to digit rather the previuos scripts and it works without the need of an Internet connection. It is also back-compatible because the other scripts has been changed in a way to be just a wrappers of `build.sh`. Just in case someone has developed automatism based on the previous scripts.
+
 ## Fork scope
 
 This github repository and related ativities are part of a broader project named **Guy Fawkes Starting Pack** started with a [LinkedIn article](https://www.linkedin.com/pulse/guy-fawkes-starting-pack-roberto-a-foglietta-jm9kf) on 15th January 2023 and continously updated after its 1st draft pubblication. It consultation is public but because LinkedIn is a proprietary medium platform that usually prevents people printing their own PDF copy of the article, then it is also available in [PDF](https://drive.google.com/file/d/1DveGE1CbTdQ8xOOhGyEOS_hilnxMM_XK/view) format by a Google Driver link.
