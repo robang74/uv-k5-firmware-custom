@@ -88,7 +88,7 @@ function show_firmware_filesize() {
     cd compiled-firmware/
     files=$(ls -1 *.bin 2>/dev/null | grep -v packed)
     test -n "$files" || return
-    echo "Packed firmware sorted per byte size:"
+    echo "Binary firmware files sorted per byte size:"
     echo
     sz=$[60*1024]
     for f in $files; do
@@ -163,26 +163,49 @@ fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# no torch & no charge lvl,  need  (bytes)  (*next)  (rundata)
+# REDUCE_LOW_MID_TX_POWER      0b  (incl.)     *         *
+# FLASHLIGHT                  64b  (avail)     *         *
+# FEAT_F4HWN_CA               64b  (excl.)     .         .
+# SHOW_CHARGE_LEVEL          104b  (avail)     *         *
+# F4HWN_RX_TX_TIMER          148b  (avail)  ( -128)      *
+# COPY_CHAN_TO_VFO           192b  (incl.)     *         *
+# AUDIO_BAR                  386b  ( -184)               *
+# FEAT_F4HWN_SLEEP           512b  ( -440)               *
+# VOX                              (-1032)            (avail)
+# AIRCOPY                          (-1996)            (-1028)
+# -------------------------------------------------------------
+# ALL THE OPTIONS                  (-3900)               ?
+#
+# FEAT_F4HWN_SCREENSHOT            (avail)               *
+# FEAT_F4HWN_RESTORE_SCAN          (avail)               *
+# FEAT_F4HWN_RESET_CHANNEL         (avail)               *
+# -------------------------------------------------------------
+# ALL THE OPTIONS                     ?               (-2896)
+#
+#   text  data   bss    dec  filename
+#  58204    20  2748  60972  f4hwn.broadcast
+#  59736    52  3116  62904  f4hwn.bandscope
+#  59736    52  3116  62904  f4hwn.default
+#  60400    52  3060  63512  f4hwn.voxless
+#  61336    52  3068  64456  f4hwn.fullflash
+#
+# Binary firmware files sorted per byte size:
+#
+#  58224  94.76%  f4hwn.broadcast
+#  59788  97.31%  f4hwn.bandscope
+#  59788  97.31%  f4hwn.default
+#  60452  98.39%  f4hwn.voxless
+#  61388  99.91%  f4hwn.fullflash
+
 TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
     ENABLE_VOX=0 \
     ENABLE_AIRCOPY=0 \
     ENABLE_AUDIO_BAR=0 \
-    ENABLE_FEAT_F4HWN_SLEEP=0 \
-    ENABLE_FEAT_F4HWN_SPECTRUM=0"
-
-# no torch & no charge lvl, need (bytes) (*next)  (rundata)
-# REDUCE_LOW_MID_TX_POWER   0b   (incl.)    *         *
-# FLASHLIGHT               64b   (avail)    *         *
-# FEAT_F4HWN_CA            64b   (excl.)    -         -
-# SHOW_CHARGE_LEVEL       104b   (avail)    *         *
-# F4HWN_RX_TX_TIMER       148b   (avail) ( -128)      *
-# COPY_CHAN_TO_VFO        192b   (incl.)    *         *
-# AUDIO_BAR               386b   ( -184)              *
-# FEAT_F4HWN_SLEEP        512b   ( -440)              *
-# VOX                            ( -776)           (avail)
-# AIRCOPY                        (-1996)           (-1028)
-# FEAT_F4HWN_SCREENSHOT          (avail)              *
-# ALL THE OPTIONS                (-3900)           (-2812)
+    ENABLE_FEAT_F4HWN_SLEEP=1 \
+    ENABLE_FEAT_F4HWN_SPECTRUM=0 \
+    ENABLE_FEAT_F4HWN_RESTORE_SCAN=0 \
+    ENABLE_NOAA=0"
 
 make_in_docker "f4hwn.fullflash" "${TVOXLESS} ENABLE_RUNDATA_MEMORY=1 \
     ENABLE_VOX=0 \
@@ -191,6 +214,8 @@ make_in_docker "f4hwn.fullflash" "${TVOXLESS} ENABLE_RUNDATA_MEMORY=1 \
     ENABLE_AUDIO_BAR=1 \
     ENABLE_FEAT_F4HWN_SLEEP=1 \
     ENABLE_FEAT_F4HWN_SPECTRUM=1 \
+    ENABLE_FEAT_F4HWN_RESTORE_SCAN=1 \
+    +ENABLE_FEAT_F4HWN_RESET_CHANNEL=1 \
     ENABLE_REDUCE_LOW_MID_TX_POWER=1 \
     ENABLE_FEAT_F4HWN_RX_TX_TIMER=1 \
     ENABLE_FEAT_F4HWN_SCREENSHOT=1 \
@@ -213,9 +238,11 @@ fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+BCOMMON="ENABLE_AIRCOPY=1 ENABLE_NOAA=0"
+
+make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0 $BCOMMON"
+make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1 $BCOMMON"
 make_in_docker "f4hwn.voxless" "${TVOXLESS}"
-make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0"
-make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
