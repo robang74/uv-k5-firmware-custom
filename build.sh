@@ -146,12 +146,12 @@ echo
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-#exec_in_docker "rm -f ./${DEST_DIR}/*"
+DEFAULT="" # "ENABLE_VOICE=1"
 
 default_first=0
 
 if [ $default_first -ne 0 ]; then
-    make_in_docker "f4hwn.default"
+    make_in_docker "f4hwn.default" $DEFAULT
 
     # RAF: to test the new code is compiling
     ret=$?;
@@ -185,6 +185,7 @@ TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
 
 make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
     ENABLE_VOX=0 \
+    ENABLE_VOICE=0 \
     ENABLE_AIRCOPY=0 \
     ENABLE_AUDIO_BAR=0 \
     ENABLE_FEAT_F4HWN_SLEEP=0 \
@@ -205,7 +206,7 @@ if [ $default_first -eq 0 ]; then
         show_firmware_filesize
         exit $ret
     fi
-    make_in_docker "f4hwn.default"
+    make_in_docker "f4hwn.default" $DEFAULT
 fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
