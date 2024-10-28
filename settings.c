@@ -27,6 +27,7 @@
 #include "settings.h"
 #include "ui/menu.h"
 
+#ifdef ENABLE_FEAT_F4HWN_RESET_CHANNEL
 static const uint32_t gDefaultFrequencyTable[] =
 {
     14500000,    //
@@ -35,6 +36,7 @@ static const uint32_t gDefaultFrequencyTable[] =
     43320000,    //
     43350000     //
 };
+#endif
 
 #ifdef ENABLE_RUNDATA_MEMORY
 EEPROM_Config_t *gpEeprom = (EEPROM_Config_t *)NULL;
@@ -514,15 +516,17 @@ void SETTINGS_FactoryReset(bool bIsAll)
     {
         RADIO_InitInfo(gRxVfo, FREQ_CHANNEL_FIRST + BAND6_400MHz, 43350000);
 
-        // set the first few memory channels
-        for (i = 0; i < ARRAY_SIZE(gDefaultFrequencyTable); i++)
-        {
-            const uint32_t Frequency   = gDefaultFrequencyTable[i];
-            gRxVfo->freq_config_RX.Frequency = Frequency;
-            gRxVfo->freq_config_TX.Frequency = Frequency;
-            gRxVfo->Band               = FREQUENCY_GetBand(Frequency);
-            SETTINGS_SaveChannel(MR_CHANNEL_FIRST + i, 0, gRxVfo, 2);
-        }
+        #ifdef ENABLE_FEAT_F4HWN_RESET_CHANNEL
+            // set the first few memory channels
+            for (i = 0; i < ARRAY_SIZE(gDefaultFrequencyTable); i++)
+            {
+                const uint32_t Frequency   = gDefaultFrequencyTable[i];
+                gRxVfo->freq_config_RX.Frequency = Frequency;
+                gRxVfo->freq_config_TX.Frequency = Frequency;
+                gRxVfo->Band               = FREQUENCY_GetBand(Frequency);
+                SETTINGS_SaveChannel(MR_CHANNEL_FIRST + i, 0, gRxVfo, 2);
+            }
+        #endif
 
         #ifdef ENABLE_FEAT_F4HWN
             EEPROM_WriteBuffer(0x1FF0, Template);
