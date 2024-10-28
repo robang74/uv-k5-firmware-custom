@@ -1,5 +1,6 @@
-/* Copyright 2024 Armel F4HWN
- * https://github.com/armel
+/*******************************************************************************
+ *
+ * Copyright 2024 Armel F4HWN - https://github.com/armel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,17 +13,27 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
+
+#ifndef SCREENSHOT_H
+#define SCREENSHOT_H
+
+#ifdef ENABLE_UART
+#ifdef ENABLE_FEAT_F4HWN_SCREENSHOT 
 
 #include "debugging.h"
 #include "driver/st7565.h"
 
 static inline void getScreenShot(void)
 {
-    char str[2] = "";
+    char str[4] = "P1\n"; //RAF: the string is here
 
-    LogUart("P1\n");
-    LogUart("128 64\n");
+    LogUart(str);         //RAF: and sent here -4b
+    LogUart("128 64\n");  //RAF: w32 alignied +8ch 
 
     for(uint8_t b = 0; b < 8; b++)
     {
@@ -49,3 +60,7 @@ static inline void getScreenShot(void)
 
     LogUart("\n----------------\n");
 }
+
+#endif //ENABLE_FEAT_F4HWN_SCREENSHOT
+#endif //ENABLE_UART
+#endif //SCREENSHOT_H
