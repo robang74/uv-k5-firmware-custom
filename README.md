@@ -16,9 +16,9 @@ Quansheng UV-K5 is a name and a shell that contains an electronic PCB which is t
 
 ![Source: oe1mww.work/UV-K5.pdf](README.d/UV-K5-models.png)
 
-It microprocessor is an ARM Cortex M0 and in particular it is a STM32G030x8 which works at 64MHz and it is packaged with 32-pinout case. This chip contains 64Bb of program memory space (internal flash) and 16Kb of RAM. Plus a 64Kb EEPROM which is external to the uP chip. While the RF chip is a BK4819.
+Its microprocessor is an ARM Cortex M0/+, a Chinese clone of STM32G030K8T6 (M0+, 8Kb SRAM) or a STM32F030K8T6 (M0, 16kb SRAM). With the uP core which works at 64MHz and all the stuff aroud (but not the EEPROM) packaged with 32-pinout case (LQFP32, 7x7 mm). This chip contains 64Kb of program memory space (internal flash) and the RAM and the RF (radio frequency) chip is a BK4819 while the the 64Kb EEPROM is soldered as external component on the same PCB.
 
-Hence, it allows 60Kb firmware files reasonably because the first 4Kb are used for the bootloader which also deliver the firmware update from the serial port embedded into the hearphone/mic jacks.
+Therefore, it allows 60Kb firmware files reasonably because the first 4Kb are used for the bootloader which also deliver the firmware update from the serial port embedded into the hearphone/mic jacks.
 
 The BK4819 is a half duplex TDD FM transceiver operating within 18 MHz ~ 660, MHz, 840 MHz ~1300 MHz band range. Besides speech communication, the BK4819 on-chip FSK data modem supports F2D and F1W emission to be used in both FRS and DPMR band for text message and GPS information exchange. 
 
