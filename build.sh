@@ -18,6 +18,10 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+trap "printf '\n>>> Ctrl-C catched, exit\n\n' >&2; exit 1" SIGINT
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 name=${0##*/};
 issh=${name%.*};
 issh=${issh/*sh/SHELL}
@@ -52,6 +56,8 @@ if [ "$xtimex" == "" ]; then
     xtimex=1 time -p $0 "$@"
     exit $?
 fi
+
+trap "exit 1" SIGINT
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
