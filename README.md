@@ -10,6 +10,15 @@ This home page is dedicated to the fork and its development.
 
 </br>
 
+# ATTENTION
+
+### THIS PAGE IS NOT UPDATE ANYMORE
+
+Please refer to the same page on the `experimental` branch, [here](https://github.com/robang74/uv-k5-firmware-custom?tab=readme-ov-file#uv-k5-hardware).
+
+
+</br>
+
 ## UV-K5 hardware
 
 Quansheng UV-K5 is a name and a shell that contains an electronic PCB which is the same among various models (cfr. [here](docs/UV-K5.pdf)) included the UV-5R but compated with this, the UV-K5 can be modded also in terms of firmware. 
