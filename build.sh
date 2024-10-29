@@ -53,7 +53,12 @@ cwd=${cwd:-.}
 cd $cwd
 
 if [ "$xtimex" == "" ]; then
-    xtimex=1 time -p $0 "$@"
+    {
+        echo
+        date -u +"######## %s (UNIX) - %F %T (UTC) ########"
+        echo
+    } >> build.log
+    xtimex=1 time -p $0 "$@" | tee -a build.log
     exit $?
 fi
 
