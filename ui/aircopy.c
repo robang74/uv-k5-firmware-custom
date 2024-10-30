@@ -55,8 +55,7 @@ void UI_DisplayAircopy(void)
     UI_PrintString(pPrintStr, 2, 127, 0, 8);
 
     if (gInputBoxIndex == 0) {
-        uint32_t frequency = gRxVfo->freq_config_RX.Frequency;
-        sprintf(String, "%3u.%05u", frequency / 100000, frequency % 100000);
+        sfrqprintf(gRxVfo->freq_config_RX.Frequency);
         // show the remaining 2 small frequency digits
         UI_PrintStringSmallNormal(String + 7, 97, 0, 3);
         String[7] = 0;

@@ -331,7 +331,7 @@ void UI_DisplayMenu(void)
                 if (gSubMenuSelection == 0)
                     strcpy(String, "OFF");
                 else
-                    sprintf(String, "%d", gSubMenuSelection);
+                    sprintf(String, "%d", I16(gSubMenuSelection));
                 break;
         #endif
 
