@@ -1,5 +1,6 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +13,10 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
 
 #include <stdbool.h>
@@ -34,7 +39,9 @@ void UI_DisplayScanner(void)
     UI_DisplayClear();
 
     if (gScanSingleFrequency || (gScanCssState != SCAN_CSS_STATE_OFF && gScanCssState != SCAN_CSS_STATE_FAILED)) {
-        sprintf(String, "FREQ:%u.%05u", gScanFrequency / 100000, gScanFrequency % 100000);
+        sprintf(String, "FREQ:%3u.%05u",
+            U16(gScanFrequency / MHZ),
+            U16(gScanFrequency % MHZ));
         pPrintStr = String;
     } else {
         pPrintStr = "FREQ:**.*****";
@@ -45,7 +52,9 @@ void UI_DisplayScanner(void)
     if (gScanCssState < SCAN_CSS_STATE_FOUND || !gScanUseCssResult) {
         pPrintStr = "CTC:******";
     } else if (gScanCssResultType == CODE_TYPE_CONTINUOUS_TONE) {
-        sprintf(String, "CTC:%u.%uHz", CTCSS_Options[gScanCssResultCode] / 10, CTCSS_Options[gScanCssResultCode] % 10);
+        sprintf(String, "CTC:%d.%uHz",
+            CTCSS_Options[gScanCssResultCode] / 10,
+            CTCSS_Options[gScanCssResultCode] % 10);
         pPrintStr = String;
     } else {
         sprintf(String, "DCS:D%03oN", DCS_Options[gScanCssResultCode]);

@@ -1,5 +1,6 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +13,12 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
+
 
 #include <string.h>
 #include <stdlib.h>  // abs()
@@ -659,9 +665,9 @@ void UI_DisplayMain(void)
                     }
 
                     UI_PrintString("ScnRng", 5, 0, line + shift, 8);
-                    sprintf(String, "%3u.%05u", gScanRangeStart / 100000, gScanRangeStart % 100000);
+                    sfrqprintf(gScanRangeStart);
                     UI_PrintStringSmallNormal(String, 56, 0, line + shift);
-                    sprintf(String, "%3u.%05u", gScanRangeStop / 100000, gScanRangeStop % 100000);
+                    sfrqprintf(gScanRangeStop);
                     UI_PrintStringSmallNormal(String, 56, 0, line + shift + 1);
 
                     if (!isMainOnly(false))
@@ -673,9 +679,9 @@ void UI_DisplayMain(void)
                 }
 #else
                 UI_PrintString("ScnRng", 5, 0, line, 8);
-                sprintf(String, "%3u.%05u", gScanRangeStart / 100000, gScanRangeStart % 100000);
+                sfrqprintf(gScanRangeStart);
                 UI_PrintStringSmallNormal(String, 56, 0, line);
-                sprintf(String, "%3u.%05u", gScanRangeStop / 100000, gScanRangeStop % 100000);
+                sfrqprintf(gScanRangeStop);
                 UI_PrintStringSmallNormal(String, 56, 0, line + 1);
                 continue;
 #endif
@@ -958,7 +964,7 @@ void UI_DisplayMain(void)
                 switch (gpEeprom->CHANNEL_DISPLAY_MODE)
                 {
                     case MDF_FREQUENCY: // show the channel frequency
-                        sprintf(String, "%3u.%05u", frequency / 100000, frequency % 100000);
+                        sfrqprintf(frequency);
 #ifdef ENABLE_BIG_FREQ
                         if(frequency < _1GHz_in_KHz) {
                             // show the remaining 2 small frequency digits
@@ -1016,7 +1022,7 @@ void UI_DisplayMain(void)
 #ifdef ENABLE_FEAT_F4HWN
                             if (isMainOnly(false))
                             {
-                                sprintf(String, "%3u.%05u", frequency / 100000, frequency % 100000);
+                                sfrqprintf(frequency);
                                 if(frequency < _1GHz_in_KHz) {
                                     // show the remaining 2 small frequency digits
                                     UI_PrintStringSmallNormal(String + 7, 113, 0, line + 4);
@@ -1032,11 +1038,11 @@ void UI_DisplayMain(void)
                             }
                             else
                             {
-                                sprintf(String, "%03u.%05u", frequency / 100000, frequency % 100000);
+                                sfrqprintf(frequency);
                                 UI_PrintStringSmallNormal(String, 32 + 4, 0, line + 1);
                             }
 #else                           // show the channel frequency below the channel number/name
-                            sprintf(String, "%03u.%05u", frequency / 100000, frequency % 100000);
+                            sfrqprintf(frequency);
                             UI_PrintStringSmallNormal(String, 32 + 4, 0, line + 1);
 #endif
                         }
@@ -1046,7 +1052,7 @@ void UI_DisplayMain(void)
             }
             else
             {   // frequency mode
-                sprintf(String, "%3u.%05u", frequency / 100000, frequency % 100000);
+                sfrqprintf(frequency);
 
 #ifdef ENABLE_BIG_FREQ
                 if(frequency < _1GHz_in_KHz) {

@@ -1,5 +1,6 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +13,10 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
 
 #ifndef MISC_H
@@ -40,6 +45,20 @@
 #define IS_FREQ_CHANNEL(x)     ((x) >= FREQ_CHANNEL_FIRST && (x) <= FREQ_CHANNEL_LAST)
 #define IS_VALID_CHANNEL(x)    ((x) < LAST_CHANNEL)
 #define IS_NOAA_CHANNEL(x)     ((x) >= NOAA_CHANNEL_FIRST && (x) <= NOAA_CHANNEL_LAST)
+
+#define MHZ 100000
+//
+//RAF: type checking costs footprint and unless the compiler/linker creates troubles
+//     at compile time or at running time, there is no reason to enable these macros.
+//
+#ifdef ENABLE_SPRINTF_TYPE_CHECKING
+#define I16(x) (int16_t)(x)
+#define U16(x) (uint16_t)(x)
+#else
+#define I16(x) (x)
+#define U16(x) (x)
+#endif
+#define sfrqprintf(f) sprintf(String, "%3u.%05u", U16(f/MHZ), U16(f%MHZ))
 
 enum {
     MR_CHANNEL_FIRST   = 0,

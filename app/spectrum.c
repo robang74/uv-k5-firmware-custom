@@ -943,7 +943,7 @@ static void ShowChannelName(uint32_t f)
 
 static void DrawF(uint32_t f)
 {
-    sprintf(String, "%u.%05u", f / 100000, f % 100000);
+    sfrqprintf(f);
     UI_PrintStringSmallNormal(String, 8, 127, 0);
 
     sprintf(String, "%3s", gModulationStr[settings.modulationType]);
@@ -969,21 +969,26 @@ static void DrawNums()
 
     if (IsCenterMode())
     {
-        sprintf(String, "%u.%05u \x7F%u.%02uk", currentFreq / 100000,
-                currentFreq % 100000, settings.frequencyChangeStep / 100,
-                settings.frequencyChangeStep % 100);
+        sprintf(String, "%u.%05u \x7F%u.%02uk",
+                U16(currentFreq / MHZ),
+                U16(currentFreq % MHZ),
+                U16(settings.frequencyChangeStep / 100),
+                U16(settings.frequencyChangeStep % 100));
         GUI_DisplaySmallest(String, 36, 49, false, true);
     }
     else
     {
-        sprintf(String, "%u.%05u", GetFStart() / 100000, GetFStart() % 100000);
+        uint32_t f;
+
+        f = GetFStart(); sfrqprintf(f);
         GUI_DisplaySmallest(String, 0, 49, false, true);
 
-        sprintf(String, "\x7F%u.%02uk", settings.frequencyChangeStep / 100,
-                settings.frequencyChangeStep % 100);
+        sprintf(String, "\x7F%u.%02uk",
+                U16(settings.frequencyChangeStep / 100),
+                U16(settings.frequencyChangeStep % 100));
         GUI_DisplaySmallest(String, 48, 49, false, true);
 
-        sprintf(String, "%u.%05u", GetFEnd() / 100000, GetFEnd() % 100000);
+        f = GetFEnd(); sfrqprintf(f);
         GUI_DisplaySmallest(String, 93, 49, false, true);
     }
 }
