@@ -61,7 +61,9 @@ The two most impacting are:
 
 - allocate and initialize large structures into a reservede memory which not get in .bbs section
 
-The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to include many features
+The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to include many features.
+
+The following data have been collected and can be replicated by tag [data01](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data01):
 
 ```
 # no torch & no charge lvl,  need  (bytes)  (*next)  (rundata)
