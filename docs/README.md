@@ -32,7 +32,7 @@ Anyway, have fun.
 
 ## Table of Contents
 
-* [My Features](#main-features)
+* [Main Features from F4HWN](#main-features-and-improvements-from-F4HWN)
 * [Main Features from Egzumer](#main-features-from-egzumer)
 * [Manual](#manual)
 * [Radio Performance](#radio-performance)
@@ -43,7 +43,7 @@ Anyway, have fun.
 * [License](#license)
 * [Example changes/updates](#example-changesupdates)
 
-### Main features:
+### Main features and improvements from F4HWN:
 
 * improve default power settings level: 
     * Low1 to Low5 (<~20mW, ~125mW, ~250mW, ~500mW, ~1W), 
@@ -75,22 +75,24 @@ Anyway, have fun.
     * and more...
 * new menu entries and changes:
     * add SetPwr menu to set User power (<20mW, 125mW, 250mW, 500mW, 1W, 2W or 5W),
-    * add SetPtt menu to set PTT mode (Classic or OnePush),
-    * add SetTot menu to set TOT alert (Off, Sound, Visual, All),
+    * add SetPTT menu to set PTT mode (Classic or OnePush),
+    * add SetTOT menu to set TOT alert (Off, Sound, Visual, All),
     * add SetCtr menu to set contrast (0 to 15),
     * add SetInv menu to set screen in invert mode (Off or On),
-    * add SetEot menu to set EOT (End Of Transmission) alert (Off, Sound, Visual, All),
+    * add SetEOT menu to set EOT (End Of Transmission) alert (Off, Sound, Visual, All),
     * add SetMet menu to set s-meter style (Classic or Tiny),
     * add SetLck menu to set what is locked (Keys or Keys + PTT),
-    * add SetGui menu to set font size on the VFO baseline (Classic or Tiny),
+    * add SetGUI menu to set font size on the VFO baseline (Classic or Tiny),
     * add TXLock menu to open TX on channel,
     * add SetTmr menu to set RX and TX timers (Off or On),
     * add SetOff menu to set the delay before the transceiver goes into deep sleep (Off or 1 minute to 2 hours),
+    * add SetNFM menu to set Narrow width (12.5kHz or 6.25kHz),
     * rename BatVol menu (52/63) to SysInf, which displays the firmware version in addition to the battery status,
     * improve PonMsg menu,
     * improve BackLt menu,
     * improve TxTOut menu,
-    * improve ScnRev menu (CARRIER FAST, CARRIER SLOW, STOP, TIMEOUT from 5 secondes to 2 minutes)
+    * improve ScnRev menu (CARRIER from 250ms to 20s, STOP, TIMEOUT from 5s to 2m)
+    * improve KeyLck menu (OFF, delay from 15s to 10m)
     * add HAM CA F Lock band (for Canadian zone),
     * remove blink and SOS functionality, 
     * remove AM Fix menu (AM Fix is ENABLED by default),
@@ -142,6 +144,7 @@ Anyway, have fun.
 * and more...
 
 ### Main features from Egzumer:
+
 * many of OneOfEleven mods:
    * AM fix, huge improvement in reception quality
    * long press buttons functions replicating F+ action
