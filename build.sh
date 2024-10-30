@@ -53,10 +53,16 @@ cwd=${cwd:-.}
 cd $cwd
 
 if [ "$xtimex" == "" ]; then
+    function show_git_branch_info() {
+        a=$(git branch -vv | sed -ne "s,\* .*\[\([^ ]*\)\] .*,\\1,p")
+        set -- $(echo ${a%/*} ${a##*/})
+        a=$(git remote -v | sed -ne "s,^$1 *\([^ ]*\) .*(fetch),\\1,p")
+        b=${a##*/} ; c=${a/\/$b/}; d=${c##*/}; echo "$d [ ${b/.git/} ] $2"
+    }
     {
-        echo
         date -u +"######## %s (UNIX) - %F %T (UTC) ########"
-        echo
+        which git >/dev/null\
+         && echo "######## $(show_git_branch_info 2>/dev/null)"
     } >> build.log
     xtimex=1 time -p $0 "$@" | tee -a build.log
     exit $?
