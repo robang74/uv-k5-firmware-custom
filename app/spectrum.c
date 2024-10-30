@@ -1,5 +1,6 @@
-/* Copyright 2023 fagci
- * https://github.com/fagci
+/*******************************************************************************
+ *
+ * Copyright 2023 fagci - https://github.com/fagci
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +13,12 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
+
 #include "app/spectrum.h"
 #include "am_fix.h"
 #include "audio.h"
@@ -347,9 +353,10 @@ static void SetF(uint32_t f)
 
     BK4819_SetFrequency(fMeasure);
     BK4819_PickRXFilterPathBasedOnFrequency(fMeasure);
-    uint16_t reg = BK4819_ReadRegister(BK4819_REG_30);
+    //RAF: reusing f saves a uint16_t in the function stack
+    f = BK4819_ReadRegister(BK4819_REG_30);
     BK4819_WriteRegister(BK4819_REG_30, 0);
-    BK4819_WriteRegister(BK4819_REG_30, reg);
+    BK4819_WriteRegister(BK4819_REG_30, f);
 }
 
 // Spectrum related
@@ -548,13 +555,23 @@ static void UpdatePeakInfo()
 static void SetRssiHistory(uint16_t idx, uint16_t rssi)
 {
 #ifdef ENABLE_SCAN_RANGES
-    if (scanInfo.measurementsCount > 128)
-    {
-        uint8_t i = (uint32_t)ARRAY_SIZE(rssiHistory) * 1000 / scanInfo.measurementsCount * idx / 1000;
+//  if (scanInfo.measurementsCount > 128)                //RAF: bigger than 128 is wrong but 127, anyway
+    if (scanInfo.measurementsCount & ~0x007F)            //RAF: this is 127/128 faster and 1/128 slower
+    {                                                    //RAF: unless 128 is a peculiarly frequent value
+
+        //uint8_t i = (uint32_t)ARRAY_SIZE(rssiHistory) * 1000 / scanInfo.measurementsCount * idx / 1000;
+
+        uint32_t i;                                      //RAF: uninitialised 32 variable
+        i = ARRAY_SIZE(rssiHistory) * idx;               //RAF: multiplication first of all
+        i += (1U + scanInfo.measurementsCount) >> 1;     //RAF: rounding the division values, both
+        i /= scanInfo.measurementsCount;                 //RAF: make the integer main division
+        i &= 0xFF;                                       //RAF: limit the index at % 256 (uint8_t)
+
         if (rssiHistory[i] < rssi || isListening)
             rssiHistory[i] = rssi;
-        rssiHistory[(i + 1) % 128] = 0;
-        return;
+
+        rssiHistory[(i + 1) & 0x007F] = 0;               //RAF: x % 128 = x & 0x7F
+        return;                                          //RAF: more precise and -8b less in .text
     }
 #endif
     rssiHistory[idx] = rssi;
