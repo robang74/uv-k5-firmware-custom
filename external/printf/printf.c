@@ -1,6 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // \author (c) Marco Paland (info@paland.com)
 //             2014-2017, PALANDesign Hannover, Germany
+// \author (c) Roberto A. Foglietta (roberto.fogliett@gmail.com)
+//             2024, Genova, Italia
 //
 // \license The MIT License (MIT)
 //
@@ -72,8 +74,10 @@
 #define FLAGS_HASH      (1U << 4U)
 #define FLAGS_UPPERCASE (1U << 5U)
 #define FLAGS_LONG      (1U << 6U)
+//#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
 #define FLAGS_LONG_LONG (1U << 7U)
 #define FLAGS_PRECISION (1U << 8U)
+//#endif
 #define FLAGS_WIDTH     (1U << 9U)
 
 
@@ -118,16 +122,24 @@ static size_t _ntoa_format(char* buffer, char* buf, size_t len, bool negative, u
   }
 
   // pad leading zeros
+#if 1 //ndef ENABLE_ROBANG74_SPRINTF_FUNC
   while (!(flags & FLAGS_LEFT) && (len < prec) && (len < NTOA_BUFFER_SIZE)) {
     buf[len++] = '0';
   }
+#endif
   while (!(flags & FLAGS_LEFT) && (flags & FLAGS_ZEROPAD) && (len < width) && (len < NTOA_BUFFER_SIZE)) {
     buf[len++] = '0';
   }
 
   // handle hash
   if (flags & FLAGS_HASH) {
-    if (((len == prec) || (len == width)) && (len > 0U)) {
+#if 1 //ndef ENABLE_ROBANG74_SPRINTF_FUNC
+    if (((len == prec)
+    || (len == width)) && (len > 0U)) {
+#else
+    (void)prec;
+    if ((len == width) && (len > 0U)) {
+#endif
       len--;
       if ((base == 16U) && (len > 0U)) {
         len--;
@@ -190,7 +202,11 @@ static size_t _ntoa_long(char* buffer, unsigned long value, bool negative, unsig
   size_t len = 0U;
 
   // write if precision != 0 and value is != 0
-  if (!(flags & FLAGS_PRECISION) || value) {
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
+  if (value || !(flags & FLAGS_PRECISION)) {
+#else
+  if (value) {
+#endif
     do {
       char digit = (char)(value % base);
       buf[len++] = digit < 10 ? '0' + digit : (flags & FLAGS_UPPERCASE ? 'A' : 'a') + digit - 10;
@@ -361,7 +377,12 @@ static size_t _ftoa(double value, char* buffer, size_t maxlen, unsigned int prec
 // internal vsnprintf
 static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va_list va)
 {
-  unsigned int flags, width, precision, n;
+/*
+ *  RAF: precision is potentially indefined here but setting to zero anywhere
+ *       caususes the increase of the .text size 368 bytes and .bss of 8 bytes.
+ * TODO: this curiosity and potencial bug, should be investigate further.
+ */
+  unsigned int flags, precision, width, n;
   size_t idx = 0U;
 
   while (idx < buffer_len) {
@@ -413,6 +434,7 @@ static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va
       format++;
     }
 
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
     // evaluate precision field
     precision = 0U;
     if (*format == '.') {
@@ -426,16 +448,17 @@ static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va
         format++;
       }
     }
-
     // evaluate length field
     if (*format == 'l' || *format == 'L') {
       flags |= FLAGS_LONG;
       format++;
     }
     if ((*format == 'l') && (flags & FLAGS_LONG)) {
+
       flags |= FLAGS_LONG_LONG;
       format++;
     }
+#endif
 
     // evaluate specifier
     switch (*format) {
@@ -475,13 +498,14 @@ static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va
         // convert the integer
         if ((*format == 'i') || (*format == 'd')) {
           // signed
-          if (flags & FLAGS_LONG_LONG) {
 #if defined(PRINTF_LONG_LONG_SUPPORT)
+          if (flags & FLAGS_LONG_LONG) {
             const long long value = va_arg(va, long long);
             idx += _ntoa_long_long(&buffer[idx], (unsigned long long)(value > 0 ? value : 0 - value), value < 0, base, buffer_len - idx, precision, width, flags);
-#endif
           }
-          else if (flags & FLAGS_LONG) {
+          else
+#endif
+          if (flags & FLAGS_LONG) {
             const long value = va_arg(va, long);
             idx += _ntoa_long(&buffer[idx], (unsigned long)(value > 0 ? value : 0 - value), value < 0, base, buffer_len - idx, precision, width, flags);
           }
@@ -492,12 +516,13 @@ static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va
         }
         else {
           // unsigned
-          if (flags & FLAGS_LONG_LONG) {
 #if defined(PRINTF_LONG_LONG_SUPPORT)
+          if (flags & FLAGS_LONG_LONG) {
             idx += _ntoa_long_long(&buffer[idx], va_arg(va, unsigned long long), false, base, buffer_len - idx, precision, width, flags);
-#endif
           }
-          else if (flags & FLAGS_LONG) {
+          else
+#endif
+          if (flags & FLAGS_LONG) {
             idx += _ntoa_long(&buffer[idx], va_arg(va, unsigned long), false, base, buffer_len - idx, precision, width, flags);
           }
           else {
@@ -538,16 +563,22 @@ static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va
         char* p = va_arg(va, char*);
         size_t l = _strlen(p);
         // pre padding
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
         if (flags & FLAGS_PRECISION) {
           l = (l < precision ? l : precision);
         }
+#endif
         if (!(flags & FLAGS_LEFT)) {
           while ((idx < buffer_len) && (l++ < width)) {
             buffer[idx++] = ' ';
           }
         }
         // string output
-        while ((idx < buffer_len) && (*p != 0) && (!(flags & FLAGS_PRECISION) || precision--)) {
+        while ((idx < buffer_len) && (*p)
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
+        && (!(flags & FLAGS_PRECISION) || precision--)
+#endif
+        ){
           buffer[idx++] = *(p++);
         }
         // post padding
@@ -592,7 +623,7 @@ static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#if 0
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
 int printf(const char* format, ...)
 {
   va_list va;
@@ -616,7 +647,7 @@ int sprintf(char* buffer, const char* format, ...)
   return (int)ret;
 }
 
-#if 0
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
 int snprintf(char* buffer, size_t count, const char* format, ...)
 {
   va_list va;
