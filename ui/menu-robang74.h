@@ -132,7 +132,10 @@ const t_menu_item MenuList[] =
     {"s-GUI",       MENU_SET_GUI       },
     {"s-TMR",       MENU_SET_TMR       },
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
-    {"S-OFF",       MENU_SET_OFF       },
+    {"s-OFF",       MENU_SET_OFF       },
+#endif
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    {"s-NFM",       MENU_SET_NFM       },
 #endif
 #endif
     {"Reset",       MENU_RESET         },
@@ -317,6 +320,14 @@ const char gSubMenu_SET_MET[2][5] =
     "TINY",
     "NRML"
 };
+
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+const char gSubMenu_SET_NFM[2][5] =
+{
+   "12.5",
+   "6.25"
+};
+#endif
 
 const char gSubMenu_PONMSG[][5] =
 {

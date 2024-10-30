@@ -76,6 +76,9 @@ extern const char        gSubMenu_BATTYP[3][5];
     extern const char    gSubMenu_SET_PTT[2][6];
     extern const char    gSubMenu_SET_LCK[2][5];
     extern const char    gSubMenu_SET_MET[2][5];
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    extern const char    gSubMenu_SET_NFM[2][5];
+#endif
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN
@@ -251,9 +254,9 @@ extern const char        gSubMenu_TOT[11][7];
     extern const char    gSubMenu_SET_TOT[4][7];
     extern const char    gSubMenu_SET_LCK[2][9];
     extern const char    gSubMenu_SET_MET[2][8];
-    #ifdef ENABLE_FEAT_F4HWN_NARROWER
-        extern const char    gSubMenu_SET_NFM[2][8];
-    #endif
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    extern const char    gSubMenu_SET_NFM[2][8];
+#endif
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN

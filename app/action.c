@@ -497,14 +497,22 @@ void ACTION_Ptt(void)
 
 void ACTION_Wn(void)
 {
-    bool chbw;
+    uint8_t chbw;
 
     if(FUNCTION_IsRx()) {
         gRxVfo->CHANNEL_BANDWIDTH = !gRxVfo->CHANNEL_BANDWIDTH;
         chbw = gRxVfo->CHANNEL_BANDWIDTH;
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+        if(gRxVfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW && gSetting_set_nfm == 1)
+            chbw++;
+#endif
     } else {
         gTxVfo->CHANNEL_BANDWIDTH = !gTxVfo->CHANNEL_BANDWIDTH;
         chbw = gTxVfo->CHANNEL_BANDWIDTH;
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+        if(gTxVfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW && gSetting_set_nfm == 1)
+            chbw++;
+#endif
     }
 
     BK4819_SetFilterBandwidth(chbw,

@@ -128,6 +128,9 @@ const t_menu_item MenuList[] =
 #ifdef ENABLE_FEAT_F4HWN_SLEEP
     {"SetOff",       MENU_SET_OFF      },
 #endif
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    {"SetNFM",      MENU_SET_NFM       },
+#endif
 #endif
     // hidden menu items from here on
     // enabled if pressing both the PTT and upper side button at power-on
@@ -359,6 +362,15 @@ const char gSubMenu_BATTYP[][9] =
         "TINY",
         "CLASSIC"
     };
+
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    const char gSubMenu_SET_NFM[][8] =
+    {
+       "12.5kHz",
+       "6.25kHz"
+    };
+#endif
+
 #endif
 
 const t_sidefunction gSubMenu_SIDEFUNCTIONS[] =

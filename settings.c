@@ -76,6 +76,12 @@ void SETTINGS_InitEEPROM(void)
     gpEeprom->DUAL_WATCH            = (Data[4] < 3) ? Data[4] : DUAL_WATCH_CHAN_A;
     gpEeprom->BACKLIGHT_TIME        = (Data[5] < 62) ? Data[5] : 12;
     gpEeprom->TAIL_TONE_ELIMINATION = (Data[6] < 2) ? Data[6] : false;
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    gpEeprom->TAIL_TONE_ELIMINATION = ((Data[6] & 0x01) < 2) ? (Data[6] & 0x01) : false; //RAF: u8 & 0x01 < 2 always!
+    gSetting_set_nfm = (((Data[6] >> 1) & 0x03) < 3) ? ((Data[6] >> 1) & 0x03) : 0; //RAF: u8 & 0x03 < 3 always!
+#else
+    gpEeprom->TAIL_TONE_ELIMINATION = (Data[6] < 2) ? Data[6] : false;
+#endif
 #ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
     gpEeprom->VFO_OPEN = Data[7] & 0x01;
     gpEeprom->CURRENT_STATE = (Data[7] >> 1) & 0x07;
@@ -83,7 +89,6 @@ void SETTINGS_InitEEPROM(void)
 #else
     gpEeprom->VFO_OPEN              = (Data[7] < 2) ? Data[7] : true;
 #endif
-
     // 0E80..0E87
     EEPROM_ReadBuffer(0x0E80, Data, 8);
     gpEeprom->ScreenChannel[0]   = IS_VALID_CHANNEL(Data[0]) ? Data[0] : (FREQ_CHANNEL_FIRST + BAND6_400MHz);
@@ -640,7 +645,11 @@ void SETTINGS_SaveSettings(void)
         State[5] = gpEeprom->BACKLIGHT_TIME;
     #endif
 
-    State[6] = gpEeprom->TAIL_TONE_ELIMINATION;
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    State[6] = (gpEeprom->TAIL_TONE_ELIMINATION & 0x01) | ((gSetting_set_nfm & 0x03) << 1);
+#else
+    State[6] = gEeprom->TAIL_TONE_ELIMINATION;
+#endif
 #ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
     State[7] = (gpEeprom->VFO_OPEN & 0x01) | ((gpEeprom->CURRENT_STATE & 0x07) << 1) | ((gpEeprom->SCAN_LIST_DEFAULT & 0x07) << 4);
 #else

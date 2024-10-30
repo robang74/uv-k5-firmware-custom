@@ -1281,16 +1281,36 @@ void UI_DisplayMain(void)
 #endif
 
 #if ENABLE_FEAT_F4HWN
-        if (isMainOnly(true))
-        {
-            const char *bandWidthNames[] = {"W", "N"};
-            UI_PrintStringSmallNormal(bandWidthNames[vfoInfo->CHANNEL_BANDWIDTH], LCD_WIDTH + 80, 0, line + 1);
-        }
-        else
-        {
-            const char *bandWidthNames[] = {"WIDE", "NAR"};
-            GUI_DisplaySmallest(bandWidthNames[vfoInfo->CHANNEL_BANDWIDTH], 91, line == 0 ? 17 : 49, false, true);
-        }
+        #ifdef ENABLE_FEAT_F4HWN_NARROWER
+            bool narrower = 0;
+
+            if(vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW && gSetting_set_nfm == 1)
+            {
+                narrower = 1;
+            }
+
+            if (isMainOnly(true))
+            {
+                const char *bandWidthNames[] = {"W", "N", "N+"};
+                UI_PrintStringSmallNormal(bandWidthNames[vfoInfo->CHANNEL_BANDWIDTH + narrower], LCD_WIDTH + 80, 0, line + 1);
+            }
+            else
+            {
+                const char *bandWidthNames[] = {"WIDE", "NAR", "NAR+"};
+                GUI_DisplaySmallest(bandWidthNames[vfoInfo->CHANNEL_BANDWIDTH + narrower], 91, line == 0 ? 17 : 49, false, true);
+            }
+        #else
+            if (isMainOnly(true))
+            {
+                const char *bandWidthNames[] = {"W", "N"};
+                UI_PrintStringSmallNormal(bandWidthNames[vfoInfo->CHANNEL_BANDWIDTH], LCD_WIDTH + 80, 0, line + 1);
+            }
+            else
+            {
+                const char *bandWidthNames[] = {"WIDE", "NAR"};
+                GUI_DisplaySmallest(bandWidthNames[vfoInfo->CHANNEL_BANDWIDTH], 91, line == 0 ? 17 : 49, false, true);
+            }
+        #endif
 #else
         if (vfoInfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW)
             UI_PrintStringSmallNormal("N", LCD_WIDTH + 70, 0, line + 1);
