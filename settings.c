@@ -72,7 +72,7 @@ void SETTINGS_InitEEPROM(void)
 #endif
     gpEeprom->CHANNEL_DISPLAY_MODE  = (Data[1] < 4) ? Data[1] : MDF_FREQUENCY;    // 4 instead of 3 - extra display mode
     gpEeprom->CROSS_BAND_RX_TX      = (Data[2] < 3) ? Data[2] : CROSS_BAND_OFF;
-    gpEeprom->BATTERY_SAVE          = (Data[3] < 5) ? Data[3] : 4;
+    gpEeprom->BATTERY_SAVE          = (Data[3] < 6) ? Data[3] : 4;
     gpEeprom->DUAL_WATCH            = (Data[4] < 3) ? Data[4] : DUAL_WATCH_CHAN_A;
     gpEeprom->BACKLIGHT_TIME        = (Data[5] < 62) ? Data[5] : 12;
     gpEeprom->TAIL_TONE_ELIMINATION = (Data[6] < 2) ? Data[6] : false;

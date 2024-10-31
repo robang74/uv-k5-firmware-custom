@@ -190,7 +190,8 @@ const char gSubMenu_SAVE[][4] =
     "1:1",
     "1:2",
     "1:3",
-    "1:4"
+    "1:4",
+    "1:5"
 };
 
 const char* const gSubMenu_RXMode[] =
