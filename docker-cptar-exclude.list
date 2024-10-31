@@ -1,0 +1,15 @@
+.git\*
+README.\*
+*.tar
+*.tgz
+*.tar.gz
+*.patch
+*.orig
+*.rej
+patches
+win_make.bat
+external/full.repos
+compiled-firmware
+archive
+images
+docs

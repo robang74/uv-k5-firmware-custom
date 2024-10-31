@@ -18,10 +18,6 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-trap "printf '\n>>> Ctrl-C catched, exit\n\n' >&2; exit 1" SIGINT
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
 name=${0##*/};
 issh=${name%.*};
 issh=${issh/*sh/SHELL}
@@ -76,7 +72,9 @@ if [ "$xtimex" == "" ]; then
     exit $?
 fi
 
-trap "exit 1" SIGINT
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+trap 'printf "\n>>> Ctrl-C catched, exit\n\n" >&2; exit 1' SIGINT
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -88,6 +86,8 @@ DOCK_IMG="uvk5"
 DOCK_NME=$DOCK_IMG-$$
 FILE_IMG="docker.image"
 DOCK_RMT=$(cat $FILE_IMG | cut -d# -f1 | grep .)
+
+TAR_EXCL="docker-cptar-exclude.list"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -152,16 +152,17 @@ fi
 echo
 echo "docker session $DOCK_NME starting ..."
 echo
-if [ "$alive" != "0" ]; then
-    trap "docker stop $DOCK_NME >/dev/null &" EXIT
+if [ $alive -eq 0 ]; then
+    trap "nohup docker stop $DOCK_NME >/dev/null 2>&1 &" EXIT
 fi
 if ! docker run --name "$DOCK_NME" -d --rm -w "$WRKG_DIR" \
     -v "${LOCL_DIR}:/app/${DEST_DIR}/" -ti uvk5 cat; then
     exit 1
 fi
 make distclean >/dev/null 2>&1 #RAF: just in case
-if true; then #RAF: there are few but good reasons to use tar here
-    tar c -X docker-cptar-exclude.list . | dd bs=1M \
+#RAF: there are few but good reasons to use tar here
+if grep -q . $TAR_EXCL; then
+    tar c -X $TAR_EXCL * | dd bs=1M \
         |  docker cp -a - $DOCK_NME:$WRKG_DIR
 else
     docker cp . $DOCK_NME:$WRKG_DIR
