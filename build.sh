@@ -50,6 +50,14 @@ fi
 
 cwd=${0%/*}
 cwd=${cwd:-.}
+stdbin="build.sh"
+runbin=$0
+if [ "$cwd" == "$stdbin" ]; then
+    cwd="."
+    if ! which $stdbin >/dev/null; then
+       runbin="./$stdbin"
+    fi
+fi
 cd $cwd
 
 if [ "$xtimex" == "" ]; then
@@ -61,10 +69,10 @@ if [ "$xtimex" == "" ]; then
     }
     {
         date -u +"######## %s (UNIX) - %F %T (UTC) ########"
-        which git >/dev/null\
-         && echo "######## $(show_git_branch_info 2>/dev/null)"
+        which git >/dev/null \
+        && echo "######## $(show_git_branch_info 2>/dev/null)"
     } >> build.log
-    xtimex=1 time -p $0 "$@" | tee -a build.log
+    xtimex=1 time -p $runbin "$@" | tee -a build.log
     exit $?
 fi
 
