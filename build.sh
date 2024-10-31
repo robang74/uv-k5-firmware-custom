@@ -250,6 +250,7 @@ make_in_docker "f4hwn.fullflash" "${TVOXLESS} ENABLE_RUNDATA_MEMORY=1 \
     ENABLE_ROBANG74_UI_MENU=1 \
     ENABLE_FLOCK_SHORT_MENU=1 \
     ENABLE_SIXTH_CHARS_MENU=1 \
+    ENABLE_NANO_PRINTF=1 \
     ENABLE_FLASHLIGHT=1"
 
 if [ $default_first -eq 0 ]; then

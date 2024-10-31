@@ -66,6 +66,8 @@ ENABLE_RUNDATA_MEMORY           ?= 1
 ENABLE_SPRINTF_TYPE_CHECKING    ?= 1
 #V needs SPRINTF_TYPE_CHECKING enabled
 ENABLE_ROBANG74_SPRINTF_FUNC    ?= 1
+#V this one just for comparison: larger
+ENABLE_NANO_PRINTF              ?= 0
 
 # ---- DEBUGGING ----
 ENABLE_AM_FIX_SHOW_DATA       	?= 0
@@ -321,6 +323,9 @@ ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
 endif
 endif
 
+ifeq ($(ENABLE_NANO_PRINTF), 1)
+    CFLAGS += -DENABLE_NANO_PRINTF
+endif
 ifeq ($(ENABLE_ROBANG74_SPRINTF_FUNC), 1)
     CFLAGS += -DENABLE_ROBANG74_SPRINTF_FUNC
 endif
