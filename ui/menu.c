@@ -327,10 +327,7 @@ void UI_DisplayMenu(void)
 
         #ifdef ENABLE_VOX
             case MENU_VOX:
-                if (gSubMenuSelection == 0)
-                    strcpy(String, "OFF");
-                else
-                    sprintf(String, "%d", I16(gSubMenuSelection));
+                sprintf(String, gSubMenuSelection == 0 ? "OFF" : "%u", U16(gSubMenuSelection));
                 break;
         #endif
 
@@ -480,7 +477,7 @@ void UI_DisplayMenu(void)
         }
 
         case MENU_SAVE:
-            strcpy(String, gSubMenu_SAVE[gSubMenuSelection]);
+            sprintf(String, gSubMenuSelection == 0 ? "OFF" : "%u", U16(gSubMenuSelection));
             break;
 
         case MENU_TDR:
@@ -523,10 +520,7 @@ void UI_DisplayMenu(void)
             break;
 
         case MENU_RP_STE:
-            if (gSubMenuSelection == 0)
-                strcpy(String, "OFF");
-            else
-                sprintf(String, "%d*100ms", I16(gSubMenuSelection));
+            sprintf(String, gSubMenuSelection == 0 ? "OFF" : "%u*100ms", U16(gSubMenuSelection));
             break;
 
         case MENU_S_LIST:

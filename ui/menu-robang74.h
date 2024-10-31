@@ -192,16 +192,6 @@ const char gSubMenu_OFF_ON[][4] =
     "1"
 };
 
-const char gSubMenu_SAVE[][4] =
-{
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5"
-};
-
 const char* const gSubMenu_RXMode[] =
 {
     "RX-1\nTX-1",       // TX and RX on main only

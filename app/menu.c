@@ -311,7 +311,7 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 
         case MENU_SAVE:
             //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_SAVE) - 1;
+            *pMax = 5;
             break;
 
         case MENU_MIC:
