@@ -719,13 +719,13 @@ void UI_DisplayMenu(void)
 
         #ifdef ENABLE_FEAT_F4HWN_VOL
             case MENU_SET_VOL:
-                sprintf(String, gSubMenuSelection == 0 ? "OFF" : "%02u", gSubMenuSelection);
+                sprintf(String, gSubMenuSelection == 0 ? "OFF" : "%02u", U16(gSubMenuSelection));
                 gpEeprom->VOLUME_GAIN = gSubMenuSelection;
                 BK4819_WriteRegister(BK4819_REG_48,
                     (11u << 12)                |     // ??? .. 0 ~ 15, doesn't seem to make any difference
                     ( 0u << 10)                |     // AF Rx Gain-1
-                    (gpEeprom->VOLUME_GAIN << 4) |     // AF Rx Gain-2
-                    (gpEeprom->DAC_GAIN    << 0));     // AF DAC Gain (after Gain-1 and Gain-2)
+                    (gpEeprom->VOLUME_GAIN << 4) |   // AF Rx Gain-2
+                    (gpEeprom->DAC_GAIN    << 0));   // AF DAC Gain (after Gain-1 and Gain-2)
                 break;
         #endif
 #endif

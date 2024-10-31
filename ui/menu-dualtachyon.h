@@ -131,6 +131,9 @@ const t_menu_item MenuList[] =
 #ifdef ENABLE_FEAT_F4HWN_NARROWER
     {"SetNFM",      MENU_SET_NFM       },
 #endif
+#ifdef ENABLE_FEAT_F4HWN_VOL
+    {"SetVol",      MENU_SET_VOL       },
+#endif
 #endif
     // hidden menu items from here on
     // enabled if pressing both the PTT and upper side button at power-on

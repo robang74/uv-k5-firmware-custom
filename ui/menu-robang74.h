@@ -137,6 +137,9 @@ const t_menu_item MenuList[] =
 #ifdef ENABLE_FEAT_F4HWN_NARROWER
     {"s-NFM",       MENU_SET_NFM       },
 #endif
+#ifdef ENABLE_FEAT_F4HWN_VOL
+    {"s-VOL",       MENU_SET_VOL       },
+#endif
 #endif
     {"Reset",       MENU_RESET         },
 /******************************************
