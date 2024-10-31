@@ -177,6 +177,8 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
         case MENU_SC_REV:
             //*pMin = 0;
             *pMax = 104;
+            ///RAF: 61 or 26 or 64 or 104 (why?)
+            //*pMax = ARRAY_SIZE(gSubMenu_SC_REV) - 1;
             break;
 
         case MENU_ROGER:
@@ -636,8 +638,9 @@ void MENU_AcceptSetting(void)
             break;
 
         case MENU_AUTOLK:
-            gpEeprom->AUTO_KEYPAD_LOCK = gSubMenuSelection;      
-            gKeyLockCountdown        = gpEeprom->AUTO_KEYPAD_LOCK * 30; // 15 seconds step
+            gpEeprom->AUTO_KEYPAD_LOCK = gSubMenuSelection;
+            // RAF: was 30x but <<5 is faster // 15 seconds step
+            gKeyLockCountdown = gpEeprom->AUTO_KEYPAD_LOCK << 5;
             break;
 
         case MENU_S_ADD1:
