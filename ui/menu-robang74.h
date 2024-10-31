@@ -339,8 +339,8 @@ const char gSubMenu_BATTYP[][9] =
     "3500"
 };
 
-#ifndef ENABLE_FEAT_F4HWN
-const char gSubMenu_SCRAMBLER[][7] =
+#ifdef ENABLE_SCRAMBLER
+const char gSubMenu_SCRAMBLER[][5] =
 {
     "OFF",
     "2.6k",

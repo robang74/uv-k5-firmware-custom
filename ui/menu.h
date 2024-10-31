@@ -46,7 +46,7 @@ enum menu_id_enum : uint8_t
     MENU_OFFSET,
     MENU_TOT,
     MENU_W_N,
-#ifndef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_SCRAMBLER
     MENU_SCR,
 #endif
     MENU_BCL,
@@ -198,8 +198,12 @@ extern const char        gSubMenu_RX_TX[4][6];
 extern const char        gSubMenu_BAT_TXT[3][8];
 extern const char        gSubMenu_BATTYP[3][9];
 
-#ifndef ENABLE_FEAT_F4HWN
-    extern const char        gSubMenu_SCRAMBLER[11][7];
+#ifdef ENABLE_SCRAMBLER
+#ifdef ENABLE_ROBANG74_UI_MENU
+    extern const char        gSubMenu_SCRAMBLER[][5];
+#else
+    extern const char        gSubMenu_SCRAMBLER[][7];
+#endif
 #endif
 
 typedef struct {char* name; uint8_t id;} t_sidefunction;

@@ -15,6 +15,7 @@ ENABLE_TX1750                 	?= 1
 ENABLE_PWRON_PASSWORD         	?= 0
 ENABLE_DTMF_CALLING           	?= 0
 ENABLE_FLASHLIGHT             	?= 1
+ENABLE_SCRAMBLER             	?= 0
 
 # ---- CUSTOM MODS ----
 ENABLE_SPECTRUM               	?= 1
@@ -455,6 +456,9 @@ ifeq ($(ENABLE_DTMF_CALLING),1)
 endif
 ifeq ($(ENABLE_AGC_SHOW_DATA),1)
 	CFLAGS  += -DENABLE_AGC_SHOW_DATA
+endif
+ifeq ($(ENABLE_SCRAMBLER),1)
+	CFLAGS  += -DENABLE_SCRAMBLER
 endif
 ifeq ($(ENABLE_FLASHLIGHT),1)
 	CFLAGS  += -DENABLE_FLASHLIGHT

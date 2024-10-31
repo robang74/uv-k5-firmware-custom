@@ -314,7 +314,7 @@ void UI_DisplayMenu(void)
             strcpy(String, gSubMenu_W_N[gSubMenuSelection]);
             break;
 
-#ifndef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_SCRAMBLER
         case MENU_SCR:
             strcpy(String, gSubMenu_SCRAMBLER[gSubMenuSelection]);
             #if 1

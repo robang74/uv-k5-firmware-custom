@@ -167,12 +167,12 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
             *pMax = ARRAY_SIZE(gSubMenu_RXMode) - 1;
             break;
 
-        #ifdef ENABLE_VOICE
-            case MENU_VOICE:
-                //*pMin = 0;
-                *pMax = ARRAY_SIZE(gSubMenu_VOICE) - 1;
-                break;
-        #endif
+    #ifdef ENABLE_VOICE
+        case MENU_VOICE:
+            //*pMin = 0;
+            *pMax = ARRAY_SIZE(gSubMenu_VOICE) - 1;
+            break;
+    #endif
 
         case MENU_SC_REV:
             //*pMin = 0;
@@ -267,7 +267,7 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
             *pMax = ARRAY_SIZE(gModulationStr) - 1;
             break;
 
-#ifndef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_SCRAMBLER
         case MENU_SCR:
             //*pMin = 0;
             *pMax = ARRAY_SIZE(gSubMenu_SCRAMBLER) - 1;
@@ -522,7 +522,7 @@ void MENU_AcceptSetting(void)
             gRequestSaveChannel       = 1;
             return;
 
-#ifndef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_SCRAMBLER
         case MENU_SCR:
             gTxVfo->SCRAMBLING_TYPE = gSubMenuSelection;
             #if 0
@@ -636,7 +636,7 @@ void MENU_AcceptSetting(void)
             break;
 
         case MENU_AUTOLK:
-            gpEeprom->AUTO_KEYPAD_LOCK = gSubMenuSelection;
+            gpEeprom->AUTO_KEYPAD_LOCK = gSubMenuSelection;      
             gKeyLockCountdown        = gpEeprom->AUTO_KEYPAD_LOCK * 30; // 15 seconds step
             break;
 
@@ -1028,7 +1028,7 @@ void MENU_ShowCurrentSetting(void)
             gSubMenuSelection = gTxVfo->CHANNEL_BANDWIDTH;
             break;
 
-#ifndef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_SCRAMBLER
         case MENU_SCR:
             gSubMenuSelection = gTxVfo->SCRAMBLING_TYPE;
             break;

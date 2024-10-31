@@ -320,21 +320,21 @@ const char gSubMenu_BATTYP[][9] =
     "3500mAh"
 };
 
-#ifndef ENABLE_FEAT_F4HWN
-const char gSubMenu_SCRAMBLER[][7] =
-{
-    "OFF",
-    "2600Hz",
-    "2700Hz",
-    "2800Hz",
-    "2900Hz",
-    "3000Hz",
-    "3100Hz",
-    "3200Hz",
-    "3300Hz",
-    "3400Hz",
-    "3500Hz"
-};
+#ifdef ENABLE_SCRAMBLER
+    const char gSubMenu_SCRAMBLER[][7] =
+    {
+        "OFF",
+        "2600Hz",
+        "2700Hz",
+        "2800Hz",
+        "2900Hz",
+        "3000Hz",
+        "3100Hz",
+        "3200Hz",
+        "3300Hz",
+        "3400Hz",
+        "3500Hz"
+    };
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN
