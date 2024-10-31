@@ -52,7 +52,9 @@ There are several ways to operate on this aim:
 
 2. memory usage: (un)initialised `static` or `global` variables waste space useful for coding, etc.
 
-3. function stack: variables used by functions a tricking because uP align them at 32 bits.
+3. external components reduction size like [printf](https://github.com/robang74/uv-k5-firmware-custom/tree/experimental/external/printf) that has been limited to this project needs
+
+5. function stack: variables used by functions a tricking because uP align them at 32 bits.
 
 On the `experimental` branch has been used several technics to shrink the firmware size.
 The two most impacting are:
@@ -60,6 +62,8 @@ The two most impacting are:
 - using bitflags packed into a `uint32_t` preferably, supported by `inline` functions or macros
 
 - allocate and initialize large structures into a reservede memory which not get in .bbs section
+
+- external components reduction size in order to includes only those functionalities used here.
 
 The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to include many features.
 
