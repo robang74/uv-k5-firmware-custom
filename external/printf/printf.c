@@ -80,6 +80,8 @@ int sprintf(char* buf, const char* fmt, ...) {
 // ntoa conversion buffer size, this must be big enough to hold one converted numeric number (created on stack)
 #define NTOA_BUFFER_SIZE      32U
 
+#if 0 //RAF: this personalisation was immediate to decide and achieve
+
 // ftoa conversion buffer size, this must be big enough to hold one converted float number (created on stack)
 #define FTOA_BUFFER_SIZE      32U
 
@@ -88,6 +90,8 @@ int sprintf(char* buf, const char* fmt, ...) {
 
 // define this to support long long types (%llu or %p)
 #define PRINTF_LONG_LONG_SUPPORT
+
+#endif
 
 #endif
 
@@ -101,10 +105,10 @@ int sprintf(char* buf, const char* fmt, ...) {
 #define FLAGS_HASH      (1U << 4U)
 #define FLAGS_UPPERCASE (1U << 5U)
 #define FLAGS_LONG      (1U << 6U)
-//#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC //RAF: to be sure that code is out of scope
 #define FLAGS_LONG_LONG (1U << 7U)
 #define FLAGS_PRECISION (1U << 8U)
-//#endif
+#endif
 #define FLAGS_WIDTH     (1U << 9U)
 
 
@@ -402,7 +406,7 @@ static size_t _ftoa(double value, char* buffer, size_t maxlen, unsigned int prec
 
 
 // internal vsnprintf
-static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va_list va)
+int _vsnprintf(char* buffer, size_t buffer_len, const char* format, va_list va)
 {
 /*
  *  RAF: precision is potentially indefined here but setting to zero anywhere
@@ -645,7 +649,7 @@ static size_t _vsnprintf(char* buffer, size_t buffer_len, const char* format, va
     }
   }
 
-  return idx;
+  return (int)idx;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -656,12 +660,12 @@ int printf(const char* format, ...)
   va_list va;
   va_start(va, format);
   char buffer[PRINTF_BUFFER_SIZE];
-  size_t ret = _vsnprintf(buffer, PRINTF_BUFFER_SIZE, format, va);
+  int ret = _vsnprintf(buffer, PRINTF_BUFFER_SIZE, format, va);
   va_end(va);
-  for (size_t i = 0U; i < ret; ++i) {
+  for (int i = 0U; i < ret; ++i) {
     _putchar(buffer[i]);
   }
-  return (int)ret;
+  return ret;
 }
 #endif
 
@@ -669,9 +673,9 @@ int sprintf(char* buffer, const char* format, ...)
 {
   va_list va;
   va_start(va, format);
-  size_t ret = _vsnprintf(buffer, (size_t)-1, format, va);
+  int ret = _vsnprintf(buffer, (size_t)-1, format, va);
   va_end(va);
-  return (int)ret;
+  return ret;
 }
 
 #ifndef ENABLE_ROBANG74_SPRINTF_FUNC
@@ -679,9 +683,9 @@ int snprintf(char* buffer, size_t count, const char* format, ...)
 {
   va_list va;
   va_start(va, format);
-  size_t ret = _vsnprintf(buffer, count, format, va);
+  int ret = _vsnprintf(buffer, count, format, va);
   va_end(va);
-  return (int)ret;
+  return ret;
 }
 #endif
 

@@ -24,7 +24,8 @@ static inline void LogUartf(const char* format, ...)
     char buffer[128];
     va_list va;
     va_start(va, format);
-    vsnprintf(buffer, (size_t)-1, format, va);
+    //RAF: being sure that it using the project defined function
+    _vsnprintf(buffer, (size_t)-1, format, va);
     va_end(va);
     UART_Send(buffer, strlen(buffer));
 }
