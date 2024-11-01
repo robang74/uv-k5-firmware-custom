@@ -18,7 +18,7 @@
  *
  *     See below in the code the part that has been reworked
  */
-
+ 
 #ifndef MISC_H
 #define MISC_H
 
@@ -36,18 +36,84 @@
 typedef unsigned int size_t;
 #endif
 
+#define MHZ 100000
+#ifdef ENABLE_SPRINTF_TYPE_CHECKING
+//
+//RAF: type checking costs footprint and unless the compiler/linker creates troubles
+//     at compile time or at running time, there is no reason to enable these macros.
+//
+#define I16(x) (int16_t)(x)
+#define U16(x) (uint16_t)(x)
+#else
+#define I16(x) (x)
+#define U16(x) (x)
+#endif
+#define sfrqprintf(f) sprintf(String, "%3u.%05u", U16(f/MHZ), U16(f%MHZ))
+
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC ///////////////////////////////////////////
+
 int abs(int j);
 size_t strlen(const char *s);
 void *memset(void *s, int c, size_t n);
 char *strcpy(char *dest, const char *src);
 void *memcpy(void *dest, const void *src, size_t n);
 int memcmp(const void *s1, const void *s2, size_t n);
+
+#else //////////////////////////////////////////////////////////////////////////
+
+#define USE_SAFEST_STRINGS_FUNCTIONS 1
+#define USE_FASTER_STRINGS_FUNCTIONS 1
+
+#if USE_SAFEST_STRINGS_FUNCTIONS
+int abs(int j);
+#else
+int _abs(int j);
+#define abs _abs
+#endif //RAF: same size
+
+#if !USE_FASTER_STRINGS_FUNCTIONS
+size_t strlen(const char *s);
+#else
+size_t _strlen(const char* str);
+#define strlen _strlen
+#endif //RAF: custom is smaller
+
+#if !USE_FASTER_STRINGS_FUNCTIONS
+void *memcpy(void *dest, const void *src, size_t n);
+#else
+void *_memcpy(void *dest, const void *src, size_t n);
+#define memcpy _memcpy
+#endif //RAF: custom is smaller
+
+#if !USE_FASTER_STRINGS_FUNCTIONS
+void *memset(void *s, int c, size_t n);
+#else
+void *_memset(void *s, int c, size_t n);
+#define memset _memset
+#endif //RAF: custom is smaller
+
+#if !USE_FASTER_STRINGS_FUNCTIONS
+char *strcpy(char *dest, const char *src);
+#else
+char *_strcpy(char *dest, const char *src);
+#define strcpy _strcpy
+#endif //RAF: custom is smaller
+
+#if !USE_FASTER_STRINGS_FUNCTIONS
 void *memmove(void *dest, const void *src, size_t n);
+#else
+void *_memmove(void *dest, const void *src, size_t n);
+#define memmove _memmove
+#endif //RAF: custom is smaller
 
-int _vsnprintf(char *str, size_t size, const char *format, va_list ap);
-#define vsnprintf _vsnprintf
+#if !USE_FASTER_STRINGS_FUNCTIONS
+int memcmp(const void *s1, const void *s2, size_t n);
+#else
+int _memcmp(const void *s1, const void *s2, size_t n);
+#define memcmp _memcmp
+#endif
 
-/*****************************************************************************/
+#endif //ENABLE_ROBANG74_SPRINTF_FUNC //////////////////////////////////////////
 
 #ifndef ARRAY_SIZE
     #define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
@@ -69,20 +135,6 @@ int _vsnprintf(char *str, size_t size, const char *format, va_list ap);
 #define IS_FREQ_CHANNEL(x)     ((x) >= FREQ_CHANNEL_FIRST && (x) <= FREQ_CHANNEL_LAST)
 #define IS_VALID_CHANNEL(x)    ((x) < LAST_CHANNEL)
 #define IS_NOAA_CHANNEL(x)     ((x) >= NOAA_CHANNEL_FIRST && (x) <= NOAA_CHANNEL_LAST)
-
-#define MHZ 100000
-//
-//RAF: type checking costs footprint and unless the compiler/linker creates troubles
-//     at compile time or at running time, there is no reason to enable these macros.
-//
-#ifdef ENABLE_SPRINTF_TYPE_CHECKING
-#define I16(x) (int16_t)(x)
-#define U16(x) (uint16_t)(x)
-#else
-#define I16(x) (x)
-#define U16(x) (x)
-#endif
-#define sfrqprintf(f) sprintf(String, "%3u.%05u", U16(f/MHZ), U16(f%MHZ))
 
 enum {
     MR_CHANNEL_FIRST   = 0,
@@ -426,4 +478,4 @@ void FUNCTION_NOP();
 
 inline bool SerialConfigInProgress() { return gSerialConfigCountDown_500ms != 0; }
 
-#endif
+#endif //MISC_H

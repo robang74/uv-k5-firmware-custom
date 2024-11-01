@@ -112,18 +112,6 @@ int sprintf(char* buf, const char* fmt, ...) {
 #define FLAGS_WIDTH     (1U << 9U)
 
 
-// internal strlen
-// \return The length of the string (excluding the terminating 0)
-static inline size_t _strlen(const char* str)
-{
-  size_t len = 0U;
-  while (str[len] != (char)0) {
-    len++;
-  }
-  return len;
-}
-
-
 // returns true if char is a digit
 static inline bool _is_digit(char ch)
 {
@@ -592,7 +580,7 @@ int _vsnprintf(char* buffer, size_t buffer_len, const char* format, va_list va)
 
       case 's' : {
         char* p = va_arg(va, char*);
-        size_t l = _strlen(p);
+        size_t l = 0; while(p[l++]); //RAF: save 4b instead of strlen()
         // pre padding
 #ifndef ENABLE_ROBANG74_SPRINTF_FUNC
         if (flags & FLAGS_PRECISION) {

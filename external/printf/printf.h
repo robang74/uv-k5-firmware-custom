@@ -35,11 +35,15 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-//typedef unsigned int size_t; //RAF: no other use rather than check the type.
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/**
+ * Tiny snprintf implementation
+ */
+int _vsnprintf(char *str, size_t size, const char *format, va_list ap);
+#define vsnprintf _vsnprintf
 
 #ifndef ENABLE_ROBANG74_SPRINTF_FUNC
 /**

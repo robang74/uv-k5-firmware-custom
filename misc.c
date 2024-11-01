@@ -1,5 +1,6 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,12 +13,81 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
 
 //#include <string.h>
 
 #include "misc.h"
 #include "settings.h"
+
+int _abs(int j) { return (j < 0) ? -j : j; }
+
+inline size_t _strlen(const char* str)
+{
+    size_t len = 0;
+    while(str[len++]);
+    return len;
+}
+
+void *_memset(void *s, int c, size_t n)
+{
+    uint8_t *p = (uint8_t *)s;
+    for (size_t i = 0; i < n; i++)
+        *p = c;
+    return s;
+}
+
+char *_strcpy(char *d, const char *s)
+{
+    for (size_t i = 0; s[i]; i++)
+        d[i] = s[i];
+    return d;
+}
+
+void *_memcpy(void *d, const void *s, size_t n)
+{
+    uint8_t *pd = (uint8_t *)d;
+    const uint8_t *ps = (const uint8_t *)s;
+    for (size_t i = 0; i < n; i++)
+        pd[i] = ps[i];
+    return d;
+}
+
+void *_memmove(void *d, const void *s, size_t n)
+{
+    uint8_t *pd = (uint8_t *)d;
+    const uint8_t *ps = (const uint8_t *)s;
+
+    if (pd < ps + n)
+        ;
+    else
+        return _memcpy(d, s, n);
+
+    size_t i = n;
+    do {
+        i--;
+        pd[i] = ps[i];
+    } while(i);
+
+    return d;
+}
+
+int _memcmp(const void *s1, const void *s2, size_t n)
+{
+    const uint8_t *p1 = (const uint8_t *)s1;
+    const uint8_t *p2 = (const uint8_t *)s2;
+    size_t i;
+
+    for (i = 0; i < n && p1[i] == p2[i]; i++)
+        ;
+    return (n-i) ? (int)(*p1 - *p2) : 0;
+}
+
+/******************************************************************************/
 
 const uint8_t     fm_radio_countdown_500ms         =  2000 / 500;  // 2 seconds
 const uint16_t    fm_play_countdown_scan_10ms      =   100 / 10;   // 100ms
