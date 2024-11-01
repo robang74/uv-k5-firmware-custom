@@ -1,3 +1,3 @@
 alias docker-listall='docker ps -a -q'
 alias docker-stopall='for i in $( docker ps -a -q ); do docker stop $i & done'
-function codegrep() { grep -rn "$@" | grep -ve full.repos/ -e patches/; }
+function codegrep() { grep -rn "$@" 2>/dev/null | grep -ve "full\.repos/" -e "patches/" -e "README.md" -e "\.git/" -e "Makefile" -e "\.unmerged:" | grep -e "\.c:" -e "\.h:"; }
