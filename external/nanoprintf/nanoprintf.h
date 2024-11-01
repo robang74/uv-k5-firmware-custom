@@ -39,6 +39,7 @@ extern "C" {
 // The npf_ functions do not return negative values, since the lack of 'l' length
 // modifier support makes encoding errors impossible.
 
+
 NPF_VISIBILITY int npf_snprintf(
   char *buffer, size_t bufsz, const char *format, ...) NPF_PRINTF_ATTR(3, 4);
 
@@ -753,7 +754,7 @@ static void npf_putc_cnt(int c, void *ctx) {
 #define NPF_WRITEBACK(MOD, TYPE) \
   case NPF_FMT_SPEC_LEN_MOD_##MOD: *(va_arg(args, TYPE *)) = (TYPE)pc_cnt.n; break
 
-int npf_vpprintf(npf_putc pc, void *pc_ctx, char const *format, va_list args) {
+NPF_VISIBILITY int npf_vpprintf(npf_putc pc, void *pc_ctx, char const *format, va_list args) {
   npf_format_spec_t fs;
   char const *cur = format;
   npf_cnt_putc_ctx_t pc_cnt;
@@ -1044,7 +1045,7 @@ int npf_vpprintf(npf_putc pc, void *pc_ctx, char const *format, va_list args) {
 #undef NPF_EXTRACT
 #undef NPF_WRITEBACK
 
-int npf_pprintf(npf_putc pc, void *pc_ctx, char const *format, ...) {
+NPF_VISIBILITY int npf_pprintf(npf_putc pc, void *pc_ctx, char const *format, ...) {
   va_list val;
   va_start(val, format);
   int const rv = npf_vpprintf(pc, pc_ctx, format, val);
@@ -1052,7 +1053,7 @@ int npf_pprintf(npf_putc pc, void *pc_ctx, char const *format, ...) {
   return rv;
 }
 
-int npf_snprintf(char *buffer, size_t bufsz, const char *format, ...) {
+NPF_VISIBILITY int npf_snprintf(char *buffer, size_t bufsz, const char *format, ...) {
   va_list val;
   va_start(val, format);
   int const rv = npf_vsnprintf(buffer, bufsz, format, val);
@@ -1060,7 +1061,7 @@ int npf_snprintf(char *buffer, size_t bufsz, const char *format, ...) {
   return rv;
 }
 
-int npf_vsnprintf(char *buffer, size_t bufsz, char const *format, va_list vlist) {
+NPF_VISIBILITY int npf_vsnprintf(char *buffer, size_t bufsz, char const *format, va_list vlist) {
   npf_bufputc_ctx_t bufputc_ctx;
   bufputc_ctx.dst = buffer;
   bufputc_ctx.len = bufsz;
