@@ -6,7 +6,7 @@
 #include "driver/uart.h"
 #include "driver/bk4819.h"
 #include "string.h"
-#include "external/printf/printf.h"
+#include "misc.h"
 #include "am_fix.h"
 
 static inline void uart_putchar(const uint8_t c)
@@ -24,8 +24,7 @@ static inline void LogUartf(const char* format, ...)
     char buffer[128];
     va_list va;
     va_start(va, format);
-    //RAF: being sure that it using the project defined function
-    _vsnprintf(buffer, (size_t)-1, format, va);
+    vsnprintf(buffer, (size_t)-1, format, va);
     va_end(va);
     UART_Send(buffer, strlen(buffer));
 }

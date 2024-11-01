@@ -28,7 +28,6 @@
 #include "driver/gpio.h"
 #include "driver/system.h"
 #include "dtmf.h"
-#include "external/printf/printf.h"
 #include "misc.h"
 #include "settings.h"
 #include "ui/ui.h"

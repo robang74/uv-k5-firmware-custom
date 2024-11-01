@@ -63,7 +63,6 @@
 #include "driver/st7565.h"
 #include "driver/system.h"
 #include "dtmf.h"
-#include "external/printf/printf.h"
 #include "frequencies.h"
 #include "functions.h"
 #include "helper/battery.h"

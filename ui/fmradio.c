@@ -21,7 +21,6 @@
 #include "app/fm.h"
 #include "driver/bk1080.h"
 #include "driver/st7565.h"
-#include "external/printf/printf.h"
 #include "misc.h"
 #include "settings.h"
 #include "ui/fmradio.h"

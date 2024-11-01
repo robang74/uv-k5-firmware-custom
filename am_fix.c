@@ -25,7 +25,6 @@
 #include "app/main.h"
 #include "board.h"
 #include "driver/bk4819.h"
-#include "external/printf/printf.h"
 #include "frequencies.h"
 #include "functions.h"
 #include "misc.h"

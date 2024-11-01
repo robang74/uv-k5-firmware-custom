@@ -26,6 +26,8 @@
 #include <assert.h>
 #include <stdint.h>
 
+#include "printf.h"
+
 #ifndef NULL
 #define NULL 0
 #endif
@@ -41,6 +43,9 @@ char *strcpy(char *dest, const char *src);
 void *memcpy(void *dest, const void *src, size_t n);
 int memcmp(const void *s1, const void *s2, size_t n);
 void *memmove(void *dest, const void *src, size_t n);
+
+int _vsnprintf(char *str, size_t size, const char *format, va_list ap);
+#define vsnprintf _vsnprintf
 
 /*****************************************************************************/
 

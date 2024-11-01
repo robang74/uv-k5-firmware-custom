@@ -527,6 +527,7 @@ endif
 
 INC =
 INC += -I $(TOP)
+INC += -I $(TOP)/external/printf
 INC += -I $(TOP)/external/CMSIS_5/CMSIS/Core/Include/
 INC += -I $(TOP)/external/CMSIS_5/Device/ARM/ARMCM0/Include
 

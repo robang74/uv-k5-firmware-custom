@@ -30,7 +30,6 @@
 #include "audio.h"
 #include "driver/keyboard.h"
 #include "dtmf.h"
-#include "external/printf/printf.h"
 #include "functions.h"
 #include "misc.h"
 #include "settings.h"

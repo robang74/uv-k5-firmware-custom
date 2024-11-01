@@ -25,7 +25,6 @@
 #include "app/scanner.h"
 #include "dcs.h"
 #include "driver/st7565.h"
-#include "external/printf/printf.h"
 #include "misc.h"
 #include "ui/helper.h"
 #include "ui/scanner.h"
