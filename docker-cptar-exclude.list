@@ -6,6 +6,7 @@ README.\*
 *.patch
 *.orig
 *.rej
+utils
 patches
 win_make.bat
 external/full.repos
