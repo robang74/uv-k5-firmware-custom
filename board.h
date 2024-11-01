@@ -17,7 +17,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-//#include <stdint.h>
+#include <stdint.h>
 //#include <stdbool.h>
 
 void     BOARD_FLASH_Init(void);
