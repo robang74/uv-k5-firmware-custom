@@ -282,7 +282,7 @@ void Main(void)
 
             //RAF, TODO: can this change during the code execution?
             //           No, then use a #define. Anyway const type.
-            const uint8_t Channel (gpEeprom->ScreenChannel[gpEeprom->TX_VFO])
+            const uint8_t Channel = gpEeprom->ScreenChannel[gpEeprom->TX_VFO];
             if (IS_MR_CHANNEL(Channel))
             {
                 AUDIO_SetVoiceID(1, VOICE_ID_CHANNEL_MODE);
