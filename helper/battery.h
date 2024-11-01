@@ -17,8 +17,9 @@
 #ifndef BATTERY_H
 #define BATTERY_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
+#include "misc.h"
 
 extern uint16_t          gBatteryCalibration[6];
 extern uint16_t          gBatteryCurrentVoltage;

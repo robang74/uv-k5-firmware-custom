@@ -19,8 +19,9 @@
  *     See below in the code the part that has been reworked
  */
 
-#include <stdbool.h>
-#include <string.h>
+//#include <stdbool.h>
+//#include <string.h>
+
 #include "app/scanner.h"
 #include "dcs.h"
 #include "driver/st7565.h"

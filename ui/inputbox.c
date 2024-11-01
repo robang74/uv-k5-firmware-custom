@@ -14,8 +14,9 @@
  *     limitations under the License.
  */
 
-#include <string.h>
+//#include <string.h>
 
+#include "misc.h"
 #include "ui/inputbox.h"
 
 char    gInputBox[8];

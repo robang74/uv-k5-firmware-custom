@@ -19,7 +19,7 @@
  *     See below in the code the part that has been reworked
  */
 
-#include <string.h>
+//#include <string.h>
 
 #include "driver/st7565.h"
 #include "external/printf/printf.h"

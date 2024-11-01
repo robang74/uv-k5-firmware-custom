@@ -17,7 +17,7 @@
 #ifndef UI_INPUTBOX_H
 #define UI_INPUTBOX_H
 
-#include <stdint.h>
+//#include <stdint.h>
 
 #include "driver/keyboard.h"
 

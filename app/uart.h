@@ -17,7 +17,7 @@
 #ifndef APP_UART_H
 #define APP_UART_H
 
-#include <stdbool.h>
+//#include <stdbool.h>
 
 bool UART_IsCommandAvailable(void);
 void UART_HandleCommand(void);

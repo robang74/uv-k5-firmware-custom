@@ -14,9 +14,10 @@
  *     limitations under the License.
  */
 
-#include <stddef.h>
-#include <string.h>
+//#include <stddef.h>
+//#include <string.h>
 
+#include "misc.h"
 #include "driver/eeprom.h"
 #include "driver/i2c.h"
 #include "driver/system.h"

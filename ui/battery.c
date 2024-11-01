@@ -14,8 +14,8 @@
  *     limitations under the License.
  */
 
-#include <stddef.h>
-#include <string.h>
+//#include <stddef.h>
+//#include <string.h>
 
 #include "bitmaps.h"
 #include "driver/st7565.h"

@@ -14,8 +14,8 @@
  *     limitations under the License.
  */
 
-#include <assert.h>
-#include <string.h>
+//#include <assert.h>
+//#include <string.h>
 
 #include "app/chFrScanner.h"
 #include "app/dtmf.h"

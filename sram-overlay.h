@@ -17,8 +17,8 @@
 #ifndef SRAM_OVERLAY_H
 #define SRAM_OVERLAY_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
 #include "driver/flash.h"
 
 extern uint32_t overlay_FLASH_MainClock __attribute__((section(".srambss")));

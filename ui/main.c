@@ -20,8 +20,8 @@
  */
 
 
-#include <string.h>
-#include <stdlib.h>  // abs()
+//#include <string.h>
+//#include <stdlib.h>  // abs()
 
 #include "app/chFrScanner.h"
 #include "app/dtmf.h"

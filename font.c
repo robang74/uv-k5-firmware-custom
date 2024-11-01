@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 
+#include "misc.h"
 #include "font.h"
 
 // removed last and middle column which was all 0x00

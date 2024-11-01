@@ -17,6 +17,10 @@
 #ifndef SPECTRUM_H
 #define SPECTRUM_H
 
+//#include <stdbool.h>
+//#include <stdint.h>
+//#include <string.h>
+
 #include "../bitmaps.h"
 #include "../board.h"
 #include "../bsp/dp32g030/gpio.h"
@@ -34,9 +38,6 @@
 #include "../radio.h"
 #include "../settings.h"
 #include "../ui/helper.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
 
 static const uint8_t DrawingEndY = 40;
 

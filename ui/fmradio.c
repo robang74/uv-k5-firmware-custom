@@ -16,7 +16,7 @@
 
 #ifdef ENABLE_FMRADIO
 
-#include <string.h>
+//#include <string.h>
 
 #include "app/fm.h"
 #include "driver/bk1080.h"

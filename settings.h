@@ -17,13 +17,13 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
 
 #include "frequencies.h"
-#include <helper/battery.h>
+#include "helper/battery.h"
 #include "radio.h"
-#include <driver/backlight.h>
+#include "driver/backlight.h"
 
 typedef enum {
 #ifdef ENABLE_FEAT_F4HWN

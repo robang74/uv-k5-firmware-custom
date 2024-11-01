@@ -23,11 +23,26 @@
 #define MISC_H
 
 #include <stdbool.h>
+#include <assert.h>
 #include <stdint.h>
 
 #ifndef NULL
 #define NULL 0
 #endif
+
+#ifndef size_t
+typedef unsigned int size_t;
+#endif
+
+int abs(int j);
+size_t strlen(const char *s);
+void *memset(void *s, int c, size_t n);
+char *strcpy(char *dest, const char *src);
+void *memcpy(void *dest, const void *src, size_t n);
+int memcmp(const void *s1, const void *s2, size_t n);
+void *memmove(void *dest, const void *src, size_t n);
+
+/*****************************************************************************/
 
 #ifndef ARRAY_SIZE
     #define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))

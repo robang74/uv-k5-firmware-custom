@@ -1,4 +1,3 @@
-
 #include "bitmaps.h"
 
 // all these images are on their right sides

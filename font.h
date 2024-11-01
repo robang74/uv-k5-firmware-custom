@@ -17,8 +17,7 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include <stdint.h>
-
+//#include <stdint.h>
 
 extern const uint8_t gFontBig[95 - 1][16 - 2];
 extern const uint8_t gFontBigDigits[11][26 - 6];

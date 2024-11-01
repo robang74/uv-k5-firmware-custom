@@ -17,7 +17,8 @@
 #ifndef FREQUENCIES_H
 #define FREQUENCIES_H
 
-#include <stdint.h>
+//#include <stdint.h>
+#include "misc.h"
 
 #define _1GHz_in_KHz 100000000
 

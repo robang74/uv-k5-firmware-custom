@@ -1,8 +1,10 @@
 #ifndef APP_CHFRSCANNER_H
 #define APP_CHFRSCANNER_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
+
+#include "misc.h"
 
 // scan direction, if not equal SCAN_OFF indicates 
 // that we are in a process of scanning channels/frequencies

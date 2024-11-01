@@ -17,8 +17,10 @@
 #ifndef DTMF_H
 #define DTMF_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
+
+#include "misc.h"
 
 #define    MAX_DTMF_CONTACTS   16
 

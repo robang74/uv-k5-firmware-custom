@@ -21,9 +21,9 @@
 #ifndef UI_UI_H
 #define UI_UI_H
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
+//#include <stdbool.h>
+//#include <stdint.h>
+//#include <string.h>
 
 void UI_GenerateChannelString(char *pString, const uint8_t Channel);
 void UI_GenerateChannelStringEx(char *pString, const bool bShowPrefix, const uint8_t ChannelNumber);

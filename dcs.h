@@ -17,7 +17,8 @@
 #ifndef DCS_H
 #define DCS_H
 
-#include <stdint.h>
+//#include <stdint.h>
+#include "misc.h"
 
 enum DCS_CodeType_t
 {

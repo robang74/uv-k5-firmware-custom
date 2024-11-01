@@ -17,8 +17,8 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
 
 enum GUI_DisplayType_t
 {

@@ -17,10 +17,11 @@
 #ifndef RADIO_H
 #define RADIO_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
 
 #include "dcs.h"
+#include "misc.h"
 #include "frequencies.h"
 
 enum {

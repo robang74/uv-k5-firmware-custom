@@ -19,8 +19,8 @@
  *     See below in the code the part that has been reworked
  */
 
-#include <stdint.h>
-#include <string.h>
+//#include <stdint.h>
+//#include <string.h>
 
 #ifdef ENABLE_AM_FIX
     #include "am_fix.h"

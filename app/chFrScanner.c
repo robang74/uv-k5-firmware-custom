@@ -4,7 +4,7 @@
 #include "functions.h"
 #include "misc.h"
 #include "settings.h"
-//#include "debugging.h"
+#include "debugging.h"
 
 int8_t            gScanStateDir;
 bool              gScanKeepResult;

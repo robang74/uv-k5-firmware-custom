@@ -17,8 +17,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <stdint.h>
-#include <stdbool.h>
+//#include <stdint.h>
+//#include <stdbool.h>
 
 void     BOARD_FLASH_Init(void);
 void     BOARD_GPIO_Init(void);

@@ -17,8 +17,10 @@
 
 #ifndef AM_FIXH
 
-#include <stdint.h>
-#include <stdbool.h>
+//#include <stdint.h>
+//#include <stdbool.h>
+
+#include "misc.h"
 
 #ifdef ENABLE_AM_FIX
     void AM_fix_init(void);

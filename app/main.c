@@ -14,7 +14,8 @@
  *     limitations under the License.
  */
 
-#include <string.h>
+//#include <string.h>
+//#include <stdlib.h>
 
 #include "app/action.h"
 #include "app/app.h"
@@ -41,7 +42,6 @@
 #include "settings.h"
 #include "ui/inputbox.h"
 #include "ui/ui.h"
-#include <stdlib.h>
 
 static void toggle_chan_scanlist(void)
 {   // toggle the selected channels scanlist setting

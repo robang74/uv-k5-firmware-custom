@@ -19,9 +19,9 @@
  *     See below in the code the part that has been reworked
  */
 
-#include <assert.h>
-#include <stdint.h>
-#include <string.h>
+//#include <assert.h>
+//#include <stdint.h>
+//#include <string.h>
 
 #include "am_fix.h"
 #include "app/action.h"

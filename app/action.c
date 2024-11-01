@@ -19,8 +19,8 @@
  *     See below in the code the part that has been reworked
  */
 
-#include <assert.h>
-#include <string.h>
+//#include <assert.h>
+//#include <string.h>
 
 #include "app/action.h"
 #include "app/app.h"

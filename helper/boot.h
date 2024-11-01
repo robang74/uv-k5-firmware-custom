@@ -17,7 +17,7 @@
 #ifndef HELPER_BOOT_H
 #define HELPER_BOOT_H
 
-#include <stdint.h>
+//#include <stdint.h>
 #include "driver/keyboard.h"
 
 enum BOOT_Mode_t

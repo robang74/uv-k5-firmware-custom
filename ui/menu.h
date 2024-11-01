@@ -21,8 +21,8 @@
 #ifndef UI_MENU_H
 #define UI_MENU_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
 
 #include "audio.h"     // VOICE_ID_t
 #include "settings.h"

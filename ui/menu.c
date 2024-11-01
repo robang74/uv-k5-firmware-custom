@@ -19,8 +19,8 @@
  *     See below in the code the part that has been reworked
  */
 
-#include <string.h>
-#include <stdlib.h>
+//#include <string.h>
+//#include <stdlib.h>
 
 #include "../app/dtmf.h"
 #include "../app/menu.h"

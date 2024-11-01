@@ -16,7 +16,7 @@
 
 #ifdef ENABLE_PWRON_PASSWORD
 
-#include <string.h>
+//#include <string.h>
 
 #include "ARMCM0.h"
 #include "app/uart.h"

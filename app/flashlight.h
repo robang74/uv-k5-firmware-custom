@@ -3,7 +3,7 @@
 
 #ifdef ENABLE_FLASHLIGHT
 
-#include <stdint.h>
+//#include <stdint.h>
 
 #ifndef ENABLE_FEAT_F4HWN
 

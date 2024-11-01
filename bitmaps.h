@@ -2,7 +2,8 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 
-#include <stdint.h>
+//#include <stdint.h>
+#include "misc.h"
 
 extern const uint8_t gFontPowerSave[2][6];
 extern const uint8_t gFontPttOnePush[2][6];

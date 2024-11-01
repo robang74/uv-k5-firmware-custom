@@ -15,7 +15,7 @@
  */
 
 #include "driver/bk4819-regs.h"
-#include <string.h>
+//#include <string.h>
 
 #include "am_fix.h"
 #include "app/dtmf.h"

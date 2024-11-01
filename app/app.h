@@ -17,7 +17,7 @@
 #ifndef APP_APP_H
 #define APP_APP_H
 
-#include <stdbool.h>
+//#include <stdbool.h>
 
 #include "functions.h"
 #include "frequencies.h"

@@ -16,7 +16,7 @@
 
 #ifdef ENABLE_AIRCOPY
 
-#include <string.h>
+//#include <string.h>
 
 #include "app/aircopy.h"
 #include "driver/st7565.h"

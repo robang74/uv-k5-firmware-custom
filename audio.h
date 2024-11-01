@@ -17,8 +17,8 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 
-#include <stdbool.h>
-#include <stdint.h>
+//#include <stdbool.h>
+//#include <stdint.h>
 
 #include "bsp/dp32g030/gpio.h"
 #include "driver/gpio.h"

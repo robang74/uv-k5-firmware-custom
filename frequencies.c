@@ -14,10 +14,11 @@
  *     limitations under the License.
  */
 
-#include "frequencies.h"
+//#include <assert.h>
+
 #include "misc.h"
+#include "frequencies.h"
 #include "settings.h"
-#include <assert.h>
 
 // the BK4819 has 2 bands it covers, 18MHz ~ 630MHz and 760MHz ~ 1300MHz
 

@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 
+#include "misc.h"
 #include "app/app.h"
 #include "app/dtmf.h"
 #include "app/generic.h"
@@ -22,7 +23,6 @@
 #include "audio.h"
 #include "driver/bk4819.h"
 #include "frequencies.h"
-#include "misc.h"
 #include "radio.h"
 #include "settings.h"
 #include "ui/inputbox.h"
