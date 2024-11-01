@@ -1,5 +1,9 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     https://github.com/robang74
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +36,28 @@
 #else
 #define MENU_VOICE_LENGHT 7
 #endif
+
+#ifdef ENABLE_ROBANG74_UI_MENU
+
+typedef struct __attribute__((__aligned__(4))) {
+    const char     name[MENU_VOICE_LENGHT];
+    const uint8_t  menu_id;
+} __attribute__((__packed__)) t_menu_item;
+
+
+#else
+
+typedef struct {
+//menu display area only has room for 6 characters + the end-of-string zero
+    const char     name[MENU_VOICE_LENGHT];
+    const uint8_t  menu_id;
+} __attribute__((__packed__)) t_menu_item;
+
+#endif
+
+extern const t_menu_item MenuList[];
+
+/** ORIGINAL PART *************************************************************/
 
 enum menu_id_enum : uint8_t
 {
@@ -225,4 +251,4 @@ int UI_MENU_GetCurrentMenuId();
 uint8_t UI_MENU_GetMenuIdx(uint8_t id);
 uint8_t UI_MENU_GetMenuSize(bool lock);
 
-#endif
+#endif //UI_MENU_H

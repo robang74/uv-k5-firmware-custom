@@ -15,12 +15,6 @@
  *     limitations under the License.
  */
 
-typedef struct {
-//menu display area only has room for 6 characters + the end-of-string zero
-    const char     name[MENU_VOICE_LENGHT];
-    const uint8_t  menu_id;
-} __attribute__((__packed__)) t_menu_item;
-
 const t_menu_item MenuList[] =
 {
 //   text,          menu ID

@@ -18,11 +18,6 @@
  *     limitations under the License.
  */
 
-typedef struct __attribute__((__aligned__(1))) {
-    const char     name[MENU_VOICE_LENGHT];
-    const uint8_t  menu_id;
-} __attribute__((__packed__)) t_menu_item;
-
 const t_menu_item MenuList[] =
 {
 /******************************************

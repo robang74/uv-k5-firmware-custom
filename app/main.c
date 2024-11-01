@@ -327,7 +327,7 @@ void channelMove(uint16_t Channel)
 
     gBeepToPlay = BEEP_NONE;
 
-    #ifdef ENABLE_VOICE
+    #if 0 //def ENABLE_VOICE    //RAF,TODO: it should not stay here, why?
         gAnotherVoiceID        = (VOICE_ID_t)Key;
     #endif
 

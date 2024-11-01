@@ -67,43 +67,44 @@ The two most impacting are:
 
 The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to include many features.
 
-The following data have been collected and can be replicated by tag [data01](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data01):
+The following data have been collected and can be replicated by tag [data02](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data02):
 
 ```
-# no torch & no charge lvl,  need  (bytes)  (*next)  (rundata)
-# REDUCE_LOW_MID_TX_POWER      0b  (incl.)     *         *
-# FLASHLIGHT                  64b  (avail)     *         *
-# FEAT_F4HWN_CA               64b  (excl.)     .         .
-# SHOW_CHARGE_LEVEL          104b  (avail)     *         *
-# F4HWN_RX_TX_TIMER          148b  (avail)  ( -128)      *
-# COPY_CHAN_TO_VFO           192b  (incl.)     *         *
-# AUDIO_BAR                  386b  ( -184)               *
-# FEAT_F4HWN_SLEEP           512b  ( -440)               *
-# VOX                              (-1032)            (avail)
-# AIRCOPY                          (-1996)            (-1028)
-# -------------------------------------------------------------
+# no torch & no charge lvl,  need  (bytes)  (*next)  (rundata)  (printf)
+# REDUCE_LOW_MID_TX_POWER      0b  (incl.)     *         *       (   0)
+# FLASHLIGHT                  64b  (avail)     *         *       (  52)
+# SHOW_CHARGE_LEVEL          104b  (avail)     *         *       (  84)
+# F4HWN_RX_TX_TIMER          148b  (avail)  ( -128)      *       ( 152)
+# COPY_CHAN_TO_VFO           192b  (incl.)     *         *       ( 116)
+# AUDIO_BAR                  386b  ( -184)               *       ( 400)
+# FEAT_F4HWN_SLEEP           512b  ( -440)               *       ( 452)
+# VOX                              (-1032)            (avail)    ( 968)
+# AIRCOPY                          (-1996)            (-1028)    (1960)
+# ------------------------------------------------------------------------------
 # ALL THE OPTIONS                  (-3900)               ?
 #
-# FEAT_F4HWN_SCREENSHOT            (avail)               *
-# FEAT_F4HWN_RESTORE_SCAN          (avail)               *
-# FEAT_F4HWN_RESET_CHANNEL         (avail)               *
-# -------------------------------------------------------------
-# ALL THE OPTIONS                     ?               (-2896)
+# VOICE                               ?                          (1584)
+# FEAT_F4HWN_SPECTRUM                                            (incl)
+# FEAT_F4HWN_SCREENSHOT            (avail)               *       (incl)
+# FEAT_F4HWN_RESTORE_SCAN          (avail)               *       ( 192)
+# FEAT_F4HWN_RESET_CHANNEL         (avail)               *       (  60)
+# ------------------------------------------------------------------------------
+# ALL THE OPTIONS                     ?               (-2896)   (-3832)
 #
 #   text  data   bss    dec  filename
-#  58204    20  2748  60972  f4hwn.broadcast
-#  59736    52  3116  62904  f4hwn.bandscope
-#  59736    52  3116  62904  f4hwn.default
-#  60400    52  3060  63512  f4hwn.voxless
-#  61336    52  3068  64456  f4hwn.fullflash
+#  60696   52   3072  63820  f4hwn.fullflash
+#  59132   52   3116  62300  f4hwn.default
+#  59132   52   3116  62300  f4hwn.bandscope
+#  57640   20   2748  60408  f4hwn.broadcast
+#  59784   52   3060  62896  f4hwn.voxless
 #
 # Binary firmware files sorted per byte size:
 #
-#  58224  94.76%  f4hwn.broadcast
-#  59788  97.31%  f4hwn.bandscope
-#  59788  97.31%  f4hwn.default
-#  60452  98.39%  f4hwn.voxless
-#  61388  99.91%  f4hwn.fullflash
+#  57660  93.84%  f4hwn.broadcast
+#  59184  96.32%  f4hwn.bandscope
+#  59184  96.32%  f4hwn.default
+#  59836  97.38%  f4hwn.voxless
+#  60748  98.87%  f4hwn.fullflash
 ```
 
 The target of shrinking the firmware of 4Kb is on its promising way and there is still space for improvements.

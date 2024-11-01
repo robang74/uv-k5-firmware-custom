@@ -153,14 +153,14 @@ void UI_DisplayStatus()
     else
     {
 
-    #ifdef ENABLE_VOICE
+        #ifdef ENABLE_VOICE
         // VOICE indicator
         if (gpEeprom->VOICE_PROMPT != VOICE_PROMPT_OFF){
-            memcpy(line + x, BITMAP_VoicePrompt, sizeof(BITMAP_VoicePrompt));
-            x1 = x + sizeof(BITMAP_VoicePrompt);
+            memcpy(line + x, gFontVox, sizeof(gFontVox));
+            x1 = x + sizeof(gFontVox);
         }
-        x += sizeof(BITMAP_VoicePrompt);
-    #endif
+        x += sizeof(gFontVox);
+        #endif
 
         if(!SCANNER_IsScanning()) {
         #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
