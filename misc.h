@@ -62,7 +62,7 @@ int memcmp(const void *s1, const void *s2, size_t n);
 #else //////////////////////////////////////////////////////////////////////////
 
 #define USE_SAFEST_STRINGS_FUNCTIONS 1
-#define USE_FASTER_STRINGS_FUNCTIONS 1
+#define USE_SMALLR_STRINGS_FUNCTIONS 1
 
 #if USE_SAFEST_STRINGS_FUNCTIONS
 int abs(int j);
@@ -71,42 +71,46 @@ int _abs(int j);
 #define abs _abs
 #endif //RAF: same size
 
-#if !USE_FASTER_STRINGS_FUNCTIONS
+#if USE_SAFEST_STRINGS_FUNCTIONS
 size_t strlen(const char *s);
 #else
-size_t _strlen(const char* str);
-#define strlen _strlen
-#endif //RAF: custom is smaller
+#if 0
+size_t strxlen(const char* s);
+#define strlen strxlen
+#else
+#define strlen(s) ({size_t n; for(n=0; (s)[n]; n++); n;})
+#endif
+#endif //RAF: custom is larger
 
-#if !USE_FASTER_STRINGS_FUNCTIONS
+#if !USE_SMALLR_STRINGS_FUNCTIONS
 void *memcpy(void *dest, const void *src, size_t n);
 #else
 void *_memcpy(void *dest, const void *src, size_t n);
 #define memcpy _memcpy
 #endif //RAF: custom is smaller
 
-#if !USE_FASTER_STRINGS_FUNCTIONS
+#if !USE_SMALLR_STRINGS_FUNCTIONS
 void *memset(void *s, int c, size_t n);
 #else
 void *_memset(void *s, int c, size_t n);
 #define memset _memset
 #endif //RAF: custom is smaller
 
-#if !USE_FASTER_STRINGS_FUNCTIONS
+#if !USE_SMALLR_STRINGS_FUNCTIONS
 char *strcpy(char *dest, const char *src);
 #else
 char *_strcpy(char *dest, const char *src);
 #define strcpy _strcpy
 #endif //RAF: custom is smaller
 
-#if !USE_FASTER_STRINGS_FUNCTIONS
+#if !USE_SMALLR_STRINGS_FUNCTIONS
 void *memmove(void *dest, const void *src, size_t n);
 #else
 void *_memmove(void *dest, const void *src, size_t n);
 #define memmove _memmove
 #endif //RAF: custom is smaller
 
-#if !USE_FASTER_STRINGS_FUNCTIONS
+#if !USE_SMALLR_STRINGS_FUNCTIONS
 int memcmp(const void *s1, const void *s2, size_t n);
 #else
 int _memcmp(const void *s1, const void *s2, size_t n);

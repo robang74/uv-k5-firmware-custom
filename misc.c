@@ -26,11 +26,13 @@
 
 int _abs(int j) { return (j < 0) ? -j : j; }
 
-inline size_t _strlen(const char* str)
+//RAF: this saves two bytes
+inline __attribute__((always_inline))
+ size_t strxlen(const char* s)
 {
-    size_t len = 0;
-    while(str[len++]);
-    return len;
+    size_t n;
+    for(n=0; s[n]; n++);
+    return n;
 }
 
 void *_memset(void *s, int c, size_t n)
@@ -395,7 +397,8 @@ int32_t NUMBER_AddWithWraparound(int32_t Base, int32_t Add, int32_t LowerLimit, 
 unsigned long StrToUL(const char * str)
 {
     unsigned long ul = 0;
-    for(uint8_t i = 0; i < strlen(str); i++){
+    const uint8_t n = strlen(str);
+    for(uint8_t i = 0; i < n; i++) {
         char c = str[i];
         if(c < '0' || c > '9')
             break;

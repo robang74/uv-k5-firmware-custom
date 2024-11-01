@@ -59,9 +59,6 @@ int sprintf(char* buf, const char* fmt, ...) {
 
 #else //########################################################################
 
-#include <stdbool.h>
-#include <stdint.h>
-
 #include "printf.h"
 
 #ifdef ENABLE_ROBANG74_SPRINTF_FUNC
@@ -580,7 +577,7 @@ int _vsnprintf(char* buffer, size_t buffer_len, const char* format, va_list va)
 
       case 's' : {
         char* p = va_arg(va, char*);
-        size_t l = 0; while(p[l++]); //RAF: save 4b instead of strlen()
+        size_t l; for(l=0; p[l]; l++);
         // pre padding
 #ifndef ENABLE_ROBANG74_SPRINTF_FUNC
         if (flags & FLAGS_PRECISION) {

@@ -5,7 +5,7 @@
 
 #include "driver/uart.h"
 #include "driver/bk4819.h"
-#include "string.h"
+//#include <string.h>
 #include "misc.h"
 #include "am_fix.h"
 
