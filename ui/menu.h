@@ -38,22 +38,14 @@
 #endif
 
 #ifdef ENABLE_ROBANG74_UI_MENU
-
-typedef struct __attribute__((__aligned__(4))) {
-    const char     name[MENU_VOICE_LENGHT];
-    const uint8_t  menu_id;
-} __attribute__((__packed__)) t_menu_item;
-
-
+//RAF: equivalent to the original but explicit
+typedef struct __attribute__((__aligned__(1))) {
 #else
-
 typedef struct {
-//menu display area only has room for 6 characters + the end-of-string zero
+#endif
     const char     name[MENU_VOICE_LENGHT];
     const uint8_t  menu_id;
 } __attribute__((__packed__)) t_menu_item;
-
-#endif
 
 extern const t_menu_item MenuList[];
 

@@ -67,7 +67,7 @@ The two most impacting are:
 
 The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to include many features.
 
-The following data have been collected and can be replicated by tag [data02](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data02):
+The following data have been collected and can be replicated by tag [data03](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data03):
 
 ```
 # no torch & no charge lvl,  need  (bytes)  (*next)  (rundata)  (printf)
@@ -89,10 +89,10 @@ The following data have been collected and can be replicated by tag [data02](htt
 # FEAT_F4HWN_RESTORE_SCAN          (avail)               *       ( 192)
 # FEAT_F4HWN_RESET_CHANNEL         (avail)               *       (  60)
 # ------------------------------------------------------------------------------
-# ALL THE OPTIONS                     ?               (-2896)   (-3832)
+# ALL THE OPTIONS                     ?               (-2896)   (-3776)
 #
 #   text  data   bss    dec  filename
-#  60696   52   3072  63820  f4hwn.fullflash
+#  60640   52   3072  63764  f4hwn.fullflash
 #  59132   52   3116  62300  f4hwn.default
 #  59132   52   3116  62300  f4hwn.bandscope
 #  57640   20   2748  60408  f4hwn.broadcast
@@ -104,7 +104,7 @@ The following data have been collected and can be replicated by tag [data02](htt
 #  59184  96.32%  f4hwn.bandscope
 #  59184  96.32%  f4hwn.default
 #  59836  97.38%  f4hwn.voxless
-#  60748  98.87%  f4hwn.fullflash
+#  60692  98.78%  f4hwn.fullflash
 ```
 
 The target of shrinking the firmware of 4Kb is on its promising way and there is still space for improvements.
