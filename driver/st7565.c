@@ -15,7 +15,6 @@
  */
 
 #include <stdint.h>
-#include <stdio.h>     // NULL
 
 #include "bsp/dp32g030/gpio.h"
 #include "bsp/dp32g030/spi.h"
