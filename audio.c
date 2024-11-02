@@ -281,7 +281,53 @@ static void AUDIO_PlayVoice(uint8_t VoiceID)
 *      into four values only. This will allows to encoding them in 2 bits and
 *      being able to be decoded in a simple way.
 *
+********************************************************************************
+*
+* RAF: in the second attempt has been dedicated to compress the table using an
+*      approximation that allows to quickly decode the values:
+*
+*        CH: enc(x) ((x - 50) >> 2); max(abs(err)) = 2, avg(abs(err)) = 1.09
+*            min(x) = 50; avg(x) = 88.25; max(x) = 110; avg(abs(err)) = 2.3%
+*        EN: dec(x) ((x - 45) >> 3); max(abs(err)) = 4, avg(abs(err)) = 1.84 
+*            min(x) = 45; avg(x) = 89.57; max(x) = 155; avg(abs(err)) = 4.5%
+*
+*      Related times might vary between 450 and 1550 ms which can be single
+*      numbers [0-9, aka digit] or short words like "exit" or "point". In this
+*      case the human users might not notice (or not too much) a variation in
+*      speaking shorter or longer by 5% in English or 2% in Chinese.
+*
+*      Under these assumptions, it seems reasonable provide an encoding/decoding
+"      which allows to store these times into 4 bits instead of 8 bits memcell.
+*
+*      Current implementation enlarge the firmware with both CH/EN for 4 bytes.
+*      Hence, it does not make sense complicate the code for nothing or less.
+*
+*      However with an variance of {EN9%,CH5%} the tables size 134 -> 48 bytes.
+*      In this case the size shrink would be something like 15 bytes or less.
 */
+
+#if 0 //RAF: just for evaluating the impact of a more efficient data encoding
+
+#ifdef ENABLE_VOICE_CHINESE
+#define DLYID_MAX_CHINESE 58
+static const uint8_t VoiceClipLengthChinese[DLYID_MAX_CHINESE >> 1] =  { 0 };
+#endif
+
+#ifdef ENABLE_VOICE_ENGLISH
+#define DLYID_MAX_ENGLISH 76
+static const uint8_t VoiceClipLengthEnglish[DLYID_MAX_ENGLISH >> 1] = { 0 };
+#endif
+
+#define DLY_MIN_ENGLISH 45
+#define DLY_MIN_CHINESE 50
+#define DLY_DEC(d, id, en) (((id & 1) ? d >> 4 : d & 0x0F) << (en ? 3 : 2))
+static uint8_t get_delay_by_id(const uint8_t *p, uint8_t id, bool en)
+{
+    const uint8_t d = p[id >> 1];
+    return DLY_DEC(d, id, en) + (en ? DLY_MIN_ENGLISH : DLY_MIN_CHINESE);
+}
+
+#else
 
 #ifdef ENABLE_VOICE_CHINESE
 #define DLYID_MAX_CHINESE 58
@@ -315,31 +361,9 @@ static const uint8_t VoiceClipLengthEnglish[DLYID_MAX_ENGLISH] =
 };
 #endif
 
-#if 0 //RAF: just for evaluating the impact of a more efficient data encoding //
-
-#define DLY_MLT_COMMON  5
-#define DLY_MIN_COMMON 45
-#define TABLE_MAX_CHINESE  (DLYID_MAX_CHINESE >> 1)
-#define DLYID_OFF_ENGLISH  (DLYID_MAX_ENGLISH >> 1)
-#define DLYID_MSB_ENGLISH ((DLYID_MAX_ENGLISH + (1<<2)) >> 3)
-#define TABLE_MAX_ENGLISH  (DLYID_OFF_ENGLISH + DLYID_MSB_ENGLISH)
-
-#define V5_DLY(d, id) ((id & 1) ? d >> 4 : d & 0x0F)
-#define EN_MSB(p, id, en) (en?(p[DLYID_OFF_ENGLISH \
-    + (id >> 3)] & (1 << (id & 0x03)) ? 16 : 0):0)
-
-static uint8_t get_delay_by_id(const uint8_t *p, uint8_t id, bool en)
-{
-    uint8_t d = p[id >> 1];
-    d = (V5_DLY(d, id) + EN_MSB(p, id, en)) * DLY_MLT_COMMON;
-    return DLY_MIN_COMMON + d;
-}
-
-#else
-
 #define get_delay_by_id(p, id, en) (p[id])
 
-#endif /////////////////////////////////////////////////////////////////////////
+#endif //RAF: just for evaluating the impact of a more efficient data encoding
 
 /*
  **********************************************************************END(C)**/
