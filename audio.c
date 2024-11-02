@@ -1,5 +1,6 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/*******************************************************************************
+ *
+ * Copyright 2023 Dual Tachyon - https://github.com/DualTachyon
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +13,10 @@
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
+ *
+ * Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+ *
+ *     See below in the code the part that has been reworked
  */
 
 #ifdef ENABLE_FMRADIO
@@ -197,49 +202,16 @@ void AUDIO_PlayBeep(BEEP_Type_t Beep)
 
 }
 
-#ifdef ENABLE_VOICE
 
-#ifdef ENABLE_VOICE_CHINESE
 
-static const uint8_t VoiceClipLengthChinese[58] =
-{
-    0x32, 0x32, 0x32, 0x37, 0x37, 0x32, 0x32, 0x32,
-    0x32, 0x37, 0x37, 0x32, 0x64, 0x64, 0x64, 0x64,
-    0x64, 0x69, 0x64, 0x69, 0x5A, 0x5F, 0x5F, 0x64,
-    0x64, 0x69, 0x64, 0x64, 0x69, 0x69, 0x69, 0x64,
-    0x64, 0x6E, 0x69, 0x5F, 0x64, 0x64, 0x64, 0x69,
-    0x69, 0x69, 0x64, 0x69, 0x64, 0x64, 0x55, 0x5F,
-    0x5A, 0x4B, 0x4B, 0x46, 0x46, 0x69, 0x64, 0x6E,
-    0x5A, 0x64,
-};
+#ifdef ENABLE_VOICE /***********************************************************/
 
-#endif
-
-#ifdef ENABLE_VOICE_ENGLISH
-
-static const uint8_t VoiceClipLengthEnglish[76] =
-{
-    0x50, 0x32, 0x2D, 0x2D, 0x2D, 0x37, 0x37, 0x37,
-    0x32, 0x32, 0x3C, 0x37, 0x46, 0x46, 0x4B, 0x82,
-    0x82, 0x6E, 0x82, 0x46, 0x96, 0x64, 0x46, 0x6E,
-    0x78, 0x6E, 0x87, 0x64, 0x96, 0x96, 0x46, 0x9B,
-    0x91, 0x82, 0x82, 0x73, 0x78, 0x64, 0x82, 0x6E,
-    0x78, 0x82, 0x87, 0x6E, 0x55, 0x78, 0x64, 0x69,
-    0x9B, 0x5A, 0x50, 0x3C, 0x32, 0x55, 0x64, 0x64,
-    0x50, 0x46, 0x46, 0x46, 0x4B, 0x4B, 0x50, 0x50,
-    0x55, 0x4B, 0x4B, 0x32, 0x32, 0x32, 0x32, 0x37,
-    0x41, 0x32, 0x3C, 0x37,
-};
-
-#endif
-
-VOICE_ID_t        gVoiceID[8];
 uint8_t           gVoiceReadIndex;
 uint8_t           gVoiceWriteIndex;
+VOICE_ID_t        gVoiceID[8];
+VOICE_ID_t        gAnotherVoiceID = VOICE_ID_INVALID;
 volatile uint16_t gCountdownToPlayNextVoice_10ms;
 volatile bool     gFlagPlayQueuedVoice;
-VOICE_ID_t        gAnotherVoiceID = VOICE_ID_INVALID;
-
 
 static void AUDIO_PlayVoice(uint8_t VoiceID)
 {
@@ -265,6 +237,113 @@ static void AUDIO_PlayVoice(uint8_t VoiceID)
     }
 }
 
+/*******************************************************************************
+*
+* Copyright 2024 Roberto A. Foglietta <roberto.foglietta@gmail.com>
+*
+*     https://github.com/robang74
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+*
+**START(C)**********************************************************************
+*
+* RAF: looking at the void delay tables we can see that all the values have a
+*      a limited range and in particular:
+*
+*        1. their minimum can be subtracted to them, say 45 the common one
+*
+*        2. plus the values can be divided by 5 without any reamin
+*
+*      after these two operations, the Chinese delay values can be stored into
+*      4 bits each, reducing the table size by half. While the English values
+*      can be stored in 5 bits and this complicates a little the things.
+*
+*      Storing 5 bits can be achieved with 76 half-bytes + 10 bytes in which
+*      storing the sequence of the 76 most significant bit of each of them.
+*
+*      The 2 tables encoded in this way occupy 57% of the original size.
+*      Unfortunately they require a more elaborated code for retrieving the
+*      values encoded and this can increase the total footprint even more.
+*
+*      Because of all these complication, even when both the CH/EN voices are
+*      enabled this encoding enlarge the firmware size of 28 bytes.
+*
+*      However this attempt can be interesting when those tables would be longer
+*      or in case the values can be modified a little and/or rearranged to suite
+*      a more efficient encoding. For example using value x8 coded in 4bits will
+*      make this approach increase the firmware size by 16 bytes only.
+*
+*      For example in the Chinese table there are values that are near to these:
+*
+*         112:1 (14), 104:41 (13), 96:4 (12), 88:3 (11), 72:3 (9), 56:12 (7)
+*
+*      Considering that these values are expressed in 10ms they might be approx
+*      into four values only. This will allows to encoding them in 2 bits and
+*      being able to be decoded in a simple way.
+*
+*/
+
+#ifdef ENABLE_VOICE_CHINESE
+#define DLYID_MAX_CHINESE 58
+static const uint8_t VoiceClipLengthChinese[DLYID_MAX_CHINESE] =
+{
+    0x32, 0x32, 0x32, 0x37, 0x37, 0x32, 0x32, 0x32,
+    0x32, 0x37, 0x37, 0x32, 0x64, 0x64, 0x64, 0x64,
+    0x64, 0x69, 0x64, 0x69, 0x5A, 0x5F, 0x5F, 0x64,
+    0x64, 0x69, 0x64, 0x64, 0x69, 0x69, 0x69, 0x64,
+    0x64, 0x6E, 0x69, 0x5F, 0x64, 0x64, 0x64, 0x69,
+    0x69, 0x69, 0x64, 0x69, 0x64, 0x64, 0x55, 0x5F,
+    0x5A, 0x4B, 0x4B, 0x46, 0x46, 0x69, 0x64, 0x6E,
+    0x5A, 0x64,
+};
+#endif
+
+#ifdef ENABLE_VOICE_ENGLISH
+#define DLYID_MAX_ENGLISH 76
+static const uint8_t VoiceClipLengthEnglish[DLYID_MAX_ENGLISH] =
+{
+    0x50, 0x32, 0x2D, 0x2D, 0x2D, 0x37, 0x37, 0x37,
+    0x32, 0x32, 0x3C, 0x37, 0x46, 0x46, 0x4B, 0x82,
+    0x82, 0x6E, 0x82, 0x46, 0x96, 0x64, 0x46, 0x6E,
+    0x78, 0x6E, 0x87, 0x64, 0x96, 0x96, 0x46, 0x9B,
+    0x91, 0x82, 0x82, 0x73, 0x78, 0x64, 0x82, 0x6E,
+    0x78, 0x82, 0x87, 0x6E, 0x55, 0x78, 0x64, 0x69,
+    0x9B, 0x5A, 0x50, 0x3C, 0x32, 0x55, 0x64, 0x64,
+    0x50, 0x46, 0x46, 0x46, 0x4B, 0x4B, 0x50, 0x50,
+    0x55, 0x4B, 0x4B, 0x32, 0x32, 0x32, 0x32, 0x37,
+    0x41, 0x32, 0x3C, 0x37,
+};
+#endif
+
+#if 0 //RAF: just for evaluating the impact of a more efficient data encoding //
+
+#define DLY_MLT_COMMON  5
+#define DLY_MIN_COMMON 45
+#define TABLE_MAX_CHINESE  (DLYID_MAX_CHINESE >> 1)
+#define DLYID_OFF_ENGLISH  (DLYID_MAX_ENGLISH >> 1)
+#define DLYID_MSB_ENGLISH ((DLYID_MAX_ENGLISH + (1<<2)) >> 3)
+#define TABLE_MAX_ENGLISH  (DLYID_OFF_ENGLISH + DLYID_MSB_ENGLISH)
+
+#define V5_DLY(d, id) ((id & 1) ? d >> 4 : d & 0x0F)
+#define EN_MSB(p, id, en) (en?(p[DLYID_OFF_ENGLISH \
+    + (id >> 3)] & (1 << (id & 0x03)) ? 16 : 0):0)
+
+static uint8_t get_delay_by_id(const uint8_t *p, uint8_t id, bool en)
+{
+    uint8_t d = p[id >> 1];
+    d = (V5_DLY(d, id) + EN_MSB(p, id, en)) * DLY_MLT_COMMON;
+    return DLY_MIN_COMMON + d;
+}
+
+#else
+
+#define get_delay_by_id(p, id, en) (p[id])
+
+#endif /////////////////////////////////////////////////////////////////////////
+
+/*
+ **********************************************************************END(C)**/
+
 void AUDIO_PlaySingleVoice(bool bFlag)
 {
     uint8_t VoiceID;
@@ -274,26 +353,28 @@ void AUDIO_PlaySingleVoice(bool bFlag)
 
     if (gpEeprom->VOICE_PROMPT != VOICE_PROMPT_OFF && gVoiceWriteIndex > 0)
     {
-
 #ifdef ENABLE_VOICE_CHINESE
         if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_CHINESE)
-        {   // Chinese
-            if (VoiceID >= ARRAY_SIZE(VoiceClipLengthChinese))
+        {
+            if (VoiceID < DLYID_MAX_CHINESE)
+            {
+                Delay = get_delay_by_id(VoiceClipLengthChinese, VoiceID, 0); //RAF
+                VoiceID += VOICE_ID_CHI_BASE;
+            }
+            else
                 goto Bailout;
-
-            Delay    = VoiceClipLengthChinese[VoiceID];
-            VoiceID += VOICE_ID_CHI_BASE;
         }
 #endif
 #ifdef ENABLE_VOICE_ENGLISH
         if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_ENGLISH)
         {
-
-            if (VoiceID >= ARRAY_SIZE(VoiceClipLengthEnglish))
+            if (VoiceID < DLYID_MAX_ENGLISH)
+            {
+                Delay = get_delay_by_id(VoiceClipLengthEnglish, VoiceID, 1); //RAF
+                VoiceID += VOICE_ID_ENG_BASE;
+            }
+            else
                 goto Bailout;
-
-            Delay    = VoiceClipLengthEnglish[VoiceID];
-            VoiceID += VOICE_ID_ENG_BASE;
         }
 #endif
 
@@ -422,9 +503,9 @@ void AUDIO_PlayQueuedVoice(void)
 #ifdef ENABLE_VOICE_CHINESE
         if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_CHINESE)
         {
-            if (VoiceID < ARRAY_SIZE(VoiceClipLengthChinese))
+            if (VoiceID < DLYID_MAX_CHINESE)
             {
-                Delay = VoiceClipLengthChinese[VoiceID];
+                Delay = get_delay_by_id(VoiceClipLengthChinese, VoiceID, 0); //RAF
                 VoiceID += VOICE_ID_CHI_BASE;
             }
             else
@@ -434,16 +515,15 @@ void AUDIO_PlayQueuedVoice(void)
 #ifdef ENABLE_VOICE_ENGLISH
         if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_ENGLISH)
         {
-            if (VoiceID < ARRAY_SIZE(VoiceClipLengthEnglish))
+            if (VoiceID < DLYID_MAX_ENGLISH)
             {
-                Delay = VoiceClipLengthEnglish[VoiceID];
+                Delay = get_delay_by_id(VoiceClipLengthEnglish, VoiceID, 1); //RAF
                 VoiceID += VOICE_ID_ENG_BASE;
             }
             else
                 Skip = true;
         }
 #endif
-
         gVoiceReadIndex++;
 
         if (!Skip)
@@ -485,4 +565,4 @@ void AUDIO_PlayQueuedVoice(void)
     gVoiceReadIndex     = 0;
 }
 
-#endif
+#endif //ENABLE_VOICE *********************************************************/
