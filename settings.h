@@ -124,8 +124,12 @@ enum ACTION_OPT_t {
     enum VOICE_Prompt_t
     {
         VOICE_PROMPT_OFF = 0,
+#ifdef ENABLE_VOICE_CHINESE
         VOICE_PROMPT_CHINESE,
+#endif
+#ifdef ENABLE_VOICE_ENGLISH
         VOICE_PROMPT_ENGLISH
+#endif
     };
     typedef enum VOICE_Prompt_t VOICE_Prompt_t;
 #endif

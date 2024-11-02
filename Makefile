@@ -9,6 +9,8 @@ ENABLE_UART                   	?= 1
 ENABLE_AIRCOPY                	?= 1
 ENABLE_NOAA                   	?= 0
 ENABLE_VOICE                  	?= 0
+ENABLE_VOICE_ENGLISH	        ?= 1
+ENABLE_VOICE_CHINESE	        ?= 1
 ENABLE_VOX                    	?= 1
 ENABLE_ALARM                  	?= 0
 ENABLE_TX1750                 	?= 1
@@ -373,7 +375,17 @@ ifeq ($(ENABLE_NOAA),1)
 	CFLAGS  += -DENABLE_NOAA
 endif
 ifeq ($(ENABLE_VOICE),1)
-	CFLAGS  += -DENABLE_VOICE
+	ifeq ($(or $(ENABLE_VOICE_ENGLISH),$(ENABLE_VOICE_CHINESE)),1)
+		CFLAGS  += -DENABLE_VOICE
+		ifeq ($(ENABLE_VOICE_ENGLISH),1)
+			CFLAGS  += -DENABLE_VOICE_ENGLISH
+		endif
+		ifeq ($(ENABLE_VOICE_CHINESE),1)
+			CFLAGS  += -DENABLE_VOICE_CHINESE
+		endif
+	else
+		CFLAGS  += -DENABLE_VOICE -DENABLE_VOICE_ENGLISH
+	endif
 endif
 ifeq ($(ENABLE_VOX),1)
 	CFLAGS  += -DENABLE_VOX

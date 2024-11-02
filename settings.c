@@ -141,26 +141,31 @@ void SETTINGS_InitEEPROM(void)
 #endif
 
     // 0E98..0E9F
-    #ifdef ENABLE_PWRON_PASSWORD
-        EEPROM_ReadBuffer(0x0E98, Data, 8);
-        memcpy(&(gpEeprom->POWER_ON_PASSWORD), Data, 4);
-    #endif
+#ifdef ENABLE_PWRON_PASSWORD
+    EEPROM_ReadBuffer(0x0E98, Data, 8);
+    memcpy(&(gpEeprom->POWER_ON_PASSWORD), Data, 4);
+#endif
 
     // 0EA0..0EA7
     EEPROM_ReadBuffer(0x0EA0, Data, 8);
-    #ifdef ENABLE_VOICE
-    gpEeprom->VOICE_PROMPT = (Data[0] < 3) ? Data[0] : VOICE_PROMPT_ENGLISH;
+#ifdef ENABLE_VOICE
+    gpEeprom->VOICE_PROMPT = (Data[0] < 3) ? Data[0] :
+    #ifdef ENABLE_VOICE_ENGLISH
+        VOICE_PROMPT_ENGLISH;
+    #else
+        VOICE_PROMPT_CHINESE;
     #endif
-    #ifdef ENABLE_RSSI_BAR
-        if((Data[1] < 200 && Data[1] > 90) && (Data[2] < Data[1]-9 && Data[1] < 160  && Data[2] > 50)) {
-            gpEeprom->S0_LEVEL = Data[1];
-            gpEeprom->S9_LEVEL = Data[2];
-        }
-        else {
-            gpEeprom->S0_LEVEL = 130;
-            gpEeprom->S9_LEVEL = 76;
-        }
-    #endif
+#endif
+#ifdef ENABLE_RSSI_BAR
+    if((Data[1] < 200 && Data[1] > 90) && (Data[2] < Data[1]-9 && Data[1] < 160  && Data[2] > 50)) {
+        gpEeprom->S0_LEVEL = Data[1];
+        gpEeprom->S9_LEVEL = Data[2];
+    }
+    else {
+        gpEeprom->S0_LEVEL = 130;
+        gpEeprom->S9_LEVEL = 76;
+    }
+#endif
 
     // 0EA8..0EAF
     EEPROM_ReadBuffer(0x0EA8, Data, 8);

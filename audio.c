@@ -199,6 +199,8 @@ void AUDIO_PlayBeep(BEEP_Type_t Beep)
 
 #ifdef ENABLE_VOICE
 
+#ifdef ENABLE_VOICE_CHINESE
+
 static const uint8_t VoiceClipLengthChinese[58] =
 {
     0x32, 0x32, 0x32, 0x37, 0x37, 0x32, 0x32, 0x32,
@@ -210,6 +212,10 @@ static const uint8_t VoiceClipLengthChinese[58] =
     0x5A, 0x4B, 0x4B, 0x46, 0x46, 0x69, 0x64, 0x6E,
     0x5A, 0x64,
 };
+
+#endif
+
+#ifdef ENABLE_VOICE_ENGLISH
 
 static const uint8_t VoiceClipLengthEnglish[76] =
 {
@@ -224,6 +230,8 @@ static const uint8_t VoiceClipLengthEnglish[76] =
     0x55, 0x4B, 0x4B, 0x32, 0x32, 0x32, 0x32, 0x37,
     0x41, 0x32, 0x3C, 0x37,
 };
+
+#endif
 
 VOICE_ID_t        gVoiceID[8];
 uint8_t           gVoiceReadIndex;
@@ -266,6 +274,8 @@ void AUDIO_PlaySingleVoice(bool bFlag)
 
     if (gpEeprom->VOICE_PROMPT != VOICE_PROMPT_OFF && gVoiceWriteIndex > 0)
     {
+
+#ifdef ENABLE_VOICE_CHINESE
         if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_CHINESE)
         {   // Chinese
             if (VoiceID >= ARRAY_SIZE(VoiceClipLengthChinese))
@@ -274,14 +284,18 @@ void AUDIO_PlaySingleVoice(bool bFlag)
             Delay    = VoiceClipLengthChinese[VoiceID];
             VoiceID += VOICE_ID_CHI_BASE;
         }
-        else
-        {   // English
+#endif
+#ifdef ENABLE_VOICE_ENGLISH
+        if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_ENGLISH)
+        {
+
             if (VoiceID >= ARRAY_SIZE(VoiceClipLengthEnglish))
                 goto Bailout;
 
             Delay    = VoiceClipLengthEnglish[VoiceID];
             VoiceID += VOICE_ID_ENG_BASE;
         }
+#endif
 
         if (FUNCTION_IsRx())   // 1of11
             BK4819_SetAF(BK4819_AF_MUTE);
@@ -405,6 +419,7 @@ void AUDIO_PlayQueuedVoice(void)
     if (gVoiceReadIndex != gVoiceWriteIndex && gpEeprom->VOICE_PROMPT != VOICE_PROMPT_OFF)
     {
         VoiceID = gVoiceID[gVoiceReadIndex];
+#ifdef ENABLE_VOICE_CHINESE
         if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_CHINESE)
         {
             if (VoiceID < ARRAY_SIZE(VoiceClipLengthChinese))
@@ -415,7 +430,9 @@ void AUDIO_PlayQueuedVoice(void)
             else
                 Skip = true;
         }
-        else
+#endif
+#ifdef ENABLE_VOICE_ENGLISH
+        if (gpEeprom->VOICE_PROMPT == VOICE_PROMPT_ENGLISH)
         {
             if (VoiceID < ARRAY_SIZE(VoiceClipLengthEnglish))
             {
@@ -425,6 +442,7 @@ void AUDIO_PlayQueuedVoice(void)
             else
                 Skip = true;
         }
+#endif
 
         gVoiceReadIndex++;
 
