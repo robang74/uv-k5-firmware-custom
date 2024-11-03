@@ -56,55 +56,55 @@ There are several ways to operate on this aim:
 
 5. function stack: variables used by functions a tricking because uP align them at 32 bits.
 
-On the `experimental` branch has been used several technics to shrink the firmware size.
-The two most impacting are:
+6. data encoding: those data which are required can be encoded in a more size-efficient manner.
 
-- using bitflags packed into a `uint32_t` preferably, supported by `inline` functions or macros
-
-- allocate and initialize large structures into a reservede memory which not get in .bbs section
-
-- external components reduction size in order to includes only those functionalities used here.
+On the `experimental` branch has been used several technics to shrink the firmware size as listed above.
 
 The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to include many features.
 
-The following data have been collected and can be replicated by tag [data03](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data03):
+</br>
+
+## Fork size
+
+The following data have been collected and can be replicated by tag [data04](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data03):
 
 ```
-# no torch & no charge lvl,  need  (bytes)  (*next)  (rundata)  (printf)
-# REDUCE_LOW_MID_TX_POWER      0b  (incl.)     *         *       (   0)
-# FLASHLIGHT                  64b  (avail)     *         *       (  52)
-# SHOW_CHARGE_LEVEL          104b  (avail)     *         *       (  84)
-# F4HWN_RX_TX_TIMER          148b  (avail)  ( -128)      *       ( 152)
-# COPY_CHAN_TO_VFO           192b  (incl.)     *         *       ( 116)
-# AUDIO_BAR                  386b  ( -184)               *       ( 400)
-# FEAT_F4HWN_SLEEP           512b  ( -440)               *       ( 452)
-# VOX                              (-1032)            (avail)    ( 968)
-# AIRCOPY                          (-1996)            (-1028)    (1960)
+# no torch & no charge lvl, need  (bytes)  (*next)  (rundata)  (printf)  (EN/CH)
+# REDUCE_LOW_MID_TX_POWER     0b  (incl.)     *         *       (   0)      =
+# FLASHLIGHT                 64b  (avail)     *         *       (  52)      =
+# SHOW_CHARGE_LEVEL         104b  (avail)     *         *       (  84)      =
+# F4HWN_RX_TX_TIMER         148b  (avail)  ( -128)      *       ( 152)      =
+# COPY_CHAN_TO_VFO          192b  (incl.)     *         *       ( 116)      =
+# AUDIO_BAR                 386b  ( -184)     x         *       ( 400)      =
+# FEAT_F4HWN_SLEEP          512b  ( -440)     x         *       ( 452)      =
+# VOX                             (-1032)     x      (avail)    ( 968)      =
+# AIRCOPY                         (-1996)     x      (-1028)    (1960)      =
 # ------------------------------------------------------------------------------
-# ALL THE OPTIONS                  (-3900)               ?
-#
-# VOICE                               ?                          (1584)
-# FEAT_F4HWN_SPECTRUM                                            (incl)
-# FEAT_F4HWN_SCREENSHOT            (avail)               *       (incl)
-# FEAT_F4HWN_RESTORE_SCAN          (avail)               *       ( 192)
-# FEAT_F4HWN_RESET_CHANNEL         (avail)               *       (  60)
+# ALL THE OPTIONS                 (-3900)     ?         ?
+#                                                                       
+# VOICE ENGLIHSH ONLY (new code)     ?        x         x                 ( 476)
+# VOICE (both, original code)        ?        x         x       (1584)       .
+# FEAT_F4HWN_SPECTRUM                         x         x       (incl)       =
+# FEAT_F4HWN_SCREENSHOT           (avail)     .         *       (incl)       =
+# FEAT_F4HWN_RESTORE_SCAN         (avail)     .         *       ( 192)       =
+# FEAT_F4HWN_RESET_CHANNEL        (avail)     .         *       (  60)       =
 # ------------------------------------------------------------------------------
-# ALL THE OPTIONS                     ?               (-2896)   (-3776)
+# ALL THE OPTIONS                    ?        ?      (-2896)   (-3832)   (-3428)
 #
 #   text  data   bss    dec  filename
-#  60640   52   3072  63764  f4hwn.fullflash
-#  59132   52   3116  62300  f4hwn.default
-#  59132   52   3116  62300  f4hwn.bandscope
-#  57640   20   2748  60408  f4hwn.broadcast
-#  59784   52   3060  62896  f4hwn.voxless
+#  60360   52   3068  63480  f4hwn.fullflash
+#  59016   52   3120  62188  f4hwn.default
+#  59016   52   3120  62188  f4hwn.bandscope
+#  57436   20   2748  60204  f4hwn.broadcast
+#  59572   52   3060  62684  f4hwn.voxless
 #
 # Binary firmware files sorted per byte size:
 #
-#  57660  93.84%  f4hwn.broadcast
-#  59184  96.32%  f4hwn.bandscope
-#  59184  96.32%  f4hwn.default
-#  59836  97.38%  f4hwn.voxless
-#  60692  98.78%  f4hwn.fullflash
+#  57456  93.51%  f4hwn.broadcast
+#  59068  96.13%  f4hwn.bandscope
+#  59068  96.13%  f4hwn.default
+#  59624  97.04%  f4hwn.voxless
+#  60412  98.32%  f4hwn.fullflash
 ```
 
 The target of shrinking the firmware of 4Kb is on its promising way and there is still space for improvements.
@@ -206,5 +206,4 @@ Hackers, we will never ask for your permission to do things that we know or lear
 * [piotr022 playground (mesg)](https://github.com/piotr022/UV_K5_playground)
 
 * [tunas1337 18-to-1300 (fork)](https://github.com/fagci/UV-K5-Modded-Firmwares)
-
 

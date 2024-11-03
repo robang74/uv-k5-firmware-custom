@@ -304,6 +304,32 @@ static void AUDIO_PlayVoice(uint8_t VoiceID)
 *
 *      However with an variance of {EN9%,CH5%} the tables size 134 -> 48 bytes.
 *      In this case the size shrink would be something like 15 bytes or less.
+*
+********************************************************************************
+*
+* RAF: in the third attempt has been dedicated to compress the table using an
+*      approximation that allows to even quickly decode the values acceting a
+*      bigger error compared to the original values:
+*
+*        CH: enc(x) ((x - 45) >> 3); max(abs(err)) 6.00%
+*        EN: dec(x) ((x - 45) >> 3); max(abs(err)) 6.15%
+*
+*     In order to reduce the size of the decoding code, simplicity as been cho-
+*     sen and both the encoding functions are the same, thus also the decoding
+*     function. Despite this the maximum relative error is likely 6% for both.
+*
+*     Whetever this error can be acceptable or not, this encoding saves 20 bytes
+*     when applied with both the languages enabled and waste 8 bytes when only
+*     English is enabled.
+*
+*     Without this encoding but enabling just the English which is perfectly
+*     fine for all the world but China, the firmware is 112 bytes smaller than
+*     having both enabled. This means 92 bytes smaller tha both 4-bits encoded.
+*
+*     Despite the succes of having found one encoding reasonably viable the
+*     option to disable one language it much more advantageos and does not
+*     requires and its is a way simpler. This 3rd attempt is the last one.
+*
 */
 
 #if 0 //RAF: just for evaluating the impact of a more efficient data encoding
@@ -318,13 +344,13 @@ static const uint8_t VoiceClipLengthChinese[DLYID_MAX_CHINESE >> 1] =  { 0 };
 static const uint8_t VoiceClipLengthEnglish[DLYID_MAX_ENGLISH >> 1] = { 0 };
 #endif
 
-#define DLY_MIN_ENGLISH 45
-#define DLY_MIN_CHINESE 50
-#define DLY_DEC(d, id, en) (((id & 1) ? d >> 4 : d & 0x0F) << (en ? 3 : 2))
+#define DLY_MIN_COMMON 45
+#define DLY_DEC(d, id) (((id & 1) ? d >> 1 : d << 1) & 0x78)
 static uint8_t get_delay_by_id(const uint8_t *p, uint8_t id, bool en)
 {
+    (void)en;
     const uint8_t d = p[id >> 1];
-    return DLY_DEC(d, id, en) + (en ? DLY_MIN_ENGLISH : DLY_MIN_CHINESE);
+    return DLY_DEC(d, id) + DLY_MIN_COMMON;
 }
 
 #else
