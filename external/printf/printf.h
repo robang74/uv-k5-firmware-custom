@@ -22,10 +22,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-// \brief Tiny printf, sprintf and snprintf implementation, optimized for speed on
-//        embedded systems with a very limited resources.
-//        Use this instead of bloated standard/newlib printf.
-//        These routines are thread safe and reentrant!
+// \brief Tiny printf, sprintf and snprintf implementation, optimized for speed
+//        on embedded systems with a very limited resources. These routines are
+//        thread safe and reentrant. Use this instead of the bloated standard/
+//        newlib printf cause these use malloc for printf.
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -87,6 +87,5 @@ int snprintf(char* buffer, size_t count, const char* format, ...);
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif  // _PRINTF_H_

@@ -6,6 +6,29 @@
  * nanoprintf v0.5.3: a tiny embeddable printf replacement written in C.
  * https://github.com/charlesnicholson/nanoprintf
  *
+ * Nanoprintf is dual-licensed under both the "Unlicense" and the
+ * "Zero-Clause BSD" (0BSD) licenses. The intent of this dual-licensing
+ * structure is to make nanoprintf as consumable as possible in as many
+ * environments / countries / companies as possible without encumbering
+ * users.
+ *
+ * This license applies to all of the nanoprintf source code, build code,
+ * and tests, with the explicit exception of doctest.h, which exists under
+ * its own license and is included in this repository.
+ *
+ * ================================ 0BSD =================================
+ *
+ * Permission to use, copy, modify, and/or distribute this software for
+ * any purpose with or without fee is hereby granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
  ******************************************************************************/
 
 #ifndef NANOPRINTF_H_INCLUDED
@@ -14,11 +37,17 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-// Define this to fully sandbox nanoprintf inside of a translation unit.
-#ifdef NANOPRINTF_VISIBILITY_STATIC
-  #define NPF_VISIBILITY static
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
+
+    // Define this to fully sandbox nanoprintf inside of a translation unit.
+    #ifdef NANOPRINTF_VISIBILITY_STATIC
+      #define NPF_VISIBILITY static
+    #else
+      #define NPF_VISIBILITY extern
+    #endif
+
 #else
-  #define NPF_VISIBILITY extern
+    #define NPF_VISIBILITY static inline
 #endif
 
 #if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
@@ -39,19 +68,23 @@ extern "C" {
 // The npf_ functions do not return negative values, since the lack of 'l' length
 // modifier support makes encoding errors impossible.
 
-
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
 NPF_VISIBILITY int npf_snprintf(
   char *buffer, size_t bufsz, const char *format, ...) NPF_PRINTF_ATTR(3, 4);
+#endif
 
 NPF_VISIBILITY int npf_vsnprintf(
   char *buffer, size_t bufsz, char const *format, va_list vlist) NPF_PRINTF_ATTR(3, 0);
 
 typedef void (*npf_putc)(int c, void *ctx);
+
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
 NPF_VISIBILITY int npf_pprintf(
   npf_putc pc, void *pc_ctx, char const *format, ...) NPF_PRINTF_ATTR(3, 4);
 
 NPF_VISIBILITY int npf_vpprintf(
   npf_putc pc, void *pc_ctx, char const *format, va_list vlist) NPF_PRINTF_ATTR(3, 0);
+#endif
 
 #ifdef __cplusplus
 }
@@ -73,9 +106,9 @@ NPF_VISIBILITY int npf_vpprintf(
 
 // The conversion buffer must fit at least UINT64_MAX in octal format with the leading '0'.
 #ifndef NANOPRINTF_CONVERSION_BUFFER_SIZE
-  #define NANOPRINTF_CONVERSION_BUFFER_SIZE    23
+  #define NANOPRINTF_CONVERSION_BUFFER_SIZE 23
 #endif
-#if NANOPRINTF_CONVERSION_BUFFER_SIZE < 23
+#if NANOPRINTF_CONVERSION_BUFFER_SIZE     < 23
   #error The size of the conversion buffer must be at least 23 bytes.
 #endif
 
@@ -727,12 +760,12 @@ static int npf_bin_len(npf_uint_t u) {
 }
 #endif
 
-static void npf_bufputc(int c, void *ctx) {
+static inline void npf_bufputc(int c, void *ctx) {
   npf_bufputc_ctx_t *bpc = (npf_bufputc_ctx_t *)ctx;
   if (bpc->cur < bpc->len) { bpc->dst[bpc->cur++] = (char)c; }
 }
 
-static void npf_bufputc_nop(int c, void *ctx) { (void)c; (void)ctx; }
+static inline void npf_bufputc_nop(int c, void *ctx) { (void)c; (void)ctx; }
 
 typedef struct npf_cnt_putc_ctx {
   npf_putc pc;
@@ -740,7 +773,7 @@ typedef struct npf_cnt_putc_ctx {
   int n;
 } npf_cnt_putc_ctx_t;
 
-static void npf_putc_cnt(int c, void *ctx) {
+static inline void npf_putc_cnt(int c, void *ctx) {
   npf_cnt_putc_ctx_t *pc_cnt = (npf_cnt_putc_ctx_t *)ctx;
   ++pc_cnt->n;
   pc_cnt->pc(c, pc_cnt->ctx); // sibling-call optimization
@@ -926,7 +959,9 @@ NPF_VISIBILITY int npf_vpprintf(npf_putc pc, void *pc_ctx, char const *format, v
           NPF_WRITEBACK(NONE, int);
           NPF_WRITEBACK(SHORT, short);
           NPF_WRITEBACK(LONG, long);
+#if NANOPRINTF_USE_FLOAT_FORMAT_SPECIFIERS == 1
           NPF_WRITEBACK(LONG_DOUBLE, double);
+#endif
           NPF_WRITEBACK(CHAR, signed char);
 #if NANOPRINTF_USE_LARGE_FORMAT_SPECIFIERS == 1
           NPF_WRITEBACK(LARGE_LONG_LONG, long long);
@@ -1045,6 +1080,8 @@ NPF_VISIBILITY int npf_vpprintf(npf_putc pc, void *pc_ctx, char const *format, v
 #undef NPF_EXTRACT
 #undef NPF_WRITEBACK
 
+#ifndef ENABLE_ROBANG74_SPRINTF_FUNC
+
 NPF_VISIBILITY int npf_pprintf(npf_putc pc, void *pc_ctx, char const *format, ...) {
   va_list val;
   va_start(val, format);
@@ -1061,15 +1098,25 @@ NPF_VISIBILITY int npf_snprintf(char *buffer, size_t bufsz, const char *format, 
   return rv;
 }
 
+#endif // ENABLE_ROBANG74_SPRINTF_FUNC
+
 NPF_VISIBILITY int npf_vsnprintf(char *buffer, size_t bufsz, char const *format, va_list vlist) {
   npf_bufputc_ctx_t bufputc_ctx;
   bufputc_ctx.dst = buffer;
   bufputc_ctx.len = bufsz;
   bufputc_ctx.cur = 0;
 
+#ifdef ENABLE_ROBANG74_SPRINTF_FUNC
+  npf_putc const pc = npf_bufputc;
+#else
   npf_putc const pc = buffer ? npf_bufputc : npf_bufputc_nop;
+#endif
   int const n = npf_vpprintf(pc, &bufputc_ctx, format, vlist);
   pc('\0', &bufputc_ctx);
+
+#ifdef ENABLE_ROBANG74_SPRINTF_FUNC
+  return n;
+#endif
 
   if (buffer && bufsz) {
 #ifdef NANOPRINTF_SNPRINTF_SAFE_EMPTY_STRING_ON_OVERFLOW
