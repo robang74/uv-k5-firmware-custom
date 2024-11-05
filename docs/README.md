@@ -70,6 +70,7 @@ Anyway, have fun.
     * rename BackLt to BLTime,
     * rename BltTRX to BLTxRx,
     * improve memory channel input,
+    * improve keyboard frequency input
     * add percent and gauge to Air Copy,
     * improve audio bar,
     * and more...
@@ -113,6 +114,7 @@ Anyway, have fun.
         * scan lists [1, 2, 3],
         * scan all (all channels with ou without list),
     * add scan list shortcuts,
+    * add scan resume mode on startup,
 * new actions:
     * RX MODE,
     * MAIN ONLY,
