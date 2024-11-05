@@ -16,10 +16,8 @@
  *     limitations under the License.
  */
 
-//#include <stdint.h>
-//#include <string.h>
-
-#include "misc.h"
+#include <stdint.h>
+#include <string.h>
 
 extern uint32_t __bss_start__[];
 extern uint32_t __bss_end__[];
