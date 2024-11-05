@@ -209,22 +209,22 @@ fi
 # FEAT_F4HWN_RESTORE_SCAN         (avail)     .         *       ( 192)       =
 # FEAT_F4HWN_RESET_CHANNEL        (avail)     .         *       (  60)       =
 # ------------------------------------------------------------------------------
-# ALL THE OPTIONS                    ?        ?      (-2896)   (-3832)   (-3088)
+# ALL THE OPTIONS                    ?        ?      (-2896)   (-3832)   (-3148)
 #
-#   text  data   bss    dec  filename
-#  60108   52   3068  63228  f4hwn.fullflash
-#  58816   52   3120  61988  f4hwn.default
-#  58816   52   3120  61988  f4hwn.bandscope
-#  57128   20   2748  59896  f4hwn.broadcast
-#  59260   52   3060  62372  f4hwn.voxless
+#   text  data  bss    dec filename
+#  60148   52  3068  63268 f4hwn.fullflash
+#  58868   52  3120  62040 f4hwn.default
+#  58868   52  3120  62040 f4hwn.bandscope
+#  57176   20  2748  59944 f4hwn.broadcast
+#  59324   52  3060  62436 f4hwn.voxless
 #
 # Binary firmware files sorted per byte size:
 #
-#  57148  93.01%  f4hwn.broadcast
-#  58868  95.81%  f4hwn.bandscope
-#  58868  95.81%  f4hwn.default
-#  59312  96.53%  f4hwn.voxless
-#  60160  97.91%  f4hwn.fullflash
+#  57196  93.09%  f4hwn.broadcast
+#  58920  95.89%  f4hwn.bandscope
+#  58920  95.89%  f4hwn.default
+#  59376  96.64%  f4hwn.voxless
+#  60200  97.98%  f4hwn.fullflash
 
 TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
     ENABLE_VOX=0 \
@@ -276,4 +276,6 @@ make_in_docker "f4hwn.voxless" "${TVOXLESS}"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-show_firmware_filesize
+
+
+

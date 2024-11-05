@@ -39,23 +39,23 @@
 
 #ifdef ENABLE_ROBANG74_UI_MENU /////////////////////////////////////////////////
 
-extern const char        gSubMenu_TXP[8][3];
-extern const char        gSubMenu_SFT_D[4][1];
-extern const char        gSubMenu_W_N[2][1];
-extern const char        gSubMenu_OFF_ON[2][1];
+extern const char        gSubMenu_TXP[8][4];
+extern const char        gSubMenu_SFT_D[3][2];
+extern const char        gSubMenu_BAT_TXT[3][2];
+extern const char        gSubMenu_W_N[2][2];
+extern const char        gSubMenu_OFF_ON[2][2];
 
-extern const char        gSubMenu_ROGER[3][3];
-extern const char        gSubMenu_RESET[2][3];
-extern const char        gSubMenu_BAT_TXT[3][1];
-extern const char        gSubMenu_RX_TX[4][4];
+extern const char        gSubMenu_ROGER[3][4];
+extern const char        gSubMenu_RESET[2][4];
+extern const char        gSubMenu_RX_TX[4][5];
 
 extern char              edit_original[17];
 extern char              edit[17];
 
-extern const char        gSubMenu_BATTYP[3][4];
+extern const char        gSubMenu_BATTYP[3][5];
 
 #ifdef ENABLE_VOICE
-    extern const char    gSubMenu_VOICE[4][2];
+    extern const char    gSubMenu_VOICE[4][3];
 #endif
 
 #ifdef ENABLE_ALARM
@@ -66,22 +66,22 @@ extern const char        gSubMenu_BATTYP[3][4];
     extern const char    gSubMenu_D_RSP[4][4];
 #endif
 
-#ifdef ENABLE_FEAT_F4HWN
-    extern const char    gSubMenu_PONMSG[5][4];
-#else
-    extern const char    gSubMenu_PONMSG[4][4];
-#endif
-
 #ifdef ENABLE_SCRAMBLER
-    extern const char    gSubMenu_SCRAMBLER[12][3];
+    extern const char    gSubMenu_SCRAMBLER[11][4];
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN
-    extern const char    gSubMenu_SET_LCK[2][4];
-    extern const char    gSubMenu_SET_MET[2][4];
-    extern const char    gSubMenu_SET_PWR[8][3];
-    extern const char    gSubMenu_SET_TOT[4][3];
+    extern const char    gSubMenu_SET_PWR[8][4];
+    extern const char    gSubMenu_SET_TOT[4][4];
     extern const char    gSubMenu_SET_PTT[2][6];
+    extern const char    gSubMenu_SET_LCK[2][5];
+    extern const char    gSubMenu_SET_MET[2][5];
+#endif
+
+#ifdef ENABLE_FEAT_F4HWN
+    extern const char    gSubMenu_PONMSG[5][5];
+#else
+    extern const char    gSubMenu_PONMSG[4][5];
 #endif
 
 //RAF: equivalent to the original but explicit

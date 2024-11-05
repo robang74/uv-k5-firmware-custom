@@ -161,7 +161,7 @@ const t_menu_item MenuList[] =
 
 const uint8_t FIRST_HIDDEN_MENU_ITEM = MENU_F_LOCK;
 
-const char gSubMenu_TXP[8][3] =
+const char gSubMenu_TXP[8][4] =
 {
     "USR",
     "MIN",
@@ -173,45 +173,44 @@ const char gSubMenu_TXP[8][3] =
     "MAX"
 };
 
-const char gSubMenu_SFT_D[4][1] =
+const char gSubMenu_SFT_D[3][2] =
 {
-    "o",
+    "o"
     "+",
-    "-",
-    ""  //RAF: 32bit aligment
+    "-"
 };
 
-const char gSubMenu_W_N[2][1] =
+const char gSubMenu_BAT_TXT[3][2] =
+{
+    "-",
+    "V",
+    "%"
+};
+
+const char gSubMenu_W_N[2][2] =
 {
     "W",
     "N"
 };
 
-const char gSubMenu_OFF_ON[2][1] =
+const char gSubMenu_OFF_ON[2][2] =
 {
     "0",
     "1"
 };
 
 
-const char gSubMenu_ROGER[3][3] =
+const char gSubMenu_ROGER[3][4] =
 {
     "OFF",
     "RGR",
     "MDC"
 };
 
-const char gSubMenu_RESET[2][3] =
+const char gSubMenu_RESET[2][4] =
 {
     "VFO",
     "ALL"
-};
-
-const char gSubMenu_BAT_TXT[3][1] =
-{
-    "-",
-    "V",
-    "%"
 };
 
 // a copy of the text before editing so that
@@ -219,7 +218,7 @@ const char gSubMenu_BAT_TXT[3][1] =
 char    edit_original[17];
 char    edit[17];
 
-const char gSubMenu_RX_TX[4][4] =
+const char gSubMenu_RX_TX[4][5] =
 {
     "NONE",
     "TX",
@@ -227,7 +226,7 @@ const char gSubMenu_RX_TX[4][4] =
     "BOTH"
 };
 
-const char gSubMenu_BATTYP[3][4] =
+const char gSubMenu_BATTYP[3][5] =
 {
     "1600",
     "2200",
@@ -237,17 +236,16 @@ const char gSubMenu_BATTYP[3][4] =
 /////
 
 #ifdef ENABLE_VOICE
-const char gSubMenu_VOICE[4][2] =
+const char gSubMenu_VOICE[4][3] =
 {
     "--",
     "CH",
     "EN"
-    ""   //RAF: 32bit aligment
 };
 #endif
 
 #ifdef ENABLE_ALARM
-const char gSubMenu_AL_MOD[2][4] =
+const char gSubMenu_AL_MOD[2][5] =
 {
     "SITE",
     "TONE"
@@ -255,7 +253,7 @@ const char gSubMenu_AL_MOD[2][4] =
 #endif
 
 #ifdef ENABLE_DTMF_CALLING
-const char gSubMenu_D_RSP[4][4] =
+const char gSubMenu_D_RSP[4][5] =
 {
     "NONE",
     "RING",
@@ -264,21 +262,8 @@ const char gSubMenu_D_RSP[4][4] =
 };
 #endif
 
-const char gSubMenu_PONMSG[][4] =
-{
-#ifdef ENABLE_FEAT_F4HWN
-    "ALL",
-    "SND",
-#else
-    "FULL",
-#endif
-    "MESG",
-    "VOLT",
-    "NONE"
-};
-
 #ifdef ENABLE_SCRAMBLER
-const char gSubMenu_SCRAMBLER[12][3] =
+const char gSubMenu_SCRAMBLER[11][4] =
 {
     "OFF",
     "2.6",
@@ -290,26 +275,13 @@ const char gSubMenu_SCRAMBLER[12][3] =
     "3.2",
     "3.3",
     "3.4",
-    "3.5",
-    ""      //RAF: 32bit aligment
+    "3.5"
 };
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN
 
-const char gSubMenu_SET_LCK[2][4] =
-{
-    "KEYS",
-    "+PTT"
-};
-
-const char gSubMenu_SET_MET[2][4] =
-{
-    "TINY",
-    "NRML"
-};
-
-const char gSubMenu_SET_PWR[8][3] =
+const char gSubMenu_SET_PWR[8][4] = //RAF: 8 instead of 4 saves a byte (!!)
 {
     "<20",
     "125",
@@ -317,11 +289,10 @@ const char gSubMenu_SET_PWR[8][3] =
     "500",
     "1W",
     "2W",
-    "5W",
-    ""      //RAF: 32bit aligment
+    "5W"
 };
 
-const char gSubMenu_SET_TOT[4][3] =  // Use by SET_EOT too
+const char gSubMenu_SET_TOT[4][4] =  // Use by SET_EOT too
 {
     "OFF",
     "SND",
@@ -329,10 +300,35 @@ const char gSubMenu_SET_TOT[4][3] =  // Use by SET_EOT too
     "ALL"
 };
 
-const char gSubMenu_SET_PTT[2][6] =  //RAF: 32bit aligment
+const char gSubMenu_SET_PTT[2][6] =
 {
     "PRESS",
     "1PUSH"
+};
+
+const char gSubMenu_SET_LCK[2][5] =
+{
+    "KEYS",
+    "+PTT"
+};
+
+const char gSubMenu_SET_MET[2][5] =
+{
+    "TINY",
+    "NRML"
+};
+
+const char gSubMenu_PONMSG[][5] =
+{
+#ifdef ENABLE_FEAT_F4HWN
+    "ALL",
+    "SND",
+#else
+    "FULL",
+#endif
+    "MESG",
+    "VOLT",
+    "NONE"
 };
 
 #endif //ENABLE_FEAT_F4HWN
