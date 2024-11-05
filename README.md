@@ -66,7 +66,7 @@ The *working-in-progress* `RUNDATA` approach is quite interesting and allowed to
 
 ## Fork size
 
-The following data have been collected and can be replicated by tag [data04](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data03):
+The following data have been collected and can be replicated by tag [data05](https://github.com/robang74/uv-k5-firmware-custom/releases/tag/data05):
 
 ```
 # no torch & no charge lvl, need  (bytes)  (*next)  (rundata)  (printf)  (EN/CH)
@@ -89,22 +89,22 @@ The following data have been collected and can be replicated by tag [data04](htt
 # FEAT_F4HWN_RESTORE_SCAN         (avail)     .         *       ( 192)       =
 # FEAT_F4HWN_RESET_CHANNEL        (avail)     .         *       (  60)       =
 # ------------------------------------------------------------------------------
-# ALL THE OPTIONS                    ?        ?      (-2896)   (-3832)   (-3428)
+# ALL THE OPTIONS                    ?        ?      (-2896)   (-3832)   (-3088)
 #
 #   text  data   bss    dec  filename
-#  60360   52   3068  63480  f4hwn.fullflash
-#  59016   52   3120  62188  f4hwn.default
-#  59016   52   3120  62188  f4hwn.bandscope
-#  57436   20   2748  60204  f4hwn.broadcast
-#  59572   52   3060  62684  f4hwn.voxless
+#  60108   52   3068  63228  f4hwn.fullflash
+#  58816   52   3120  61988  f4hwn.default
+#  58816   52   3120  61988  f4hwn.bandscope
+#  57128   20   2748  59896  f4hwn.broadcast
+#  59260   52   3060  62372  f4hwn.voxless
 #
 # Binary firmware files sorted per byte size:
 #
-#  57456  93.51%  f4hwn.broadcast
-#  59068  96.13%  f4hwn.bandscope
-#  59068  96.13%  f4hwn.default
-#  59624  97.04%  f4hwn.voxless
-#  60412  98.32%  f4hwn.fullflash
+#  57148  93.01%  f4hwn.broadcast
+#  58868  95.81%  f4hwn.bandscope
+#  58868  95.81%  f4hwn.default
+#  59312  96.53%  f4hwn.voxless
+#  60160  97.91%  f4hwn.fullflash
 ```
 
 The target of shrinking the firmware of 4Kb is on its promising way and there is still space for improvements.

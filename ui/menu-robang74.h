@@ -161,7 +161,7 @@ const t_menu_item MenuList[] =
 
 const uint8_t FIRST_HIDDEN_MENU_ITEM = MENU_F_LOCK;
 
-const char gSubMenu_TXP[][6] =
+const char gSubMenu_TXP[8][3] =
 {
     "USR",
     "MIN",
@@ -173,52 +173,81 @@ const char gSubMenu_TXP[][6] =
     "MAX"
 };
 
-const char gSubMenu_SFT_D[][4] =
+const char gSubMenu_SFT_D[4][1] =
 {
     "o",
     "+",
-    "-"
+    "-",
+    ""  //RAF: 32bit aligment
 };
 
-const char gSubMenu_W_N[][7] =
+const char gSubMenu_W_N[2][1] =
 {
     "W",
     "N"
 };
 
-const char gSubMenu_OFF_ON[][4] =
+const char gSubMenu_OFF_ON[2][1] =
 {
     "0",
     "1"
 };
 
-const char* const gSubMenu_RXMode[] =
+
+const char gSubMenu_ROGER[3][3] =
 {
-    "RX-1\nTX-1",       // TX and RX on main only
-    "RX12\nRESP",       // Watch both and respond
-    "RX-2\nTX-1",       // TX on main, RX on secondary
-    "RX12\nTX-1"        // always TX on main, but RX on both
+    "OFF",
+    "RGR",
+    "MDC"
 };
 
+const char gSubMenu_RESET[2][3] =
+{
+    "VFO",
+    "ALL"
+};
+
+const char gSubMenu_BAT_TXT[3][1] =
+{
+    "-",
+    "V",
+    "%"
+};
+
+// a copy of the text before editing so that
+// we can easily test for changes/difference
+char    edit_original[17];
+char    edit[17];
+
+const char gSubMenu_RX_TX[4][4] =
+{
+    "NONE",
+    "TX",
+    "RX",
+    "BOTH"
+};
+
+const char gSubMenu_BATTYP[3][4] =
+{
+    "1600",
+    "2200",
+    "3500"
+};
+
+/////
+
 #ifdef ENABLE_VOICE
-const char gSubMenu_VOICE[][4] =
+const char gSubMenu_VOICE[4][2] =
 {
     "--",
     "CH",
     "EN"
+    ""   //RAF: 32bit aligment
 };
 #endif
 
-const char* const gSubMenu_MDF[] =
-{
-    "FREQ",
-    "CHNL",
-    "NAME",
-    "N+FQ"
-};
-
 #ifdef ENABLE_ALARM
-const char gSubMenu_AL_MOD[][5] =
+const char gSubMenu_AL_MOD[2][4] =
 {
     "SITE",
     "TONE"
@@ -226,7 +255,7 @@ const char gSubMenu_AL_MOD[][5] =
 #endif
 
 #ifdef ENABLE_DTMF_CALLING
-const char gSubMenu_D_RSP[][11] =
+const char gSubMenu_D_RSP[4][4] =
 {
     "NONE",
     "RING",
@@ -235,16 +264,7 @@ const char gSubMenu_D_RSP[][11] =
 };
 #endif
 
-const char* const gSubMenu_PTT_ID[] =
-{
-    "OFF",
-    "UP",
-    "DOWN",
-    "UP+DOWN",
-    "APOLLO\nQUINDAR"
-};
-
-const char gSubMenu_PONMSG[][8] =
+const char gSubMenu_PONMSG[][4] =
 {
 #ifdef ENABLE_FEAT_F4HWN
     "ALL",
@@ -257,17 +277,91 @@ const char gSubMenu_PONMSG[][8] =
     "NONE"
 };
 
-const char gSubMenu_ROGER[][6] =
+#ifdef ENABLE_SCRAMBLER
+const char gSubMenu_SCRAMBLER[12][3] =
 {
     "OFF",
-    "ROGER",
-    "MDC"
+    "2.6",
+    "2.7",
+    "2.8",
+    "2.9",
+    "3.0",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    ""      //RAF: 32bit aligment
+};
+#endif
+
+#ifdef ENABLE_FEAT_F4HWN
+
+const char gSubMenu_SET_LCK[2][4] =
+{
+    "KEYS",
+    "+PTT"
 };
 
-const char gSubMenu_RESET[][4] =
+const char gSubMenu_SET_MET[2][4] =
 {
-    "VFO",
+    "TINY",
+    "NRML"
+};
+
+const char gSubMenu_SET_PWR[8][3] =
+{
+    "<20",
+    "125",
+    "250",
+    "500",
+    "1W",
+    "2W",
+    "5W",
+    ""      //RAF: 32bit aligment
+};
+
+const char gSubMenu_SET_TOT[4][3] =  // Use by SET_EOT too
+{
+    "OFF",
+    "SND",
+    "SEE",
     "ALL"
+};
+
+const char gSubMenu_SET_PTT[2][6] =  //RAF: 32bit aligment
+{
+    "PRESS",
+    "1PUSH"
+};
+
+#endif //ENABLE_FEAT_F4HWN
+
+////
+
+const char* const gSubMenu_RXMode[] =
+{
+    "RX-1\nTX-1",       // TX and RX on main only
+    "RX12\nRESP",       // Watch both and respond
+    "RX-2\nTX-1",       // TX on main, RX on secondary
+    "RX12\nTX-1"        // always TX on main, but RX on both
+};
+
+const char* const gSubMenu_MDF[] =
+{
+    "FREQ",
+    "CHNL",
+    "NAME",
+    "N+FQ"
+};
+
+const char* const gSubMenu_PTT_ID[] =
+{
+    "OFF",
+    "UP",
+    "DOWN",
+    "UP+DOWN",
+    "APOLLO\nQUINDAR"
 };
 
 const char * const gSubMenu_F_LOCK[] =
@@ -302,84 +396,6 @@ const char * const gSubMenu_F_LOCK[] =
     "NONE",
     "ALL",
 };
-
-const char gSubMenu_RX_TX[][6] =
-{
-    "NONE",
-    "TX",
-    "RX",
-    "BOTH"
-};
-
-const char gSubMenu_BAT_TXT[][8] =
-{
-    "-",
-    "V",
-    "%"
-};
-
-const char gSubMenu_BATTYP[][9] =
-{
-    "1600"
-    "2200",
-    "3500"
-};
-
-#ifdef ENABLE_SCRAMBLER
-const char gSubMenu_SCRAMBLER[][5] =
-{
-    "OFF",
-    "2.6k",
-    "2.7k",
-    "2.8k",
-    "2.9k",
-    "3.0k",
-    "3.1k",
-    "3.2k",
-    "3.3k",
-    "3.4k",
-    "3.5k"
-};
-#endif
-
-#ifdef ENABLE_FEAT_F4HWN
-const char gSubMenu_SET_PWR[][6] =
-{
-    "<20",
-    "125",
-    "250",
-    "500",
-    "1W",
-    "2W",
-    "5W"
-};
-
-const char gSubMenu_SET_PTT[][8] =
-{
-    "PRESS",
-    "1PUSH"
-};
-
-const char gSubMenu_SET_TOT[][7] =  // Use by SET_EOT too
-{
-    "OFF",
-    "SND",
-    "SEE",
-    "ALL"
-};
-
-const char gSubMenu_SET_LCK[][9] =
-{
-    "KEYS",
-    "+PTT"
-};
-
-const char gSubMenu_SET_MET[][8] =
-{
-    "TINY",
-    "NRML"
-};
-#endif
 
 const t_sidefunction gSubMenu_SIDEFUNCTIONS[] =
 {

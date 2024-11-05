@@ -37,12 +37,58 @@
 #define MENU_VOICE_LENGHT 7
 #endif
 
-#ifdef ENABLE_ROBANG74_UI_MENU
+#ifdef ENABLE_ROBANG74_UI_MENU /////////////////////////////////////////////////
+
+extern const char        gSubMenu_TXP[8][3];
+extern const char        gSubMenu_SFT_D[4][1];
+extern const char        gSubMenu_W_N[2][1];
+extern const char        gSubMenu_OFF_ON[2][1];
+
+extern const char        gSubMenu_ROGER[3][3];
+extern const char        gSubMenu_RESET[2][3];
+extern const char        gSubMenu_BAT_TXT[3][1];
+extern const char        gSubMenu_RX_TX[4][4];
+
+extern char              edit_original[17];
+extern char              edit[17];
+
+extern const char        gSubMenu_BATTYP[3][4];
+
+#ifdef ENABLE_VOICE
+    extern const char    gSubMenu_VOICE[4][2];
+#endif
+
+#ifdef ENABLE_ALARM
+    extern const char    gSubMenu_AL_MOD[2][4];
+#endif
+
+#ifdef ENABLE_DTMF_CALLING
+    extern const char    gSubMenu_D_RSP[4][4];
+#endif
+
+#ifdef ENABLE_FEAT_F4HWN
+    extern const char    gSubMenu_PONMSG[5][4];
+#else
+    extern const char    gSubMenu_PONMSG[4][4];
+#endif
+
+#ifdef ENABLE_SCRAMBLER
+    extern const char    gSubMenu_SCRAMBLER[12][3];
+#endif
+
+#ifdef ENABLE_FEAT_F4HWN
+    extern const char    gSubMenu_SET_LCK[2][4];
+    extern const char    gSubMenu_SET_MET[2][4];
+    extern const char    gSubMenu_SET_PWR[8][3];
+    extern const char    gSubMenu_SET_TOT[4][3];
+    extern const char    gSubMenu_SET_PTT[2][6];
+#endif
+
 //RAF: equivalent to the original but explicit
 typedef struct __attribute__((__aligned__(1))) {
 #else
 typedef struct {
-#endif
+#endif //ENABLE_ROBANG74_UI_MENU ///////////////////////////////////////////////
     const char     name[MENU_VOICE_LENGHT];
     const uint8_t  menu_id;
 } __attribute__((__packed__)) t_menu_item;
@@ -176,22 +222,24 @@ enum menu_id_enum : uint8_t
 
 extern const uint8_t FIRST_HIDDEN_MENU_ITEM;
 
+#ifndef ENABLE_ROBANG74_UI_MENU ////////////////////////////////////////////////
+
 extern const char        gSubMenu_TXP[8][6];
 extern const char        gSubMenu_SFT_D[3][4];
 extern const char        gSubMenu_W_N[2][7];
 extern const char        gSubMenu_OFF_ON[2][4];
 extern const char        gSubMenu_TOT[11][7];
-extern const char* const gSubMenu_RXMode[4];
 
 #ifdef ENABLE_VOICE
     extern const char    gSubMenu_VOICE[3][4];
 #endif
-extern const char* const gSubMenu_MDF[4];
+
 #ifdef ENABLE_ALARM
     extern const char    gSubMenu_AL_MOD[2][5];
 #endif
+
 #ifdef ENABLE_DTMF_CALLING
-extern const char        gSubMenu_D_RSP[4][11];
+    extern const char    gSubMenu_D_RSP[4][11];
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN
@@ -202,40 +250,43 @@ extern const char        gSubMenu_D_RSP[4][11];
     extern const char    gSubMenu_SET_MET[2][8];
 #endif
 
-extern const char* const gSubMenu_PTT_ID[5];
 #ifdef ENABLE_FEAT_F4HWN
-    extern const char        gSubMenu_PONMSG[5][8];
+    extern const char    gSubMenu_PONMSG[5][8];
 #else
-    extern const char        gSubMenu_PONMSG[4][8];
+    extern const char    gSubMenu_PONMSG[4][8];
 #endif
 extern const char        gSubMenu_ROGER[3][6];
 extern const char        gSubMenu_RESET[2][4];
-extern const char* const gSubMenu_F_LOCK[F_LOCK_LEN];
 extern const char        gSubMenu_RX_TX[4][6];
 extern const char        gSubMenu_BAT_TXT[3][8];
 extern const char        gSubMenu_BATTYP[3][9];
 
 #ifdef ENABLE_SCRAMBLER
-#ifdef ENABLE_ROBANG74_UI_MENU
-    extern const char        gSubMenu_SCRAMBLER[][5];
-#else
-    extern const char        gSubMenu_SCRAMBLER[][7];
-#endif
+    extern const char    gSubMenu_SCRAMBLER[][7];
 #endif
 
-typedef struct {char* name; uint8_t id;} t_sidefunction;
-extern const uint8_t         gSubMenu_SIDEFUNCTIONS_size;
-extern const t_sidefunction gSubMenu_SIDEFUNCTIONS[];
-                         
-extern bool              gIsInSubMenu;
-                         
-extern uint8_t           gMenuCursor;
-
-extern int32_t           gSubMenuSelection;
-                         
 extern char              edit_original[17];
 extern char              edit[17];
-extern int               edit_index;
+
+#endif //ENABLE_ROBANG74_UI_MENU ///////////////////////////////////////////////
+
+extern const char* const gSubMenu_RXMode[4];
+extern const char* const gSubMenu_MDF[4];
+extern const char* const gSubMenu_PTT_ID[5];
+extern const char* const gSubMenu_F_LOCK[F_LOCK_LEN];
+
+typedef struct {
+    char* name;
+    uint8_t id;
+} t_sidefunction;
+
+extern const t_sidefunction gSubMenu_SIDEFUNCTIONS[];
+extern const uint8_t        gSubMenu_SIDEFUNCTIONS_size;
+
+extern int32_t              gSubMenuSelection;
+extern uint8_t              gMenuCursor;
+extern bool                 gIsInSubMenu;
+extern int                  edit_index;
 
 void UI_DisplayMenu(void);
 int UI_MENU_GetCurrentMenuId();

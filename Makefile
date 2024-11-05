@@ -305,23 +305,13 @@ CFLAGS += -DVERSION_STRING=\"$(VERSION_STRING)\"
 
 ifeq ($(ENABLE_FLOCK_SHORT_MENU),1)
 ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
-	$(info "")
-	$(error "ENABLE_ROBANG74_UI_MENU missing, exit")
-	$(info "")
-	$(info  "ENABLE_FLOCK_SHORT_MENU requires it")
-	$(info "")
-	$(exit -1)
+    ENABLE_FLOCK_SHORT_MENU := 0
 endif
 endif
 
 ifeq ($(ENABLE_SIXTH_CHARS_MENU),1)
 ifeq ($(ENABLE_ROBANG74_UI_MENU),0)
-	$(info "")
-	$(error "ENABLE_ROBANG74_UI_MENU missing, exit")
-	$(info "")
-	$(info  "ENABLE_SIXTH_CHARS_MENU requires it")
-	$(info "")
-	$(exit -1)
+    ENABLE_SIXTH_CHARS_MENU := 0
 endif
 endif
 

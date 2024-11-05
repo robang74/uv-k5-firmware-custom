@@ -396,3 +396,8 @@ const t_sidefunction gSubMenu_SIDEFUNCTIONS[] =
     {"WIDE\nNARROW",    ACTION_OPT_WN},
 #endif
 };
+
+// a copy of the text before editing so that
+// we can easily test for changes/difference
+char    edit_original[17];
+char    edit[17];

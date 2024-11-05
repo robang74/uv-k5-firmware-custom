@@ -89,10 +89,15 @@ uint8_t UI_MENU_GetMenuSize(bool lock)
 /*
  **********************************************************************END(C)**/
 
+int32_t gSubMenuSelection;
+int     edit_index;
+uint8_t gMenuCursor;
+bool    gIsInSubMenu;
+
 const uint8_t gSubMenu_SIDEFUNCTIONS_size = ARRAY_SIZE(gSubMenu_SIDEFUNCTIONS);
 
-bool    gIsInSubMenu;
-uint8_t gMenuCursor;
+/******************************************************************************/
+
 int UI_MENU_GetCurrentMenuId() {
     if(gMenuCursor < ARRAY_SIZE(MenuList))
         return MenuList[gMenuCursor].menu_id;
@@ -107,13 +112,6 @@ uint8_t UI_MENU_GetMenuIdx(uint8_t id)
             return i;
     return 0;
 }
-
-int32_t gSubMenuSelection;
-
-// edit box
-char    edit_original[17]; // a copy of the text before editing so that we can easily test for changes/difference
-char    edit[17];
-int     edit_index;
 
 void UI_DisplayMenu(void)
 {
