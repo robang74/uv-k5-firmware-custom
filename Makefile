@@ -111,7 +111,7 @@ OBJS += init.o
 ifeq ($(ENABLE_OVERLAY),1)
 	OBJS += sram-overlay.o
 endif
-OBJS += external/printf/printf.o
+OBJS += printf/printf.o
 
 # Drivers
 OBJS += driver/adc.o
@@ -539,7 +539,7 @@ endif
 
 INC =
 INC += -I $(TOP)
-INC += -I $(TOP)/external/printf
+INC += -I $(TOP)/printf
 INC += -I $(TOP)/external/CMSIS_5/CMSIS/Core/Include/
 INC += -I $(TOP)/external/CMSIS_5/Device/ARM/ARMCM0/Include
 
