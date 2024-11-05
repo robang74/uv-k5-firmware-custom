@@ -445,13 +445,33 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 #ifdef ENABLE_VOICE
             gAnotherVoiceID = (VOICE_ID_t)Key;
 #endif
-            bool isGigaF = gTxVfo->pRX->Frequency >= _1GHz_in_KHz;
-            if (gInputBoxIndex < 6 + isGigaF) {
+            uint8_t totalDigits = 6; // by default frequency is lower than 1 GHz
+            if (gTxVfo->pRX->Frequency >= _1GHz_in_KHz) {
+                totalDigits = 7; // if frequency is uppen than GHz
+            }
+
+            if (gInputBoxIndex == 0) {
+                // do nothing
                 return;
             }
 
-            gInputBoxIndex = 0;
-            uint32_t Frequency = StrToUL(INPUTBOX_GetAscii()) * 100;
+            gKeyInputCountdown = (key_input_timeout_500ms / 5); // short time...
+
+            const char *inputStr = INPUTBOX_GetAscii();
+            uint8_t inputLength = gInputBoxIndex;
+
+            // convert to int
+            uint32_t inputFreq = StrToUL(inputStr);
+
+            // how many zero to add
+            uint8_t zerosToAdd = totalDigits - inputLength;
+
+            // add missing zero
+            for (uint8_t i = 0; i < zerosToAdd; i++) {
+                inputFreq *= 10;
+            }
+
+            uint32_t Frequency = inputFreq * 100;
 
             // clamp the frequency entered to some valid value
             if (Frequency < frequencyBandTable[0].lower) {
