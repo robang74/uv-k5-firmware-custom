@@ -43,7 +43,7 @@
 // Compile nanoprintf in this translation unit.
 #define NANOPRINTF_IMPLEMENTATION
 #define NANOPRINTF_VISIBILITY_STATIC
-#include "../nanoprintf/nanoprintf.h"
+#include "nanoprintf.h"
 
 int sprintf(char* buf, const char* fmt, ...) {
     int rv;
