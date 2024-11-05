@@ -185,41 +185,117 @@ int FM_CheckFrequencyLock(uint16_t Frequency, uint16_t LowerLimit)
     const uint16_t Deviation = BK1080_REG_07_GET_FREQD(Test2);
 
     if (BK1080_REG_07_GET_SNR(Test2) <= 2) {
-        goto Bail;
+        BK1080_FrequencyDeviation = Deviation;
+        BK1080_BaseFrequency      = Frequency;
+
+        return ret;
     }
 
     const uint16_t Status = BK1080_ReadRegister(BK1080_REG_10);
 
     if ((Status & BK1080_REG_10_MASK_AFCRL) != BK1080_REG_10_AFCRL_NOT_RAILED || BK1080_REG_10_GET_RSSI(Status) < 10) {
-        goto Bail;
+        BK1080_FrequencyDeviation = Deviation;
+        BK1080_BaseFrequency      = Frequency;
+
+        return ret;
     }
 
     //if (Deviation > -281 && Deviation < 280)
     if (Deviation >= 280 && Deviation <= 3815) {
-        goto Bail;
+        BK1080_FrequencyDeviation = Deviation;
+        BK1080_BaseFrequency      = Frequency;
+
+        return ret;
     }
 
     // not BLE(less than or equal)
     if (Frequency > LowerLimit && (Frequency - BK1080_BaseFrequency) == 1) {
         if (BK1080_FrequencyDeviation & 0x800 || (BK1080_FrequencyDeviation < 20))
-            goto Bail;
+        {
+            BK1080_FrequencyDeviation = Deviation;
+            BK1080_BaseFrequency      = Frequency;
+
+            return ret;
+        }
     }
 
     // not BLT(less than)
 
     if (Frequency >= LowerLimit && (BK1080_BaseFrequency - Frequency) == 1) {
         if ((BK1080_FrequencyDeviation & 0x800) == 0 || (BK1080_FrequencyDeviation > 4075))
-            goto Bail;
+        {
+            BK1080_FrequencyDeviation = Deviation;
+            BK1080_BaseFrequency      = Frequency;
+
+            return ret;
+        }
     }
 
     ret = 0;
-
-Bail:
     BK1080_FrequencyDeviation = Deviation;
     BK1080_BaseFrequency      = Frequency;
 
     return ret;
 }
+
+/*
+int FM_CheckFrequencyLock(uint16_t Frequency, uint16_t LowerLimit)
+{
+    int ret = -1;
+
+    const uint16_t Test2 = BK1080_ReadRegister(BK1080_REG_07);
+    const uint16_t Deviation = BK1080_REG_07_GET_FREQD(Test2);
+
+    // Vérifie la qualité du signal (SNR)
+    if (BK1080_REG_07_GET_SNR(Test2) <= 2) {
+        BK1080_FrequencyDeviation = Deviation;
+        BK1080_BaseFrequency = Frequency;
+        return ret;
+    }
+
+    // Récupère le status du registre 10 pour vérifier AFCRL et RSSI
+    const uint16_t Status = BK1080_ReadRegister(BK1080_REG_10);
+
+    if ((Status & BK1080_REG_10_MASK_AFCRL) != BK1080_REG_10_AFCRL_NOT_RAILED || 
+        BK1080_REG_10_GET_RSSI(Status) < 10) {
+        BK1080_FrequencyDeviation = Deviation;
+        BK1080_BaseFrequency = Frequency;
+        return ret;
+    }
+
+    // Vérifie les limites de la déviation de fréquence
+    if (Deviation >= 280 && Deviation <= 3815) {
+        BK1080_FrequencyDeviation = Deviation;
+        BK1080_BaseFrequency = Frequency;
+        return ret;
+    }
+
+    // Vérifie les conditions pour BLE
+    if (Frequency > LowerLimit && (Frequency - BK1080_BaseFrequency) == 1) {
+        if (BK1080_FrequencyDeviation & 0x800 || BK1080_FrequencyDeviation < 20) {
+            BK1080_FrequencyDeviation = Deviation;
+            BK1080_BaseFrequency = Frequency;
+            return ret;
+        }
+    }
+
+    // Vérifie les conditions pour BLT
+    if (Frequency >= LowerLimit && (BK1080_BaseFrequency - Frequency) == 1) {
+        if ((BK1080_FrequencyDeviation & 0x800) == 0 || BK1080_FrequencyDeviation > 4075) {
+            BK1080_FrequencyDeviation = Deviation;
+            BK1080_BaseFrequency = Frequency;
+            return ret;
+        }
+    }
+
+    // Si toutes les vérifications passent, on valide le verrouillage de la fréquence
+    ret = 0;
+    BK1080_FrequencyDeviation = Deviation;
+    BK1080_BaseFrequency = Frequency;
+
+    return ret;
+}
+*/
 
 static void Key_DIGITS(KEY_Code_t Key, uint8_t state)
 {
