@@ -202,7 +202,7 @@ fi
 # ------------------------------------------------------------------------------
 # ALL THE OPTIONS                 (-3900)     ?         ?
 #                                                                       
-# VOICE ENGLIHSH ONLY (new code)     ?        x         x                 ( 476)
+# VOICE ENGLIHSH ONLY (new code)     ?        x         x                 (-248)
 # VOICE (both, original code)        ?        x         x       (1584)       .
 # FEAT_F4HWN_SPECTRUM                         x         x       (incl)       =
 # FEAT_F4HWN_SCREENSHOT           (avail)     .         *       (incl)       =
@@ -275,7 +275,4 @@ make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1 $BCOMMON"
 make_in_docker "f4hwn.voxless" "${TVOXLESS}"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-
-
 
