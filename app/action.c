@@ -234,6 +234,10 @@ void ACTION_Scan(bool bRestart)
         gScanPauseDelayIn_10ms = 1;
         gScheduleScanListen    = false;
     } else {
+        #ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
+        gpEeprom->CURRENT_STATE = 1;
+        SETTINGS_WriteCurrentState();
+        #endif
         // start scanning
         CHFRSCANNER_Start(true, SCAN_FWD);
 
