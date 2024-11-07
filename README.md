@@ -1,16 +1,24 @@
-## Quansheng UV-K5/K6/5R v2.1.27 firmware
+## UV-K5 experimental firmware
 
-**Open Source re-implementation**
+**Open Source re-implementation originally forked from Quansheng firmware v2.1.27**
 
-The root README.md has been moved in docs/ folder, here:
+The root `README.md` has been moved in `docs/` folder, here:
 
 * [docs/README.md](docs/README.md)
 
-This home page is dedicated to the fork and its development.
+The original wiki has been revisited and it is available here:
+
+* [wiki](wiki) welcome page
+
+* custom firmware [manual](wiki/custom-firmware-manual.pdf) (PDF)
+
+* spectrum analyzer [guide](wiki/spectrum-analyzer-guide.pdf) (PDF)
+
+This home page is dedicated to the `robang74` fork and its development.
 
 </br>
 
-## UV-K5 hardware
+## UV-K5 family hardware
 
 Quansheng UV-K5 is a name and a shell that contains an electronic PCB which is the same among various models (cfr. [here](docs/UV-K5.pdf)) included the UV-5R but compated with this, the UV-K5 can be modded also in terms of firmware. 
 
@@ -191,7 +199,7 @@ Hackers, we will never ask for your permission to do things that we know or lear
 
 * [UV-K5 Wiki (repo)](https://github.com/ludwich66/Quansheng_UV-K5_Wiki)
 
-* [UV-K5 Wiki (home)](https://github.com/ludwich66/Quansheng_UV-K5_Wiki/wiki)
+* [UV-K5 Wiki (wiki)](https://github.com/ludwich66/Quansheng_UV-K5_Wiki/wiki)
 
 * [amnemonic (tools)](https://github.com/amnemonic/Quansheng_UV-K5_Firmware)
 
@@ -207,3 +215,6 @@ Hackers, we will never ask for your permission to do things that we know or lear
 
 * [tunas1337 18-to-1300 (fork)](https://github.com/fagci/UV-K5-Modded-Firmwares)
 
+* [sq5bpf reverse engineering](https://github.com/sq5bpf/uvk5-reverse-engineering)
+
+* [sq5bpf K5 emulator](https://github.com/sq5bpf/k5emulator)
