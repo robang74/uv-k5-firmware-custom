@@ -24,9 +24,13 @@ This home page is dedicated to the `robang74` fork and its development.
 
 ## UV-K5 family hardware
 
-Quansheng UV-K5 is a name and a shell that contains an electronic PCB which is the same among various models (cfr. [here](docs/UV-K5.pdf)) included the UV-5R but compated with this, the UV-K5 can be modded also in terms of firmware. 
+Quansheng UV-K5 is a name and a shell that contains an electronic PCB which is the same among various models (cfr. [here](docs/UV-K5.pdf)) included the UV-5R but compated with this, the UV-K5 can be modded also in terms of firmware.
+
+<div align="center">
 
 ![Source: oe1mww.work/UV-K5.pdf](README.d/UV-K5-models.png)
+
+</div>
 
 Its microprocessor is an ARM Cortex M0/+, a Chinese clone of STM32G030K8T6 (M0+, 8Kb SRAM) or a STM32F030K8T6 (M0, 16kb SRAM). With the uP core which works at 64MHz and all the stuff aroud (but not the EEPROM) packaged with 32-pinout case (LQFP32, 7x7 mm). This chip contains 64Kb of program memory space (internal flash) and the RAM and the RF (radio frequency) chip is a BK4819 while the the 64Kb EEPROM is soldered as external component on the same PCB.
 
@@ -34,7 +38,11 @@ Therefore, it allows 60Kb firmware files reasonably because the first 4Kb are us
 
 The BK4819 is a half duplex TDD FM transceiver operating within 18 MHz ~ 660, MHz, 840 MHz ~1300 MHz band range. Besides speech communication, the BK4819 on-chip FSK data modem supports F2D and F1W emission to be used in both FRS and DPMR band for text message and GPS information exchange. 
 
+<div align="center">
+
 ![uP 32 pins and PCB version](docs/UV-K5_PCB_R51-V1.4.jpg)
+
+</div>
 
 The following branded STM32G031, STM32G041 Cortex G-series are two models providing the electrical pinout compatible with the STM32G030x8. Moreover, a quick investigation these two model are provided with a RAM that can vary between 8Kb upto 64Kb.
 
@@ -208,11 +216,11 @@ I wish to be clear about the last two points: nothing personal and everyone does
 
 For everybody else, silence is gold plus quick middle fingering is my way to go (cfr. the [bullsh+t asymmetry principle](https://statmodeling.stat.columbia.edu/2019/01/28/bullshit-asymmetry-principle/)) and you are invited to do something the same: take *the bright side of the life* (cit.), and skip the rest.
 
-> I don't have a short temper, I just have a quick reaction to bullshit -- Elizabeth Taylor
-
-<img src="README.d/colazione-da-tiffany.jpg" width="420" heigh="153" alt="Audrey Hepburn in Colazione da Tiffany">
-
-Audrey Hepburn in the picture, not Elizabeth Taylor, Ada Lovelace, Hedwig Eva Maria Kiesler (aka Hedy Lamarr) or any other lovely nerdishly Morticia Addams. LOL
+> *I don't have a short temper, I just have a quick reaction to bullshit* - Elizabeth Taylor
+>
+> <img src="README.d/colazione-da-tiffany.jpg" width="420" heigh="153" alt="Audrey Hepburn in Colazione da Tiffany">
+>
+> Audrey Hepburn in the picture, on the set of *Breakfast at Tiffany's* film (1961)
 
 Hackers, we will never ask for your permission to do things that we know or learning how to do. Keep it stick in the mind and write it down in a post-it and attach to your PC screen nearby the one you are using for your login password.
 
