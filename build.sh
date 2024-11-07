@@ -130,6 +130,8 @@ function show_firmware_filesize() {
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+mkdir -p ${DEST_DIR}
+
 if ! dockimgchk $DOCK_IMG | grep -qe ":latest$"; then
     if [ "$DOCK_RMT" == "" ]; then
         echo
