@@ -223,10 +223,12 @@ Hackers, we will never ask for your permission to do things that we know or lear
 
 * [selevo WebUSBserial (tool)](https://github.com/selevo/WebUsbSerialTerminal)
 
-* [piotr022 playground (mesg)](https://github.com/piotr022/UV_K5_playground)
+* [piotr022 playground (docs)](https://github.com/piotr022/UV_K5_playground)
 
 * [tunas1337 18-to-1300 (fork)](https://github.com/fagci/UV-K5-Modded-Firmwares)
 
 * [sq5bpf reverse engineering](https://github.com/sq5bpf/uvk5-reverse-engineering)
 
 * [sq5bpf K5 emulator](https://github.com/sq5bpf/k5emulator)
+
+* [manujedi K5 tools](https://github.com/manujedi/UV_K5-Tools)
