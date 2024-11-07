@@ -1,0 +1,665 @@
+diff --git a/am_fix.c b/am_fix.c
+index ca1d2ab..6fffe4d 100644
+--- a/am_fix.c
++++ b/am_fix.c
+@@ -27,7 +27,7 @@
+ #include "driver/bk4819.h"
+ #include "frequencies.h"
+ #include "functions.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #ifdef ENABLE_AGC_SHOW_DATA
+ #include "ui/main.h"
+diff --git a/am_fix.h b/am_fix.h
+index d9529b6..09c318e 100644
+--- a/am_fix.h
++++ b/am_fix.h
+@@ -17,10 +17,10 @@
+ 
+ #ifndef AM_FIXH
+ 
+-//#include <stdint.h>
++#include <stdint.h>
+ //#include <stdbool.h>
+ 
+-#include "misc.h"
++//#include "misc.h"
+ 
+ #ifdef ENABLE_AM_FIX
+     void AM_fix_init(void);
+diff --git a/app/action.c b/app/action.c
+index 835878d..2abed59 100644
+--- a/app/action.c
++++ b/app/action.c
+@@ -43,7 +43,7 @@
+ #include "driver/gpio.h"
+ #include "driver/backlight.h"
+ #include "functions.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/inputbox.h"
+ #include "ui/ui.h"
+diff --git a/app/aircopy.c b/app/aircopy.c
+index bc844fe..186ffd8 100644
+--- a/app/aircopy.c
++++ b/app/aircopy.c
+@@ -26,7 +26,7 @@
+ #include "driver/crc.h"
+ #include "driver/eeprom.h"
+ #include "frequencies.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "ui/helper.h"
+ #include "ui/inputbox.h"
+diff --git a/app/app.c b/app/app.c
+index 7d26817..62eeb7a 100644
+--- a/app/app.c
++++ b/app/app.c
+@@ -66,7 +66,7 @@
+ #include "frequencies.h"
+ #include "functions.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "settings.h"
+ 
+diff --git a/app/chFrScanner.c b/app/chFrScanner.c
+index be3b240..5a2a845 100644
+--- a/app/chFrScanner.c
++++ b/app/chFrScanner.c
+@@ -2,9 +2,8 @@
+ #include "app/app.h"
+ #include "app/chFrScanner.h"
+ #include "functions.h"
+-#include "misc.h"
+ #include "settings.h"
+-#include "debugging.h"
++//#include "debugging.h"
+ 
+ int8_t            gScanStateDir;
+ bool              gScanKeepResult;
+diff --git a/app/chFrScanner.h b/app/chFrScanner.h
+index 601f42e..ac4a69e 100644
+--- a/app/chFrScanner.h
++++ b/app/chFrScanner.h
+@@ -1,10 +1,10 @@
+ #ifndef APP_CHFRSCANNER_H
+ #define APP_CHFRSCANNER_H
+ 
+-//#include <stdbool.h>
+-//#include <stdint.h>
++#include <stdbool.h>
++#include <stdint.h>
+ 
+-#include "misc.h"
++//#include "misc.h"
+ 
+ // scan direction, if not equal SCAN_OFF indicates 
+ // that we are in a process of scanning channels/frequencies
+diff --git a/app/common.c b/app/common.c
+index 528f89d..de28943 100644
+--- a/app/common.c
++++ b/app/common.c
+@@ -1,7 +1,7 @@
+ #include "app/chFrScanner.h"
+ #include "audio.h"
+ #include "functions.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/ui.h"
+ 
+diff --git a/app/dtmf.c b/app/dtmf.c
+index a6d47d6..3418723 100644
+--- a/app/dtmf.c
++++ b/app/dtmf.c
+@@ -28,7 +28,7 @@
+ #include "driver/gpio.h"
+ #include "driver/system.h"
+ #include "dtmf.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/ui.h"
+ 
+diff --git a/app/dtmf.h b/app/dtmf.h
+index c6f4c42..ecb7edd 100644
+--- a/app/dtmf.h
++++ b/app/dtmf.h
+@@ -18,9 +18,9 @@
+ #define DTMF_H
+ 
+ //#include <stdbool.h>
+-//#include <stdint.h>
++#include <stdint.h>
+ 
+-#include "misc.h"
++//#include "misc.h"
+ 
+ #define    MAX_DTMF_CONTACTS   16
+ 
+diff --git a/app/fm.c b/app/fm.c
+index 844fda3..2c9e10e 100644
+--- a/app/fm.c
++++ b/app/fm.c
+@@ -27,7 +27,7 @@
+ #include "driver/eeprom.h"
+ #include "driver/gpio.h"
+ #include "functions.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/inputbox.h"
+ #include "ui/ui.h"
+diff --git a/app/generic.c b/app/generic.c
+index 79ed7b3..d1c7293 100644
+--- a/app/generic.c
++++ b/app/generic.c
+@@ -31,7 +31,7 @@
+ #include "driver/keyboard.h"
+ #include "dtmf.h"
+ #include "functions.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/inputbox.h"
+ #include "ui/ui.h"
+diff --git a/app/main.c b/app/main.c
+index a1b47ce..9791956 100644
+--- a/app/main.c
++++ b/app/main.c
+@@ -37,7 +37,7 @@
+ #include "driver/bk4819.h"
+ #include "dtmf.h"
+ #include "frequencies.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "settings.h"
+ #include "ui/inputbox.h"
+diff --git a/app/menu.c b/app/menu.c
+index d7c7d69..07145d0 100644
+--- a/app/menu.c
++++ b/app/menu.c
+@@ -33,7 +33,7 @@
+ #include "driver/keyboard.h"
+ #include "frequencies.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #if defined(ENABLE_OVERLAY)
+     #include "sram-overlay.h"
+diff --git a/app/scanner.c b/app/scanner.c
+index 3e33bd3..c188b33 100644
+--- a/app/scanner.c
++++ b/app/scanner.c
+@@ -14,7 +14,7 @@
+  *     limitations under the License.
+  */
+ 
+-#include "misc.h"
++//#include "misc.h"
+ #include "app/app.h"
+ #include "app/dtmf.h"
+ #include "app/generic.h"
+diff --git a/app/spectrum.c b/app/spectrum.c
+index 035808c..2f45322 100644
+--- a/app/spectrum.c
++++ b/app/spectrum.c
+@@ -22,7 +22,7 @@
+ #include "app/spectrum.h"
+ #include "am_fix.h"
+ #include "audio.h"
+-#include "misc.h"
++//#include "misc.h"
+ 
+ #ifdef ENABLE_SCAN_RANGES
+ #include "chFrScanner.h"
+diff --git a/app/spectrum.h b/app/spectrum.h
+index b0640c1..9246878 100644
+--- a/app/spectrum.h
++++ b/app/spectrum.h
+@@ -33,7 +33,7 @@
+ #include "driver/systick.h"
+ #include "font.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "settings.h"
+ #include "ui/helper.h"
+diff --git a/app/uart.c b/app/uart.c
+index 9ac81eb..6d7f46d 100644
+--- a/app/uart.c
++++ b/app/uart.c
+@@ -34,7 +34,7 @@
+ #include "driver/gpio.h"
+ #include "driver/uart.h"
+ #include "functions.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "version.h"
+ 
+diff --git a/audio.c b/audio.c
+index 9ac3df5..5e853cb 100644
+--- a/audio.c
++++ b/audio.c
+@@ -27,7 +27,7 @@
+ #include "driver/system.h"
+ #include "driver/systick.h"
+ #include "functions.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/ui.h"
+ 
+diff --git a/bitmaps.h b/bitmaps.h
+index 6d35f60..c88f345 100644
+--- a/bitmaps.h
++++ b/bitmaps.h
+@@ -2,8 +2,8 @@
+ #ifndef BITMAP_H
+ #define BITMAP_H
+ 
+-//#include <stdint.h>
+-#include "misc.h"
++#include <stdint.h>
++//#include "misc.h"
+ 
+ extern const uint8_t gFontPowerSave[2][6];
+ extern const uint8_t gFontPttOnePush[2][6];
+diff --git a/board.c b/board.c
+index cf40dad..ae35405 100644
+--- a/board.c
++++ b/board.c
+@@ -38,7 +38,7 @@
+ #include "driver/st7565.h"
+ #include "frequencies.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #if defined(ENABLE_OVERLAY)
+     #include "sram-overlay.h"
+diff --git a/dcs.h b/dcs.h
+index 67f3b6e..b910f09 100644
+--- a/dcs.h
++++ b/dcs.h
+@@ -17,7 +17,7 @@
+ #ifndef DCS_H
+ #define DCS_H
+ 
+-//#include <stdint.h>
++#include <stdint.h>
+ #include "misc.h"
+ 
+ enum DCS_CodeType_t
+diff --git a/debugging.h b/debugging.h
+index d5565bc..9ab14be 100644
+--- a/debugging.h
++++ b/debugging.h
+@@ -6,7 +6,7 @@
+ #include "driver/uart.h"
+ #include "driver/bk4819.h"
+ #include "string.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "am_fix.h"
+ 
+ static inline void uart_putchar(const uint8_t c)
+diff --git a/driver/backlight.c b/driver/backlight.c
+index 07c8901..565c5f5 100644
+--- a/driver/backlight.c
++++ b/driver/backlight.c
+@@ -24,7 +24,7 @@
+ #ifdef ENABLE_FEAT_F4HWN
+     #include "driver/system.h"
+     #include "audio.h"
+-    #include "misc.h"
++    //#include "misc.h"
+ #endif
+ 
+ // this is decremented once every 500ms
+diff --git a/driver/bk1080.c b/driver/bk1080.c
+index 3c8e921..222e806 100644
+--- a/driver/bk1080.c
++++ b/driver/bk1080.c
+@@ -19,7 +19,7 @@
+ #include "driver/gpio.h"
+ #include "driver/i2c.h"
+ #include "driver/system.h"
+-#include "misc.h"
++//#include "misc.h"
+ 
+ #ifndef ARRAY_SIZE
+     #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+diff --git a/font.c b/font.c
+index 4975d58..1a5376b 100644
+--- a/font.c
++++ b/font.c
+@@ -14,7 +14,9 @@
+  *     limitations under the License.
+  */
+ 
+-#include "misc.h"
++#include <stdint.h>
++
++//#include "misc.h"
+ #include "font.h"
+ 
+ // removed last and middle column which was all 0x00
+diff --git a/frequencies.c b/frequencies.c
+index b76c7e6..aeb122a 100644
+--- a/frequencies.c
++++ b/frequencies.c
+@@ -16,9 +16,9 @@
+ 
+ //#include <assert.h>
+ 
+-#include "misc.h"
+ #include "frequencies.h"
+ #include "settings.h"
++//#include "misc.h"
+ 
+ // the BK4819 has 2 bands it covers, 18MHz ~ 630MHz and 760MHz ~ 1300MHz
+ 
+diff --git a/frequencies.h b/frequencies.h
+index 0b80228..89e96fa 100644
+--- a/frequencies.h
++++ b/frequencies.h
+@@ -17,8 +17,8 @@
+ #ifndef FREQUENCIES_H
+ #define FREQUENCIES_H
+ 
+-//#include <stdint.h>
+-#include "misc.h"
++#include <stdint.h>
++//#include "misc.h"
+ 
+ #define _1GHz_in_KHz 100000000
+ 
+diff --git a/functions.c b/functions.c
+index 20b56bc..ec78000 100644
+--- a/functions.c
++++ b/functions.c
+@@ -34,7 +34,7 @@
+ #include "frequencies.h"
+ #include "functions.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "settings.h"
+ #include "ui/status.h"
+diff --git a/helper/battery.c b/helper/battery.c
+index feacd9d..05fa13c 100644
+--- a/helper/battery.c
++++ b/helper/battery.c
+@@ -16,7 +16,7 @@
+ 
+ //#include <assert.h>
+ 
+-#include "misc.h"
++//#include "misc.h"
+ #include "battery.h"
+ #include "driver/backlight.h"
+ #include "driver/st7565.h"
+diff --git a/helper/battery.h b/helper/battery.h
+index 8c575a4..b26c466 100644
+--- a/helper/battery.h
++++ b/helper/battery.h
+@@ -18,8 +18,8 @@
+ #define BATTERY_H
+ 
+ //#include <stdbool.h>
+-//#include <stdint.h>
+-#include "misc.h"
++#include <stdint.h>
++//#include "misc.h"
+ 
+ extern uint16_t          gBatteryCalibration[6];
+ extern uint16_t          gBatteryCurrentVoltage;
+diff --git a/helper/boot.c b/helper/boot.c
+index 37f44ea..bed9c37 100644
+--- a/helper/boot.c
++++ b/helper/boot.c
+@@ -25,7 +25,7 @@
+ #include "driver/gpio.h"
+ #include "driver/system.h"
+ #include "helper/boot.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "settings.h"
+ #include "ui/menu.h"
+diff --git a/init.c b/init.c
+index 6305109..060e55c 100644
+--- a/init.c
++++ b/init.c
+@@ -16,10 +16,10 @@
+  *     limitations under the License.
+  */
+ 
+-//#include <stdint.h>
++#include <stdint.h>
+ //#include <string.h>
+ 
+-#include "misc.h"
++//#include "misc.h"
+ 
+ extern uint32_t __bss_start__[];
+ extern uint32_t __bss_end__[];
+diff --git a/main.c b/main.c
+index 3b18e6c..5d4ad26 100644
+--- a/main.c
++++ b/main.c
+@@ -28,7 +28,7 @@
+ 
+ #include "audio.h"
+ #include "board.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "settings.h"
+ #include "version.h"
+diff --git a/radio.c b/radio.c
+index a7f1ead..f8893c2 100644
+--- a/radio.c
++++ b/radio.c
+@@ -32,7 +32,7 @@
+ #include "frequencies.h"
+ #include "functions.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "settings.h"
+ #include "ui/menu.h"
+diff --git a/radio.h b/radio.h
+index 199eb0d..fd1fb3b 100644
+--- a/radio.h
++++ b/radio.h
+@@ -21,7 +21,7 @@
+ //#include <stdint.h>
+ 
+ #include "dcs.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "frequencies.h"
+ 
+ enum {
+diff --git a/scheduler.c b/scheduler.c
+index 1810d54..fe75221 100644
+--- a/scheduler.c
++++ b/scheduler.c
+@@ -22,7 +22,7 @@
+ #include "audio.h"
+ #include "functions.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ 
+ #include "driver/backlight.h"
+diff --git a/settings.c b/settings.c
+index cc9b124..11245d5 100644
+--- a/settings.c
++++ b/settings.c
+@@ -23,7 +23,7 @@
+ #include "driver/bk1080.h"
+ #include "driver/bk4819.h"
+ #include "driver/eeprom.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/menu.h"
+ 
+diff --git a/ui/aircopy.c b/ui/aircopy.c
+index 14163ae..1116895 100644
+--- a/ui/aircopy.c
++++ b/ui/aircopy.c
+@@ -20,7 +20,7 @@
+ 
+ #include "app/aircopy.h"
+ #include "driver/st7565.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "ui/aircopy.h"
+ #include "ui/helper.h"
+diff --git a/ui/fmradio.c b/ui/fmradio.c
+index 3a46f0c..0701ef5 100644
+--- a/ui/fmradio.c
++++ b/ui/fmradio.c
+@@ -21,7 +21,7 @@
+ #include "app/fm.h"
+ #include "driver/bk1080.h"
+ #include "driver/st7565.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/fmradio.h"
+ #include "ui/helper.h"
+diff --git a/ui/helper.h b/ui/helper.h
+index 8fe2e82..37c576d 100644
+--- a/ui/helper.h
++++ b/ui/helper.h
+@@ -22,10 +22,11 @@
+ #define UI_UI_H
+ 
+ //#include <stdbool.h>
+-//#include <stdint.h>
++#include <stddef.h>
++#include <stdint.h>
+ //#include <string.h>
+ 
+-#include "misc.h"
++//#include "misc.h"
+ 
+ void UI_GenerateChannelString(char *pString, const uint8_t Channel);
+ void UI_GenerateChannelStringEx(char *pString, const bool bShowPrefix, const uint8_t ChannelNumber);
+diff --git a/ui/lock.c b/ui/lock.c
+index d394b6a..feaebad 100644
+--- a/ui/lock.c
++++ b/ui/lock.c
+@@ -23,7 +23,7 @@
+ #include "audio.h"
+ #include "driver/keyboard.h"
+ #include "driver/st7565.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/helper.h"
+ #include "ui/inputbox.h"
+diff --git a/ui/main.c b/ui/main.c
+index 9b385d4..a41eb9b 100644
+--- a/ui/main.c
++++ b/ui/main.c
+@@ -34,7 +34,7 @@
+ #include "driver/st7565.h"
+ #include "functions.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "radio.h"
+ #include "settings.h"
+ #include "ui/helper.h"
+diff --git a/ui/menu.c b/ui/menu.c
+index 1735dcd..2eafc43 100644
+--- a/ui/menu.c
++++ b/ui/menu.c
+@@ -33,7 +33,7 @@
+ #include "driver/st7565.h"
+ #include "frequencies.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "helper.h"
+ #include "inputbox.h"
+diff --git a/ui/scanner.c b/ui/scanner.c
+index a2ad34a..decd82f 100644
+--- a/ui/scanner.c
++++ b/ui/scanner.c
+@@ -25,7 +25,7 @@
+ #include "app/scanner.h"
+ #include "dcs.h"
+ #include "driver/st7565.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "ui/helper.h"
+ #include "ui/scanner.h"
+ 
+diff --git a/ui/status.c b/ui/status.c
+index 3d21e4a..5ba79ee 100644
+--- a/ui/status.c
++++ b/ui/status.c
+@@ -31,7 +31,7 @@
+ #include "driver/st7565.h"
+ #include "functions.h"
+ #include "helper/battery.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "settings.h"
+ #include "ui/battery.h"
+ #include "ui/helper.h"
+diff --git a/ui/ui.c b/ui/ui.c
+index 0087f70..7ee7377 100644
+--- a/ui/ui.c
++++ b/ui/ui.c
+@@ -23,7 +23,6 @@
+     #include "app/fm.h"
+ #endif
+ #include "driver/keyboard.h"
+-#include "misc.h"
+ #ifdef ENABLE_AIRCOPY
+     #include "ui/aircopy.h"
+ #endif
+@@ -35,7 +34,7 @@
+ #include "ui/menu.h"
+ #include "ui/scanner.h"
+ #include "ui/ui.h"
+-#include "../misc.h"
++//#include "misc.h"
+ 
+ GUI_DisplayType_t gScreenToDisplay;
+ GUI_DisplayType_t gRequestDisplayScreen = DISPLAY_INVALID;
+diff --git a/ui/welcome.c b/ui/welcome.c
+index c3ec5b4..c5df2f2 100644
+--- a/ui/welcome.c
++++ b/ui/welcome.c
+@@ -20,7 +20,7 @@
+ #include "driver/st7565.h"
+ #include "helper/battery.h"
+ #include "settings.h"
+-#include "misc.h"
++//#include "misc.h"
+ #include "ui/helper.h"
+ #include "ui/welcome.h"
+ #include "ui/status.h"
