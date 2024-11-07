@@ -4,7 +4,7 @@
 
 > [!WARNING]
 >
-> This repository contains **UNTESTED** code and only `experimental` is developed.
+> This repository contains **UNTESTED** code and only `experimental` is actevely [developed](https://github.com/robang74/uv-k5-firmware-custom/graphs/commit-activity).
 
 The root `README.md` has been moved in `docs/` folder, here:
 
@@ -19,6 +19,8 @@ The original wiki has been revisited and it is available here:
 * spectrum analyzer [guide](wiki/spectrum-analyzer-guide.pdf) (PDF)
 
 This home page is dedicated to the `robang74` fork and its development.
+
+Discussions [forum is open](https://github.com/robang74/uv-k5-firmware-custom/discussions/2), feel free to use it or alternatively write to [me](mailto:roberto.foglietta@gmail.com).
 
 </br>
 
@@ -56,7 +58,7 @@ At this time, the compatibility with other uP chips is under investigation. The 
 
 ## Fork status
 
-The branch's git status says N commits behind `armel/main` but changes are cherry picked, also from other contributors.
+The branch's git status says N commits behind `armel/main` but changes are cherry picked, also from other [contributors](https://github.com/robang74/uv-k5-firmware-custom/graphs/contributors).
 
 At the moment, compared the `armel`'s v3.6, these below are those was not integrated yet:
 
