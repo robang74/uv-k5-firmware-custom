@@ -2,6 +2,10 @@
 
 **Open Source re-implementation originally forked from Quansheng firmware v2.1.27**
 
+> [!WARNING]
+>
+> This repository contains **UNTESTED** code and only `experimental` is developed.
+
 The root `README.md` has been moved in `docs/` folder, here:
 
 * [docs/README.md](docs/README.md)
@@ -44,15 +48,22 @@ At this time, the compatibility with other uP chips is under investigation. The 
 
 ## Fork status
 
-This repository contains **UNTESTED** code on two serving branches:
+The branch's git status says N commits behind `armel/main` but changes are cherry picked, also from other contributors.
 
-- [main](https://github.com/robang74/uv-k5-firmware-custom/tree/main): cherry picking from others, it compiles but it is untested
+At the moment, compared the `armel`'s v3.6, these below are those was not integrated yet:
 
-- [devel](https://github.com/robang74/uv-k5-firmware-custom/tree/devel): seeking for inspiration, might not even compile
++ 153241a - Change label options
++ 443c3d8 - SetVol debug
++ ee6f71a - Voxless limitations 
++ 18daf70 - Add Narrower feature
 
-- [experimental](https://github.com/robang74/uv-k5-firmware-custom/tree/experimental): most interesting but totally unsafe
+The pending cherry-pick from the `armel` repository among others janitory activities are usually liste in [TODO](TODO) file.
 
-The goal is to include as much feature as possible an in order to achieve this result, the size of the firmware should be shrinked a lot.
+</br>
+
+## Fork goal
+
+The goal is to include as much features as possible and in order to achieve this result, the size of the firmware should be shrinked a lot.
 
 There are several ways to operate on this aim:
 
@@ -138,7 +149,7 @@ or get in touch by the Zello channel `UV-K5-mods` - [zello.com/uv-k5-mods](https
 
 </br>
 
-## Fork Docker
+## Fork docker
 
 Another aspect of this fork that might interest you is related to the Docker container management that has been improved compared to the original repository forked.
 
