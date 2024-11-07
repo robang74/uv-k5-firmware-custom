@@ -119,6 +119,8 @@ The target of shrinking the firmware of 4Kb is on its promising way and there is
 
 However, the mass of untested code is skyrocketing and going to be overwhelming for almost everyone else who wishes leverage it.
 
+</br>
+
 ## Fork sharing
 
 Time to share this challenge with other people and spawning more branches like stable, testing, etc. with two small commits to test per week? Wanna join?
@@ -133,6 +135,8 @@ or get in touch by the Zello channel `UV-K5-mods` - [zello.com/uv-k5-mods](https
 
 <!-- img src="https://zello.com/channels/qr?name=UV-K5-mods" alt="zello.com/uv-k5-mods" style="float:center; width:145px; heigth:145px;"/-->
 <img src="README.d/zello-uv-k5-mods-qrcode.png" alt="zello.com/uv-k5-mods" width="145" heigth="145px">
+
+</br>
 
 ## Fork Docker
 
@@ -161,9 +165,13 @@ Plus, it relies over a pre-prepared image which is not built nor updated everyti
 
 Finally `./build.sh` or `./build.sh all` is much shorter to digit rather the previuos scripts and it works without the need of an Internet connection. It is also back-compatible because the other scripts has been changed in a way to be just a wrappers of `build.sh`. Just in case someone has developed automatism based on the previous scripts.
 
+</br>
+
 ## Fork scope
 
 This github repository and related ativities are part of a broader project named **Guy Fawkes Starting Pack** started with a [LinkedIn article](https://www.linkedin.com/pulse/guy-fawkes-starting-pack-roberto-a-foglietta-jm9kf) on 15th January 2023 and continously updated after its 1st draft pubblication. It consultation is public but because LinkedIn is a proprietary medium platform that usually prevents people printing their own PDF copy of the article, then it is also available in [PDF](https://drive.google.com/file/d/1DveGE1CbTdQ8xOOhGyEOS_hilnxMM_XK/view) format by a Google Driver link.
+
+</br>
 
 ## Fork background
 
@@ -183,6 +191,8 @@ Which is the reason for this fork from the well-known **armel** repo?
 
 I wish to be clear about the last two points: nothing personal and everyone does what s/he wants. In fact, here I am, forking a githup repo and carrying on my way.
 
+</br>
+
 ## On my own way
 
 For everybody else, silence is gold plus quick middle fingering is my way to go (cfr. the [bullsh+t asymmetry principle](https://statmodeling.stat.columbia.edu/2019/01/28/bullshit-asymmetry-principle/)) and you are invited to do something the same: take *the bright side of the life* (cit.), and skip the rest.
@@ -194,6 +204,8 @@ For everybody else, silence is gold plus quick middle fingering is my way to go 
 Audrey Hepburn in the picture, not Elizabeth Taylor, Ada Lovelace, Hedwig Eva Maria Kiesler (aka Hedy Lamarr) or any other lovely nerdishly Morticia Addams. LOL
 
 Hackers, we will never ask for your permission to do things that we know or learning how to do. Keep it stick in the mind and write it down in a post-it and attach to your PC screen nearby the one you are using for your login password.
+
+</br>
 
 ## Links
 
