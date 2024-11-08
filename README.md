@@ -2,9 +2,15 @@
 
 **Open Source re-implementation originally forked from Quansheng firmware v2.1.27**
 
+This repository is an experimental fork of [F4HWN](https://github.com/armel/uv-k5-firmware-custom) custom firmware which is a fork of [Egzumer](https://github.com/egzumer/uv-k5-firmware-custom) custom firmware, who was a merge of [OneOfEleven](https://github.com/OneOfEleven/uv-k5-firmware-custom) custom firmware with [fagci](https://github.com/fagci/uv-k5-firmware-fagci-mod) spectrum analizer. All is a cloned and customized version of [DualTachyon](https://github.com/DualTachyon/uv-k5-firmware) custom firmware plus some more changes also from [rebezhir](https://github.com/rebezhir/openquack) openquack.
+
+---
+
 > [!WARNING]
 >
-> This repository contains **UNTESTED** code and only `experimental` is actively [developed](https://github.com/robang74/uv-k5-firmware-custom/graphs/commit-activity).
+> This repository contains **UNTESTED** code and `experimental` branch is actively [developed](https://github.com/robang74/uv-k5-firmware-custom/graphs/commit-activity), only.
+
+---
 
 The root `README.md` has been moved in `docs/` folder, here:
 
