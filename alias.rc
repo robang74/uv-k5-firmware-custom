@@ -1,3 +1,31 @@
 alias docker-listall='docker ps -a -q'
 alias docker-stopall='for i in $( docker ps -a -q ); do docker stop $i & done'
-function codegrep() { grep -rn "$@" 2>/dev/null | grep -ve "full\.repos/" -e "patches/" -e "README.md" -e "\.git/" -e "Makefile" -e "\.unmerged:" | grep -e "\.c:" -e "\.h:"; }
+function codegrep() {
+    grep -rn "$@" 2>/dev/null | grep -ve "full\.repos/" -e "patches/" \
+        -e "README.md" -e "\.git/" -e "Makefile" -e "\.unmerged:" | \
+            grep -e "\.c:" -e "\.h:";
+}
+function uvk5chpk() {
+    if ${GITSHLVL:-0} -gt 0; then
+        echo "ERROR: this fuctions works within gitshell only, abort."
+        return 1
+    fi
+    if ! ch | tail -n1 | grep -q "nothing to commit"; then
+        echo "WARNING: changes are pending, stash before chpk, abort."
+        return 1
+    fi
+    nfile=$$.patch
+    n=$(sw --ignore-space-change $1 | tee $nfile.tmp |\
+        grnc -ne "^_____________*$" | cut -d: -f1)
+    head -n$[n-1] $nfile.tmp |\
+        sed -e "s,gEeprom\.,gpEeprom->,g" | tee $nfile
+    rm -f $nfile.tmp
+    if grnc -q "gpEeprom->" $nfile; then
+        if ! pa $nfile | grep -qe "^error: "; then
+            lg1; return 0
+        fi
+        patch -NElp1 < $nfile
+        cm -am "${2:+$2, }chpk $1 preparation" && lg1
+    fi
+    chpk $1 -m 1 --ignore-space-change || ch
+}
