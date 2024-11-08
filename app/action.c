@@ -495,35 +495,6 @@ void ACTION_Ptt(void)
     gSetting_set_ptt_session = !gSetting_set_ptt_session;
 }
 
-void ACTION_Wn(void)
-{
-    uint8_t chbw;
-
-    if(FUNCTION_IsRx()) {
-        gRxVfo->CHANNEL_BANDWIDTH = !gRxVfo->CHANNEL_BANDWIDTH;
-        chbw = gRxVfo->CHANNEL_BANDWIDTH;
-#ifdef ENABLE_FEAT_F4HWN_NARROWER
-        if(gRxVfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW && gSetting_set_nfm == 1)
-            chbw++;
-#endif
-    } else {
-        gTxVfo->CHANNEL_BANDWIDTH = !gTxVfo->CHANNEL_BANDWIDTH;
-        chbw = gTxVfo->CHANNEL_BANDWIDTH;
-#ifdef ENABLE_FEAT_F4HWN_NARROWER
-        if(gTxVfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW && gSetting_set_nfm == 1)
-            chbw++;
-#endif
-    }
-
-    BK4819_SetFilterBandwidth(chbw,
-#ifdef ENABLE_AM_FIX
-            true
-#else
-            false
-#endif
-        );
-}
-
 void ACTION_BackLight(void)
 {
     if(gBackLight)
@@ -567,6 +538,25 @@ void ACTION_BackLightOnDemand(void)
  **START(C)**/
  
 #include "bitflags.h"
+
+void ACTION_Wn(void)
+{
+    VFO_Info_t *p = FUNCTION_IsRx() ? gRxVfo : gTxVfo;
+    p->CHANNEL_BANDWIDTH = !p->CHANNEL_BANDWIDTH;
+
+    BK4819_SetFilterBandwidth(
+        p->CHANNEL_BANDWIDTH
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+        + (p->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW && gSetting_set_nfm == 1)
+#endif
+        ,
+#ifdef ENABLE_AM_FIX
+        true
+#else
+        false
+#endif
+    );
+}
 
 void ACTION_RxMode(void)
 {
