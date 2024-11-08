@@ -420,6 +420,12 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
             //*pMin = 0;
             *pMax = ARRAY_SIZE(gSubMenu_SET_MET) - 1;
             break;
+        #ifdef ENABLE_FEAT_F4HWN_NARROWER
+            case MENU_SET_NFM:
+                //*pMin = 0;
+                *pMax = ARRAY_SIZE(gSubMenu_SET_NFM) - 1;
+                break;
+        #endif
 #endif
 
         default:
@@ -920,6 +926,13 @@ void MENU_AcceptSetting(void)
         case MENU_SET_GUI:
             gSetting_set_gui = gSubMenuSelection;
             break;
+        #ifdef ENABLE_FEAT_F4HWN_NARROWER
+            case MENU_SET_NFM:
+                gSetting_set_nfm = gSubMenuSelection;
+                RADIO_SetTxParameters();
+                RADIO_SetupRegisters(true);
+                break;
+        #endif
         case MENU_SET_TMR:
             gSetting_set_tmr = gSubMenuSelection;
             break;
@@ -1354,6 +1367,11 @@ void MENU_ShowCurrentSetting(void)
         case MENU_SET_GUI:
             gSubMenuSelection = gSetting_set_gui;
             break;
+        #ifdef ENABLE_FEAT_F4HWN_NARROWER
+            case MENU_SET_NFM:
+                gSubMenuSelection = gSetting_set_nfm;
+                break;
+        #endif
         case MENU_SET_TMR:
             gSubMenuSelection = gSetting_set_tmr;
             break;

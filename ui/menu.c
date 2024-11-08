@@ -711,6 +711,11 @@ void UI_DisplayMenu(void)
             strcpy(String, gSubMenu_SET_MET[gSubMenuSelection]); // Same as SET_MET
             break;
 
+        #ifdef ENABLE_FEAT_F4HWN_NARROWER
+            case MENU_SET_NFM:
+                strcpy(String, gSubMenu_SET_NFM[gSubMenuSelection]);
+                break;
+        #endif
 #endif
 
     }

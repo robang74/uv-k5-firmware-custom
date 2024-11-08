@@ -658,6 +658,13 @@ void RADIO_SetupRegisters(bool switchToForeground)
 {
     BK4819_FilterBandwidth_t Bandwidth = gRxVfo->CHANNEL_BANDWIDTH;
 
+    #ifdef ENABLE_FEAT_F4HWN_NARROWER
+        if(Bandwidth == BK4819_FILTER_BW_NARROW && gSetting_set_nfm == 1)
+        {
+            Bandwidth = BK4819_FILTER_BW_NARROWER;
+        }
+    #endif
+
     AUDIO_AudioPathOff();
 
     gEnableSpeaker = false;
@@ -671,6 +678,7 @@ void RADIO_SetupRegisters(bool switchToForeground)
             [[fallthrough]];
         case BK4819_FILTER_BW_WIDE:
         case BK4819_FILTER_BW_NARROW:
+        case BK4819_FILTER_BW_NARROWER:
             #ifdef ENABLE_AM_FIX
 //              BK4819_SetFilterBandwidth(Bandwidth, gRxVfo->Modulation == MODULATION_AM && gSetting_AM_fix);
                 BK4819_SetFilterBandwidth(Bandwidth, true);
@@ -887,6 +895,13 @@ void RADIO_SetTxParameters(void)
 {
     BK4819_FilterBandwidth_t Bandwidth = gCurrentVfo->CHANNEL_BANDWIDTH;
 
+    #ifdef ENABLE_FEAT_F4HWN_NARROWER
+        if(Bandwidth == BK4819_FILTER_BW_NARROW && gSetting_set_nfm == 1)
+        {
+            Bandwidth = BK4819_FILTER_BW_NARROWER;
+        }
+    #endif
+
     AUDIO_AudioPathOff();
 
     gEnableSpeaker = false;
@@ -900,6 +915,7 @@ void RADIO_SetTxParameters(void)
             [[fallthrough]];
         case BK4819_FILTER_BW_WIDE:
         case BK4819_FILTER_BW_NARROW:
+        case BK4819_FILTER_BW_NARROWER:
             #ifdef ENABLE_AM_FIX
 //              BK4819_SetFilterBandwidth(Bandwidth, gCurrentVfo->Modulation == MODULATION_AM && gSetting_AM_fix);
                 BK4819_SetFilterBandwidth(Bandwidth, true);
