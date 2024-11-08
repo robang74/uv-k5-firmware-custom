@@ -313,5 +313,7 @@ void SETTINGS_WriteBuildOptions(void);
 #ifdef ENABLE_FEAT_F4HWN_RESTORE_SCAN
     void SETTINGS_WriteCurrentState(void);
 #endif
-
+#ifdef ENABLE_FEAT_F4HWN_VOL
+    void SETTINGS_WriteCurrentVol(void);
+#endif
 #endif

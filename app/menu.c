@@ -426,6 +426,12 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
                 *pMax = ARRAY_SIZE(gSubMenu_SET_NFM) - 1;
                 break;
         #endif
+        #ifdef ENABLE_FEAT_F4HWN_VOL
+            case MENU_SET_VOL:
+                //*pMin = 0;
+                *pMax = 63;
+                break;
+        #endif
 #endif
 
         default:
@@ -933,6 +939,11 @@ void MENU_AcceptSetting(void)
                 RADIO_SetupRegisters(true);
                 break;
         #endif
+        #ifdef ENABLE_FEAT_F4HWN_VOL
+            case MENU_SET_VOL:
+                gpEeprom->VOLUME_GAIN = gSubMenuSelection;
+                break;
+        #endif
         case MENU_SET_TMR:
             gSetting_set_tmr = gSubMenuSelection;
             break;
@@ -1370,6 +1381,11 @@ void MENU_ShowCurrentSetting(void)
         #ifdef ENABLE_FEAT_F4HWN_NARROWER
             case MENU_SET_NFM:
                 gSubMenuSelection = gSetting_set_nfm;
+                break;
+        #endif
+        #ifdef ENABLE_FEAT_F4HWN_VOL
+            case MENU_SET_VOL:
+                gSubMenuSelection = gpEeprom->VOLUME_GAIN;
                 break;
         #endif
         case MENU_SET_TMR:

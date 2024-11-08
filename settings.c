@@ -818,6 +818,10 @@ void SETTINGS_SaveSettings(void)
 
     EEPROM_WriteBuffer(0x1FF0, State);
 #endif
+
+#ifdef ENABLE_FEAT_F4HWN_VOL
+    SETTINGS_WriteCurrentVol();
+#endif
 }
 
 void SETTINGS_SaveChannel(uint8_t Channel, uint8_t VFO, const VFO_Info_t *pVFO, uint8_t Mode)
@@ -1018,5 +1022,15 @@ State[1] = 0
         //State[3] = (gpEeprom->CURRENT_STATE << 4) | (gpEeprom->BATTERY_SAVE & 0x0F);
         State[7] = (gpEeprom->VFO_OPEN & 0x01) | ((gpEeprom->CURRENT_STATE & 0x07) << 1) | ((gpEeprom->SCAN_LIST_DEFAULT & 0x07) << 4);
         EEPROM_WriteBuffer(0x0E78, State);
+    }
+#endif
+
+#ifdef ENABLE_FEAT_F4HWN_VOL
+    void SETTINGS_WriteCurrentVol(void)
+    {
+        uint8_t State[8];
+        EEPROM_ReadBuffer(0x1F88, State, sizeof(State));
+        State[6] = gpEeprom->VOLUME_GAIN;
+        EEPROM_WriteBuffer(0x1F88, State);
     }
 #endif
