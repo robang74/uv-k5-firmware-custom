@@ -77,8 +77,12 @@ void SETTINGS_InitEEPROM(void)
     gpEeprom->BACKLIGHT_TIME        = (Data[5] < 62) ? Data[5] : 12;
     gpEeprom->TAIL_TONE_ELIMINATION = (Data[6] < 2) ? Data[6] : false;
 #ifdef ENABLE_FEAT_F4HWN_NARROWER
-    gpEeprom->TAIL_TONE_ELIMINATION = ((Data[6] & 0x01) < 2) ? (Data[6] & 0x01) : false; //RAF: u8 & 0x01 < 2 always!
-    gSetting_set_nfm = (((Data[6] >> 1) & 0x03) < 3) ? ((Data[6] >> 1) & 0x03) : 0; //RAF: u8 & 0x03 < 3 always!
+/* RAF: Data is defined as uint8_t and under this condition, we can apply some simplifications
+    gpEeprom->TAIL_TONE_ELIMINATION = ((Data[6] & 0x01) < 2) ? (Data[6] & 0x01) : false; //RAF,TODO: u8 & 0x01 < 2 always!
+    gSetting_set_nfm = (((Data[6] >> 1) & 0x03) < 3) ? ((Data[6] >> 1) & 0x03) : 0; //RAF,TODO: u8 & 0x03 < 3 always!
+*/
+    gpEeprom->TAIL_TONE_ELIMINATION = (Data[6] & 0x01);
+    gSetting_set_nfm = ((Data[6] >> 1) & 0x03);
 #else
     gpEeprom->TAIL_TONE_ELIMINATION = (Data[6] < 2) ? Data[6] : false;
 #endif
