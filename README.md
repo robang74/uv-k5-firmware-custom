@@ -4,7 +4,7 @@
 
 > [!WARNING]
 >
-> This repository contains **UNTESTED** code and only `experimental` is actevely [developed](https://github.com/robang74/uv-k5-firmware-custom/graphs/commit-activity).
+> This repository contains **UNTESTED** code and only `experimental` is actively [developed](https://github.com/robang74/uv-k5-firmware-custom/graphs/commit-activity).
 
 The root `README.md` has been moved in `docs/` folder, here:
 
