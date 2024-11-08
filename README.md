@@ -58,16 +58,7 @@ At this time, the compatibility with other uP chips is under investigation. The 
 
 ## Fork status
 
-The branch's git status says N commits behind `armel/main` but changes are cherry picked, also from other [contributors](https://github.com/robang74/uv-k5-firmware-custom/graphs/contributors).
-
-At the moment, compared the `armel`'s v3.6, these below are those was not integrated yet:
-
-+ 153241a - Change label options
-+ 443c3d8 - SetVol debug
-+ ee6f71a - Voxless limitations 
-+ 18daf70 - Add Narrower feature
-
-The pending cherry-pick from the `armel` repository among others janitory activities are usually liste in [TODO](TODO) file.
+The branch's git status says N commits behind `armel/main` but changes are cherry picked, also from other [contributors](https://github.com/robang74/uv-k5-firmware-custom/graphs/contributors). The pending cherry-pick from the `armel` repository among others janitory and developing activities are usually liste in [TODO](TODO) file.
 
 </br>
 
