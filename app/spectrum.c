@@ -886,12 +886,18 @@ uint8_t Rssi2Y(uint16_t rssi)
 
 static void DrawSpectrum()
 {
-    for (uint8_t x = 0; x < 128; ++x)
+    uint8_t ox = 0;
+    for (uint8_t i = 0; i < 128; ++i)
     {
-        uint16_t rssi = rssiHistory[x >> settings.stepsCount];
+        uint16_t rssi = rssiHistory[i >> settings.stepsCount];
         if (rssi != RSSI_MAX_VALUE)
         {
-            DrawVLine(Rssi2Y(rssi), DrawingEndY, x, true);
+            uint8_t x = i * 128 / GetStepsCount();
+            for (uint8_t xx = ox; xx < x; xx++)
+            {
+                DrawVLine(Rssi2Y(rssi), DrawingEndY, xx, true);
+            }
+            ox = x;
         }
     }
 }
