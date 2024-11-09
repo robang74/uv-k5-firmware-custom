@@ -2,9 +2,9 @@
 alias docker-listall='docker ps -a -q'
 alias docker-stopall='for i in $( docker ps -a -q ); do docker stop $i & done'
 function codegrep() {
-    grep -rn "$@" 2>/dev/null | grep -ve "full\.repos/" -e "patches/" \
+    grep --color=never -rn "$@" 2>&1 | grep -ve "full\.repos/" -e "patches/" \
         -e "README.md" -e "\.git/" -e "Makefile" -e "\.unmerged:" | \
-            grep -e "\.c:" -e "\.h:";
+            grep --color=never -e "\.c:" -e "\.h:" | grep --color=always "$@";
 }
 function uvk5chpk() {
     if [ ${GITSHLVL:-0} -eq 0 ]; then
