@@ -225,7 +225,9 @@ Hackers, we will never ask for your permission to do things that we know or lear
 
 </br>
 
-## Links
+## Resources
+
+This is a non-complete list of resources available and reletated to this project: 
 
 * [UV-K5 Wiki (repo)](https://github.com/ludwich66/Quansheng_UV-K5_Wiki)
 
@@ -243,7 +245,7 @@ Hackers, we will never ask for your permission to do things that we know or lear
 
 * [piotr022 playground (docs)](https://github.com/piotr022/UV_K5_playground)
 
-* [tunas1337 18-to-1300 (fork)](https://github.com/fagci/UV-K5-Modded-Firmwares)
+* [tunas1337 18-to-1300 (FW)](https://github.com/fagci/UV-K5-Modded-Firmwares)
 
 * [sq5bpf reverse engineering](https://github.com/sq5bpf/uvk5-reverse-engineering)
 
@@ -252,3 +254,13 @@ Hackers, we will never ask for your permission to do things that we know or lear
 * [manujedi K5 tools](https://github.com/manujedi/UV_K5-Tools)
 
 * [ArtrixTech OpenUVK5 (FW)](https://github.com/ArtrixTech/OpenUVK5)
+
+* [Rober Clark Melburne (fixes)](https://github.com/rogerclarkmelbourne/uv-k5-firmware/tree/fixes)
+
+</br>
+
+## Links
+
+This is a arbitrary list of projects which are interesting but not related to UV-K5:
+
+* [OpenRTX (PoC)](https://github.com/OpenRTX/OpenRTX)
