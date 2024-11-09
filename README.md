@@ -257,6 +257,8 @@ This is a non-complete list of resources available and reletated to this project
 
 * [Rober Clark Melburne (fixes)](https://github.com/rogerclarkmelbourne/uv-k5-firmware/tree/fixes)
 
+* [LHunti calibration (cfg)](https://github.com/LHunti/Quansheng-UV-Calibrations)
+
 </br>
 
 ## Links
@@ -264,3 +266,5 @@ This is a non-complete list of resources available and reletated to this project
 This is a arbitrary list of projects which are interesting but not related to UV-K5:
 
 * [OpenRTX (PoC)](https://github.com/OpenRTX/OpenRTX)
+
+* [Open Quack (prj)](https://github.com/rebezhir/openquack/)
