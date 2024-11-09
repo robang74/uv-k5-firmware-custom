@@ -250,3 +250,5 @@ Hackers, we will never ask for your permission to do things that we know or lear
 * [sq5bpf K5 emulator](https://github.com/sq5bpf/k5emulator)
 
 * [manujedi K5 tools](https://github.com/manujedi/UV_K5-Tools)
+
+* [ArtrixTech OpenUVK5 (FW)](https://github.com/ArtrixTech/OpenUVK5)
