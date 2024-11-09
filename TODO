@@ -2,6 +2,10 @@ TODO
 
 + integrate ENABLE_FEAT_F4HWN_NARROWER into gSubMenu_W_N
 + in uvk5chpk add sed for README.md -> docs/ also
++ Artrix Tech OpenUVK5 (FW) check changes
+  https://github.com/ArtrixTech/OpenUVK5
++ Roger Clark Melbourne (2.0.31) fixes check
+  https://github.com/rogerclarkmelbourne/uv-k5-firmware
 
 DONE
 
@@ -9,4 +13,5 @@ v script to upgrade the uvk5 image
 v integration of 18daf70 - Add Narrower feature
 v 2 //RAF TODO in settings.c ENABLE_FEAT_F4HWN_NARROWER
 v integration of 443c3d8 - SetVol debug
-x rejected this 153241a - Change label options
+x cherry pick rejected: 153241a - Change label options
+x move the RSSI array in RUNDATA memory (larger size)

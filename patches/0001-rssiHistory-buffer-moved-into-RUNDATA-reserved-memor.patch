@@ -1,0 +1,84 @@
+From 69a5cb147aa82545eb91d8547e48b60423c68447 Mon Sep 17 00:00:00 2001
+From: "Roberto A. Foglietta" <roberto.foglietta@gmail.com>
+Date: Sun, 10 Nov 2024 00:53:15 +0100
+Subject: [PATCH] rssiHistory[] buffer moved into RUNDATA reserved memory
+
+Signed-off-by: Roberto A. Foglietta <roberto.foglietta@gmail.com>
+---
+ app/spectrum.c | 14 +++++++++++---
+ main.c         |  8 +++++++-
+ 2 files changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/app/spectrum.c b/app/spectrum.c
+index e42ea15d..b75ac699 100644
+--- a/app/spectrum.c
++++ b/app/spectrum.c
+@@ -95,7 +95,15 @@ SpectrumSettings settings = {.stepsCount = STEPS_64,
+ 
+ uint32_t fMeasure = 0;
+ uint32_t currentFreq, tempFreq;
+-uint16_t rssiHistory[128];
++
++#define RSSI_HISTORY_SIZE 128   //RAF: this should go in misc.h on the long run
++#ifdef ENABLE_RUNDATA_MEMORY
++uint16_t *rssiHistory = NULL;
++#else
++uint16_t _rssiHistory[RSSI_HISTORY_SIZE];
++uint16_t *rssiHistory = &_rssiHistory[0];
++#endif
++
+ int vfo;
+ uint8_t freqInputIndex = 0;
+ uint8_t freqInputDotIndex = 0;
+@@ -562,7 +570,7 @@ static void SetRssiHistory(uint16_t idx, uint16_t rssi)
+         //uint8_t i = (uint32_t)ARRAY_SIZE(rssiHistory) * 1000 / scanInfo.measurementsCount * idx / 1000;
+ 
+         uint32_t i;                                      //RAF: uninitialised 32 variable
+-        i = ARRAY_SIZE(rssiHistory) * idx;               //RAF: multiplication first of all
++        i = RSSI_HISTORY_SIZE * idx;                     //RAF: multiplication first of all
+         i += (1U + scanInfo.measurementsCount) >> 1;     //RAF: rounding the division values, both
+         i /= scanInfo.measurementsCount;                 //RAF: make the integer main division
+         i &= 0xFF;                                       //RAF: limit the index at % 256 (uint8_t)
+@@ -1657,7 +1665,7 @@ void APP_RunSpectrum()
+ 
+     RelaunchScan();
+ 
+-    memset(rssiHistory, 0, sizeof(rssiHistory));
++    memset(rssiHistory, 0, RSSI_HISTORY_SIZE);
+ 
+     isInitialized = true;
+ 
+diff --git a/main.c b/main.c
+index 3b18e6cb..94231260 100644
+--- a/main.c
++++ b/main.c
+@@ -95,12 +95,14 @@ volatile uint8_t bitflags;
+ extern uint32_t __rundata_start;
+ extern uint32_t __rundata_end;
+ 
++extern uint16_t *rssiHistory;
++
+ void __attribute__((section(".preinit_array"))) init_rundata_ramseg(void) {
+     uint8_t *start = (uint8_t *)__rundata_start;
+     uint8_t *end = (uint8_t *)__rundata_end;
+ 
+     memset(start, 0, end-start);
+-    memcpy(gpEeprom, &start, 4);
++    memcpy(gpEeprom, &start, 4);               //RAF: 32 bits pointers = 4 bytes
+ 
+     #ifdef ENABLE_DTMF_CALLING
+     strcpy(gpEeprom->ANI_DTMF_ID, "123");
+@@ -109,6 +111,10 @@ void __attribute__((section(".preinit_array"))) init_rundata_ramseg(void) {
+     #endif
+     strcpy(gpEeprom->DTMF_UP_CODE, "12345");
+     strcpy(gpEeprom->DTMF_DOWN_CODE, "54321");
++
++    uint8_t *next = start + sizeof(EEPROM_Config_t);
++    assert((uint32_t)next < __rundata_end);
++    memcpy(rssiHistory, &next, 4);             //RAF: 32 bits pointers = 4 bytes
+ }
+ #endif
+ 
+-- 
+2.34.1
+
