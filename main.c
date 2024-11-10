@@ -100,7 +100,7 @@ void __attribute__((section(".preinit_array"))) init_rundata_ramseg(void) {
     uint8_t *end = (uint8_t *)__rundata_end;
 
     memset(start, 0, end-start);
-    memcpy(gpEeprom, &start, 4);
+    memcpy(&gpEeprom, &start, 4);
 
     #ifdef ENABLE_DTMF_CALLING
     strcpy(gpEeprom->ANI_DTMF_ID, "123");
