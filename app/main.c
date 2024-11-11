@@ -427,7 +427,7 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 
         if (IS_MR_CHANNEL(gTxVfo->CHANNEL_SAVE)) { // user is entering channel number
 
-            gKeyInputCountdown = (key_input_timeout_500ms / 5); // short time...
+            gKeyInputCountdown = (key_input_timeout_500ms / 4); // short time...
 
             #ifdef ENABLE_VOICE
                 gAnotherVoiceID   = (VOICE_ID_t)Key;
@@ -454,8 +454,8 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
                 // do nothing
                 return;
             }
-
-            gKeyInputCountdown = (key_input_timeout_500ms / 5); // short time...
+            
+            gKeyInputCountdown = (gInputBoxIndex == totalDigits) ? (key_input_timeout_500ms / 16) : (key_input_timeout_500ms / 4);
 
             const char *inputStr = INPUTBOX_GetAscii();
             uint8_t inputLength = gInputBoxIndex;
