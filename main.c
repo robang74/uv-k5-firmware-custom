@@ -189,15 +189,7 @@ void Main(void)
         #ifdef ENABLE_FEAT_F4HWN
             gpEeprom->KEY_LOCK = 0;
             SETTINGS_SaveSettings();
-            #ifndef ENABLE_VOX
-                gMenuCursor = 64; // move to hidden section, fix me if change... !!! Remove VOX and Mic Bar
-            #else
-                #ifdef ENABLE_FEAT_F4HWN_SLEEP
-                    gMenuCursor = 67; // move to hidden section, fix me if change... !!!
-                #else
-                    gMenuCursor = 66; // move to hidden section, fix me if change... !!!
-                #endif
-            #endif
+            gMenuCursor = FIRST_HIDDEN_MENU_ITEM;
             gSubMenuSelection = gSetting_F_LOCK;
         #endif
     }
