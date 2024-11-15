@@ -886,13 +886,17 @@ uint8_t Rssi2Y(uint16_t rssi)
 
 static void DrawSpectrum()
 {
-    uint16_t rssi, x, xx, ox = 0;
+#ifdef ENABLE_FEAT_F4HWN_SPECTRUM
+    uint16_t x, xx, ox = 0;
+#endif
 
     for (uint8_t i = 0; i < 128; ++i)
     {
-        rssi = rssiHistory[i >> settings.stepsCount];
+        uint16_t rssi = rssiHistory[i >> settings.stepsCount];
         if (rssi != RSSI_MAX_VALUE)
-        {   //
+        {
+#ifdef ENABLE_FEAT_F4HWN_SPECTRUM
+            //
             //RAF: interger division principles
             //     1. using the largest word to process the result
             //     2. pay attention to overflow and underflow
@@ -909,6 +913,9 @@ static void DrawSpectrum()
                 DrawVLine(Rssi2Y(rssi), DrawingEndY, xx, true);
             }
             ox = x;
+#else
+            DrawVLine(Rssi2Y(rssi), DrawingEndY, i, true);
+#endif
         }
     }
 }
