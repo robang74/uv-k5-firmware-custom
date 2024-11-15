@@ -427,7 +427,7 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 
         if (IS_MR_CHANNEL(gTxVfo->CHANNEL_SAVE)) { // user is entering channel number
 
-            gKeyInputCountdown = (key_input_timeout_500ms / 4); // short time...
+            gKeyInputCountdown = (key_input_timeout_500ms >> 2); // short time...
 
             #ifdef ENABLE_VOICE
                 gAnotherVoiceID   = (VOICE_ID_t)Key;
@@ -455,7 +455,8 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
                 return;
             }
             
-            gKeyInputCountdown = (gInputBoxIndex == totalDigits) ? (key_input_timeout_500ms / 16) : (key_input_timeout_500ms / 4);
+            gKeyInputCountdown = (gInputBoxIndex == totalDigits) ?
+                (key_input_timeout_500ms >> 4) : (key_input_timeout_500ms >> 2);
 
             const char *inputStr = INPUTBOX_GetAscii();
             uint8_t inputLength = gInputBoxIndex;
@@ -478,7 +479,7 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
                 Frequency = frequencyBandTable[0].lower;
             }
             else if (Frequency >= BX4819_band1.upper && Frequency < BX4819_band2.lower) {
-                const uint32_t center = (BX4819_band1.upper + BX4819_band2.lower) / 2;
+                const uint32_t center = (BX4819_band1.upper + BX4819_band2.lower) >> 1;
                 Frequency = (Frequency < center) ? BX4819_band1.upper : BX4819_band2.lower;
             }
             else if (Frequency > frequencyBandTable[BAND_N_ELEM - 1].upper) {
@@ -501,7 +502,7 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
 
             if (Frequency >= BX4819_band1.upper && Frequency < BX4819_band2.lower)
             {   // clamp the frequency to the limit
-                const uint32_t center = (BX4819_band1.upper + BX4819_band2.lower) / 2;
+                const uint32_t center = (BX4819_band1.upper + BX4819_band2.lower) >> 1;
                 Frequency = (Frequency < center) ? BX4819_band1.upper - gTxVfo->StepFrequency : BX4819_band2.lower;
             }
 
