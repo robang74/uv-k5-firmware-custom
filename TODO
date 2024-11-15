@@ -15,3 +15,51 @@ v 2 //RAF TODO in settings.c ENABLE_FEAT_F4HWN_NARROWER
 v integration of 443c3d8 - SetVol debug
 x cherry pick rejected: 153241a - Change label options
 x move the RSSI array in RUNDATA memory (larger size)
+
+= = = =
+
+settings.c:57
+
+Considering the logic implemented:
+
+bbbb bbbb
+doing >>2
+00bb bbbb 
+doing &15
+0000 bbbb
+doing >4?
+0000 bbxx -> 0
+0000 00xx -> xx
+
+An alternative but might not be equivalent:
+
+bbbb bbbb
+doing >>2
+00bb bbbb 
+doing &3
+0000 bbxx -> xx
+
+or even better don't do any change here but here settings.c:601:        
+
+State[4] = (gEeprom.KEY_LOCK ? 0x01 : 0) | (gEeprom.MENU_LOCK ? 0x02 :0) | ((gEeprom.SET_KEY & 0x0F) << 2);
+
+becomes
+
+State[4] = gEeprom.KEY_LOCK | (gEeprom.MENU_LOCK <<1) | ((gEeprom.SET_KEY & 0x03) << 2);
+
+because
+
+settings.h:185:    bool KEY_LOCK;
+settings.h:190:    bool MENU_LOCK;
+
+However, a more suitable encoding is usually put the boolean flag in higher bits that can be set/get easily and the mask lower bits for values, like in this way:
+
+State[4] = (gEeprom.KEY_LOCK <<3) | (gEeprom.MENU_LOCK <<2) | (gEeprom.SET_KEY & 0x03);
+
+In this way
+
+State[4] <-> KEY_LOCK with 0x08 mask
+State[4] <-> MENU_LOCK with 0x04 mask
+State[4] <-> MENU_LOCK with 0x03 mask
+
+Unfortunately, this encoding is not back-compatible with the data saved in the physical EEPROM between two version upgrades.
