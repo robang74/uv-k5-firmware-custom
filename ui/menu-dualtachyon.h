@@ -119,7 +119,9 @@ const t_menu_item MenuList[] =
     {"SetPtt",      MENU_SET_PTT       },
     {"SetTot",      MENU_SET_TOT       },
     {"SetEot",      MENU_SET_EOT       },
+#ifdef ENABLE_FEAT_F4HWN_CONTRAST
     {"SetCtr",      MENU_SET_CTR       },
+#endif
     {"SetInv",      MENU_SET_INV       },
     {"SetLck",      MENU_SET_LCK       },
     {"SetMet",      MENU_SET_MET       },

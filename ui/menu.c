@@ -680,11 +680,13 @@ void UI_DisplayMenu(void)
             strcpy(String, gSubMenu_SET_TOT[gSubMenuSelection]); // Same as SET_TOT
             break;
 
+#ifdef ENABLE_FEAT_F4HWN_CONTRAST
         case MENU_SET_CTR:
             sprintf(String, "%d", I16(gSubMenuSelection));
             gSetting_set_ctr = gSubMenuSelection;
             ST7565_ContrastAndInv();
             break;
+#endif
 
         case MENU_SET_INV:
             strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
