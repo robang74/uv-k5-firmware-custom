@@ -454,9 +454,8 @@ static void MAIN_Key_DIGITS(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
                 // do nothing
                 return;
             }
-            
-            gKeyInputCountdown = (gInputBoxIndex == totalDigits) ?
-                (key_input_timeout_500ms >> 4) : (key_input_timeout_500ms >> 2);
+
+            gKeyInputCountdown = key_input_timeout_500ms >> ((gInputBoxIndex == totalDigits) ? 4 : 2);
 
             const char *inputStr = INPUTBOX_GetAscii();
             uint8_t inputLength = gInputBoxIndex;
