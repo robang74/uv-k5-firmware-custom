@@ -162,7 +162,7 @@ DEFAULT="" # "ENABLE_VOICE=1"
 default_first=0
 
 if [ $default_first -ne 0 ]; then
-    make_in_docker "f4hwn.default" $DEFAULT
+    make_in_docker "raf74.default" $DEFAULT
 
     # RAF: to test the new code is compiling
     ret=$?;
@@ -178,31 +178,31 @@ TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
     ENABLE_VOX=0 \
     ENABLE_AIRCOPY=0 \
     ENABLE_AUDIO_BAR=0 \
-    ENABLE_FEAT_F4HWN_SLEEP=0 \
-    ENABLE_FEAT_F4HWN_SPECTRUM=0"
+    ENABLE_FEAT_raf74_SLEEP=0 \
+    ENABLE_FEAT_raf74_SPECTRUM=0"
 
 # no torch & no charge lvl, need (bytes) (*next)
 # REDUCE_LOW_MID_TX_POWER   0b   (incl.)
 # FLASHLIGHT               64b   (avail)    *
-# FEAT_F4HWN_CA            64b   (excl.)
+# FEAT_raf74_CA            64b   (excl.)
 # SHOW_CHARGE_LEVEL       104b   (avail)    *
-# F4HWN_RX_TX_TIMER       148b   (avail) ( -128)
+# raf74_RX_TX_TIMER       148b   (avail) ( -128)
 # COPY_CHAN_TO_VFO        192b   (incl.)
 # AUDIO_BAR               386b   ( -184)
-# FEAT_F4HWN_SLEEP        512b   ( -440)
+# FEAT_raf74_SLEEP        512b   ( -440)
 # VOX                            ( -776)
 # AIRCOPY                        (-1996)
 # ALL THE OPTIONS                (-3900)
 
-make_in_docker "f4hwn.fullflash" "${TVOXLESS} \
+make_in_docker "raf74.fullflash" "${TVOXLESS} \
     ENABLE_VOX=0 \
     ENABLE_VOICE=0 \
     ENABLE_AIRCOPY=0 \
     ENABLE_AUDIO_BAR=0 \
-    ENABLE_FEAT_F4HWN_SLEEP=0 \
-    ENABLE_FEAT_F4HWN_SPECTRUM=1 \
+    ENABLE_FEAT_raf74_SLEEP=0 \
+    ENABLE_FEAT_raf74_SPECTRUM=1 \
     ENABLE_REDUCE_LOW_MID_TX_POWER=1 \
-    ENABLE_FEAT_F4HWN_RX_TX_TIMER=0 \
+    ENABLE_FEAT_raf74_RX_TX_TIMER=0 \
     ENABLE_SHOW_CHARGE_LEVEL=0 \
     ENABLE_COPY_CHAN_TO_VFO=1 \
     ENABLE_ROBANG74_UI_MENU=1 \
@@ -217,14 +217,14 @@ if [ $default_first -eq 0 ]; then
         show_firmware_filesize
         exit $ret
     fi
-    make_in_docker "f4hwn.default" $DEFAULT
+    make_in_docker "raf74.default" $DEFAULT
 fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-make_in_docker "f4hwn.voxless" "${TVOXLESS}"
-make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0"
-make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1"
+make_in_docker "raf74.voxless" "${TVOXLESS}"
+make_in_docker "raf74.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0"
+make_in_docker "raf74.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
