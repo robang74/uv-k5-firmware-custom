@@ -271,10 +271,14 @@ fi
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 BCOMMON="ENABLE_AIRCOPY=1 ENABLE_NOAA=0"
+LIGHTFW="ENABLE_SPECTRUM=0 ENABLE_FMRADIO=0 ENABLE_AIRCOPY=0 ENABLE_NOAA=1"
 
 make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0 $BCOMMON"
 make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1 $BCOMMON"
-make_in_docker "f4hwn.voxless" "${TVOXLESS}"
+make_in_docker "f4hwn.voxless" "$TVOXLESS"
+make_in_docker "f4hwn.lightfw" "$LIGHTFW"
+
+show_firmware_filesize
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
