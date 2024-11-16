@@ -233,7 +233,7 @@ This is a non-complete list of resources available and reletated to this project
 
 * [UV-K5 Wiki (wiki)](https://github.com/ludwich66/Quansheng_UV-K5_Wiki/wiki)
 
-* [amnemonic (tools)](https://github.com/amnemonic/Quansheng_UV-K5_Firmware)
+* [amnemonic (FW)](https://github.com/amnemonic/Quansheng_UV-K5_Firmware)
 
 * [losehu (mod)](https://github.com/losehu/uv-k5-firmware-custom)
 
@@ -268,3 +268,11 @@ This is a arbitrary list of projects which are interesting but not related to UV
 * [OpenRTX (PoC)](https://github.com/OpenRTX/OpenRTX)
 
 * [Open Quack (prj)](https://github.com/rebezhir/openquack/)
+
+* [Sirio IJV (FW)](https://www.universirius.com/en_gb/preppers/quansheng-uv-k5-manuale-del-firmware-ijv_v3/)
+
+* [Corso OM (doc)](http://www.stmb.it/corso.htm)
+
+* [OM guide (doc)](https://github.com/giordyb/OM-study-guide)
+
+* [OM test (form)](https://docs.google.com/forms/d/e/1FAIpQLSf59HeQ4Z-xl8h-QgxiPQnYIRUqj6MNVxkC5SaBMjVh0RwnDQ/viewform)
