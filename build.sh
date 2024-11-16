@@ -179,7 +179,7 @@ DEFAULT="" # "ENABLE_VOICE=1"
 default_first=0
 
 if [ $default_first -ne 0 ]; then
-    make_in_docker "f4hwn.default" $DEFAULT
+    make_in_docker "raf74.default" $DEFAULT
 
     # RAF: to test the new code is compiling
     ret=$?;
@@ -195,10 +195,10 @@ fi
 # REDUCE_LOW_MID_TX_POWER     0b  (incl.)     *         *       (   0)      =
 # FLASHLIGHT                 64b  (avail)     *         *       (  52)      =
 # SHOW_CHARGE_LEVEL         104b  (avail)     *         *       (  84)      =
-# F4HWN_RX_TX_TIMER         148b  (avail)  ( -128)      *       ( 152)      =
+# raf74_RX_TX_TIMER         148b  (avail)  ( -128)      *       ( 152)      =
 # COPY_CHAN_TO_VFO          192b  (incl.)     *         *       ( 116)      =
 # AUDIO_BAR                 386b  ( -184)     x         *       ( 400)      =
-# FEAT_F4HWN_SLEEP          512b  ( -440)     x         *       ( 452)      =
+# FEAT_raf74_SLEEP          512b  ( -440)     x         *       ( 452)      =
 # VOX                             (-1032)     x      (avail)    ( 968)      =
 # AIRCOPY                         (-1996)     x      (-1028)    (1960)      =
 # ------------------------------------------------------------------------------
@@ -206,53 +206,53 @@ fi
 #                                                                       
 # VOICE ENGLIHSH ONLY (new code)     ?        x         x                 (-248)
 # VOICE (both, original code)        ?        x         x       (1584)       .
-# FEAT_F4HWN_SPECTRUM                         x         x       (incl)       =
-# FEAT_F4HWN_SCREENSHOT           (avail)     .         *       (incl)       =
-# FEAT_F4HWN_RESTORE_SCAN         (avail)     .         *       ( 192)       =
-# FEAT_F4HWN_RESET_CHANNEL        (avail)     .         *       (  60)       =
+# FEAT_raf74_SPECTRUM                         x         x       (incl)       =
+# FEAT_raf74_SCREENSHOT           (avail)     .         *       (incl)       =
+# FEAT_raf74_RESTORE_SCAN         (avail)     .         *       ( 192)       =
+# FEAT_raf74_RESET_CHANNEL        (avail)     .         *       (  60)       =
 # ------------------------------------------------------------------------------
 # ALL THE OPTIONS                    ?        ?      (-2896)   (-3832)   (-3148)
 #
 #   text  data  bss    dec filename
-#  60148   52  3068  63268 f4hwn.fullflash
-#  58868   52  3120  62040 f4hwn.default
-#  58868   52  3120  62040 f4hwn.bandscope
-#  57176   20  2748  59944 f4hwn.broadcast
-#  59324   52  3060  62436 f4hwn.voxless
+#  60148   52  3068  63268 raf74.fullflash
+#  58868   52  3120  62040 raf74.default
+#  58868   52  3120  62040 raf74.bandscope
+#  57176   20  2748  59944 raf74.broadcast
+#  59324   52  3060  62436 raf74.voxless
 #
 # Binary firmware files sorted per byte size:
 #
-#  57196  93.09%  f4hwn.broadcast
-#  58920  95.89%  f4hwn.bandscope
-#  58920  95.89%  f4hwn.default
-#  59376  96.64%  f4hwn.voxless
-#  60200  97.98%  f4hwn.fullflash
+#  57196  93.09%  raf74.broadcast
+#  58920  95.89%  raf74.bandscope
+#  58920  95.89%  raf74.default
+#  59376  96.64%  raf74.voxless
+#  60200  97.98%  raf74.fullflash
 
 TVOXLESS="ENABLE_SPECTRUM=1 ENABLE_FMRADIO=1 \
     ENABLE_VOX=0 \
     ENABLE_AIRCOPY=0 \
     ENABLE_AUDIO_BAR=0 \
-    ENABLE_FEAT_F4HWN_SLEEP=1 \
-    ENABLE_FEAT_F4HWN_SPECTRUM=0 \
-    ENABLE_FEAT_F4HWN_RESTORE_SCAN=0 \
+    ENABLE_FEAT_raf74_SLEEP=1 \
+    ENABLE_FEAT_raf74_SPECTRUM=0 \
+    ENABLE_FEAT_raf74_RESTORE_SCAN=0 \
     ENABLE_NOAA=0"
 
-make_in_docker "f4hwn.fullflash" "${TVOXLESS} ENABLE_RUNDATA_MEMORY=1 \
+make_in_docker "raf74.fullflash" "${TVOXLESS} ENABLE_RUNDATA_MEMORY=1 \
     ENABLE_VOX=0 \
     ENABLE_VOICE=0 \
     ENABLE_AIRCOPY=0 \
     ENABLE_AUDIO_BAR=1 \
-    ENABLE_FEAT_F4HWN_SLEEP=1 \
-    ENABLE_FEAT_F4HWN_RESTORE_SCAN=1 \
-    ENABLE_FEAT_F4HWN_RESET_CHANNEL=1 \
+    ENABLE_FEAT_raf74_SLEEP=1 \
+    ENABLE_FEAT_raf74_RESTORE_SCAN=1 \
+    ENABLE_FEAT_raf74_RESET_CHANNEL=1 \
     ENABLE_REDUCE_LOW_MID_TX_POWER=1 \
-    ENABLE_FEAT_F4HWN_RX_TX_TIMER=1 \
+    ENABLE_FEAT_raf74_RX_TX_TIMER=1 \
     ENABLE_SHOW_CHARGE_LEVEL=1 \
     ENABLE_COPY_CHAN_TO_VFO=1 \
     ENABLE_FLASHLIGHT=1 \
     \
-    ENABLE_FEAT_F4HWN_SPECTRUM=1 \
-    ENABLE_FEAT_F4HWN_SCREENSHOT=1 \
+    ENABLE_FEAT_raf74_SPECTRUM=1 \
+    ENABLE_FEAT_raf74_SCREENSHOT=1 \
     ENABLE_ROBANG74_SPRINTF_FUNC=1 \
     ENABLE_ROBANG74_UI_MENU=1 \
     ENABLE_FLOCK_SHORT_MENU=1 \
@@ -265,7 +265,7 @@ if [ $default_first -eq 0 ]; then
         show_firmware_filesize
         exit $ret
     fi
-    make_in_docker "f4hwn.default" $DEFAULT
+    make_in_docker "raf74.default" $DEFAULT
 fi
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -273,10 +273,10 @@ fi
 BCOMMON="ENABLE_AIRCOPY=1 ENABLE_NOAA=0"
 LIGHTFW="ENABLE_SPECTRUM=0 ENABLE_FMRADIO=0 ENABLE_AIRCOPY=0 ENABLE_NOAA=1"
 
-make_in_docker "f4hwn.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0 $BCOMMON"
-make_in_docker "f4hwn.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1 $BCOMMON"
-make_in_docker "f4hwn.voxless" "$TVOXLESS"
-make_in_docker "f4hwn.lightfw" "$LIGHTFW"
+make_in_docker "raf74.bandscope" "ENABLE_SPECTRUM=1 ENABLE_FMRADIO=0 $BCOMMON"
+make_in_docker "raf74.broadcast" "ENABLE_SPECTRUM=0 ENABLE_FMRADIO=1 $BCOMMON"
+make_in_docker "raf74.voxless" "$TVOXLESS"
+make_in_docker "raf74.lightfw" "$LIGHTFW"
 
 show_firmware_filesize
 
