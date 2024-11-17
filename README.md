@@ -276,3 +276,5 @@ This is a arbitrary list of projects which are interesting but not related to UV
 * [OM guide (doc)](https://github.com/giordyb/OM-study-guide)
 
 * [OM test (form)](https://docs.google.com/forms/d/e/1FAIpQLSf59HeQ4Z-xl8h-QgxiPQnYIRUqj6MNVxkC5SaBMjVh0RwnDQ/viewform)
+
+* [colour display (howto)](https://youtu.be/NlZvnFQGUU8?si=Mf_GIw-LXTGthZTs)
