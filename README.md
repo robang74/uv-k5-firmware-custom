@@ -60,6 +60,16 @@ The following branded STM32G031, STM32G041 Cortex G-series are two models provid
 
 At this time, the compatibility with other uP chips is under investigation. The final word can be a chip upgrade that works.
 
+The Sirio IJV firmware support the extension from 200 channels to 999 channels replacing the 64Kb EEPROM with a pin/logic compatible 128Kb EEPROM
+
+<div align="center">
+
+![EEPROM chip](docs/M24M01-RMN6TP.png)
+
+[M24M01-RMN6TP](https://it.rs-online.com/web/p/eeprom/7147585) - EEPROM I2C 1Mbit SOIC SMD 8 pin (datasheet [1st page](docs/M24M01-RMN6TP.pdf))
+
+</div>
+
 </br>
 
 ## Fork status
